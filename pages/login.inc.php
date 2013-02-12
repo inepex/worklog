@@ -1,3 +1,5 @@
+<div class="worklog-container">
+<h4>Belépés</h4>
 <?
 	if (!isset($_POST['entername']) && $_SESSION['loggedin_worklog_admin']=="false") { 
 	// a bejelentkező doboz
@@ -11,3 +13,4 @@
 
 
 ?>
+</div>

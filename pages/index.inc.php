@@ -15,7 +15,7 @@
 		<div style="clear: both;"></div>
 		<form method="post">
 			<table class="table table-bordered">
-				<tr>
+				<tr class="editline">
 					<td><select style="width: 120px !important;">
 							<option value="1">IneTrack új weboldal</option>
 							<option value="2">Iktató bugfix</option>
@@ -43,6 +43,18 @@
 					<td><input type="sumbit" value="OK" class="btn btn-primary"
 						style="width: 20px;"></td>
 				</tr>
+				
+				<tr>
+					<th>Project</th>
+					<th>Category</th>
+					<th>Date</th>
+					<th>From</th>
+					<th>To</th>
+					<th>Log</th>
+					<th>Place</th>
+					<th></th>
+				</tr>
+				
 				<tr>
 					<td>Inepex új weboldal</td>
 					<td>Design</td>

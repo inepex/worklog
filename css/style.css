@@ -34,3 +34,11 @@ th, td {
 	background: #ffffff;
 	padding: 20px;
 }
+
+.editline td {
+	border-bottom: 2px solid #000000;
+}
+
+th {
+	background: #e6e6e6;
+}

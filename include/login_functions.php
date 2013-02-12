@@ -23,7 +23,7 @@ if (  $_SESSION['loggedin_worklog_admin'] !="true" ) {
 			if ($_POST['entername']=="$line[0]" && $pwd == "$line[1]") {
 
 				$_SESSION['loggedin_worklog_admin']="true";
-				$_SESSION['entername']=$_POST['entername'];
+				$_SESSION['enterusername']=$_POST['entername'];
 
 			}
 		}
@@ -31,11 +31,12 @@ if (  $_SESSION['loggedin_worklog_admin'] !="true" ) {
 		if ($_SESSION['loggedin_worklog_admin']=="true") {
 			// ha be van lépve
 			$nev=$_SESSION['entername'];
-			$b="SELECT id,user_status FROM worklog_users where worklog_users.username='$nev'";
+			$b="SELECT worklog_user_id,user_status,name FROM worklog_users where worklog_users.username='$nev'";
 			$eredmeny=mysql_query($b);
 			while ($lines = mysql_fetch_row($eredmeny)) {
 				$_SESSION['enterid']=$lines[0];
 				$_SESSION['enterstatus']=$lines[1];
+				$_SESSION['entername']=$lines[2];
 			}
 			$enterdate = date("Y-m-d");
 			$entertime=date("G:i:s");
