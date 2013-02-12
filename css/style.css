@@ -1,0 +1,36 @@
+body {
+	background: #e6e6e6 !important;
+}
+
+.header, .footer {
+	width: 1050px;
+	margin: 10px auto;
+	 
+}
+
+.footer {
+text-align: center;
+}
+
+th, td {
+	vertical-align: middle;
+}
+	
+.profile_photo {
+	float:left;
+	margin-right: 20px;
+}
+
+.profile_photo img {
+	width: 60px;
+	height: 60px;
+}
+.worklog-container {
+	width: 1010px;
+	margin: 10px auto;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	background: #ffffff;
+	padding: 20px;
+}
