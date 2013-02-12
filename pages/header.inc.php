@@ -9,7 +9,7 @@
                   </a>
                   <a class="brand" href="index.php" style="color: #ffffff !important;"><img src="images/logo.png" style="margin-right: 5px; margin-top: -6px;">Worklog</a>
                  
-                 <?php  if ($_SESSION['loggedin_worklog_admin']=="true") { ?>
+                 <?php  if ($_SESSION['loggedin_worklog']=="true") { ?>
                  
                   <div class="nav-collapse collapse navbar-responsive-collapse">
                     <ul class="nav">
@@ -25,7 +25,7 @@
                       
                       <li class="divider-vertical"></li>
                       <?php 
-						if ($_SESSION['loggedin_worklog_admin']=="true") {
+						if ($_SESSION['loggedin_worklog']=="true") {
 				
 						if ($_SERVER['QUERY_STRING']=='') {
 							$logoutlink="$_SERVER[PHP_SELF]?log=logout";

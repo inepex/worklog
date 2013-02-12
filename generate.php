@@ -25,7 +25,7 @@
 	<?php foreach( $include_list[ 'head' ] as $inc_file ) include( $inc_file ) ?>
 	<!-- PHP -->
 	<?php
-	if ($_SESSION['loggedin_worklog_admin']=="true") {
+	if ($_SESSION['loggedin_worklog']=="true") {
 		foreach( $include_list[ 'main' ] as $inc_file ) include( $inc_file );
 	} else {
 		include('pages/login.inc.php');

@@ -1,16 +1,16 @@
 <?php
 if (  $_GET['log'] =="logout" ) {
 	// kilépés
-	$_SESSION['loggedin_worklog_admin']="false";
+	$_SESSION['loggedin_worklog']="false";
 	$_SESSION['enterstatus']=0;
 	$_SESSION['enterid']=0;
 	header('Location:index.php');
 }
 
-if (  $_SESSION['loggedin_worklog_admin'] !="true" ) {
+if (  $_SESSION['loggedin_worklog'] !="true" ) {
 
 	// ha épp nincs belépve
-	$_SESSION['loggedin_worklog_admin']="false";
+	$_SESSION['loggedin_worklog']="false";
 
 	if(isset($_POST['entername'])) {
 
@@ -22,13 +22,13 @@ if (  $_SESSION['loggedin_worklog_admin'] !="true" ) {
 			$pwd=md5($_POST['enterpassword']);
 			if ($_POST['entername']=="$line[0]" && $pwd == "$line[1]") {
 
-				$_SESSION['loggedin_worklog_admin']="true";
+				$_SESSION['loggedin_worklog']="true";
 				$_SESSION['enterusername']=$_POST['entername'];
 
 			}
 		}
 
-		if ($_SESSION['loggedin_worklog_admin']=="true") {
+		if ($_SESSION['loggedin_worklog']=="true") {
 			// ha be van lépve
 			$nev=$_SESSION['entername'];
 			$b="SELECT worklog_user_id,user_status,name FROM worklog_users where worklog_users.username='$nev'";
