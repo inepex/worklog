@@ -13,7 +13,7 @@
                  
                   <div class="nav-collapse collapse navbar-responsive-collapse">
                     <ul class="nav">
-                      <li><a href="#">+New Project</a></li>
+                      <li><a href="project_edit.php?type=new">+New Project</a></li>
 
                     </ul>
                     

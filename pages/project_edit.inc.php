@@ -8,7 +8,7 @@
 			</div>
 			<div style="float: right;">
 				<a href="#" class="btn">Duplicate project</a> <a href="#"
-					class="btn">Project Page</a> <a href="#" class="btn btn-primary">Edit
+					class="btn ">Project Page</a> <a href="#" class="btn btn-inverse">Edit
 					Project</a>
 			</div>
 		</div>
@@ -49,6 +49,8 @@
 			</table>
 		</form>
 
+		<hr>
+		
 		<div style="width: 30%; float: left;">
 			<h4>Workmates</h4>
 			<form method="post">
@@ -125,7 +127,7 @@
 				 	<td>20</td>
 				 </tr>
 			</table>
-			<input typ="submit" class="btn" value="Save">
+			<input typ="submit" class="btn btn-primary" value="Save">
 		</form>	
 			
 	</div>
