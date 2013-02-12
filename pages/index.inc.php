@@ -25,7 +25,7 @@
 				<td><select style="width: 120px !important;">
 						<option value="1">megbeszélés</option>
 						<option value="2">design</option>
-				</select style="width:120px;">
+				</select>
 				</td>
 				<td><select style="width: 120px;">
 						<option value="1">2013-02-12</option>
@@ -65,7 +65,7 @@
 			</tr>
 
 			<tr>
-				<td><a href="#">Inepex új weboldal</a>
+				<td><a href="project_view.php">Inepex új weboldal</a>
 				</td>
 				<td><a href="#">Design</a>
 				</td>
@@ -78,7 +78,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td><a href="#">Inepex új weboldal</a>
+				<td><a href="project_view.php">Inepex új weboldal</a>
 				</td>
 				<td><a href="#">Design</a>
 				</td>
@@ -90,7 +90,7 @@
 				<td></td>
 			</tr>
 			<tr>
-				<td><a href="#">Inepex új weboldal</a>
+				<td><a href="project_view.php">Inepex új weboldal</a>
 				</td>
 				<td><a href="#">Design</a>
 				</td>

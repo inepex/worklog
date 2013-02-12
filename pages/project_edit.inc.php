@@ -7,8 +7,8 @@
 				<h4>Create New Project / Edit Project</h4>
 			</div>
 			<div style="float: right;">
-				<a href="#" class="btn">Duplicate project</a> <a href="#"
-					class="btn ">Project Page</a> <a href="#" class="btn btn-inverse">Edit
+				<a href="#" class="btn">Duplicate project</a> <a href="project_view.php"
+					class="btn ">Project Page</a> <a href="project_edit.php" class="btn btn-inverse">Edit
 					Project</a>
 			</div>
 		</div>
@@ -65,7 +65,7 @@
 					</td>
 				</tr>
 				<tr>
-					<td width="120">Hidi Tibor</td>
+					<td width="120"><img src="photos/tibi.jpg" width="20" height="20"> Hidi Tibor</td>
 					<td><img src="images/delete.png"></td>
 				</tr>
 			</table>
