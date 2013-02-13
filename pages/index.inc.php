@@ -1,10 +1,11 @@
 <div class="worklog-container">
 
-	<div class="subheader">
-		<div class="profile_photo">
+	<div class="subheader" ">
+	
+		<div class="profile_photo" style="margin-top:10px;">
 			<img src="photos/tibi.jpg">
 		</div>
-		<div class="titlebar">
+		<div class="titlebar" style="float:left;">
 			<h4>Hidi Tibor's Worklog - LogView</h4>
 			<select>
 				<option value="201301">2013. January</option>
@@ -17,8 +18,13 @@
 			</select>
 			<input type="sumbit" value="OK" class="btn"
 					style="width: 20px;">
+					
 		</div>
+		<div class="personal_note">My personal note:  <input type="sumbit" class="btn btn-mini" value="Save" style="width:30px; float:right; margin-bottom: 3px;"> <br><textarea style="width: 250px; height: 60px;"></textarea></div>
+		<div style="clear: both;"></div>
 	</div>
+	
+					
 	<hr>
 	<div style="clear: both;"></div>
 	

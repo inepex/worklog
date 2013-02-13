@@ -42,3 +42,7 @@ th, td {
 th {
 	background: #e6e6e6;
 }
+
+.personal_note {
+	float:right;
+}
