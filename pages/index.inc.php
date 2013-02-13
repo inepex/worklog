@@ -21,6 +21,30 @@
 	</div>
 	<hr>
 	<div style="clear: both;"></div>
+	
+	<script>
+	$(
+		    function(){
+		     
+		        $('#time_from_link').click(function(){
+		                  var time = new Date();                
+		                  $('#time_from').val(time.getHours() + ":" + time.getMinutes());  
+		        });
+		        
+		    }
+		);
+
+	$(
+		    function(){
+		     
+		        $('#time_to_link').click(function(){
+		                  var time = new Date();                
+		                  $('#time_to').val(time.getHours() + ":" + time.getMinutes());  
+		        });
+		        
+		    }
+		);
+	</script>
 	<form method="post">
 		<table class="table table-bordered">
 			<tr>
@@ -41,9 +65,9 @@
 						<option value="1">2013-02-09 (Friday)</option>
 				</select>
 				</td>
-				<td><input type="text" style="width: 40px;">
+				<td><input type="text" style="width: 40px;" id="time_from">
 				</td>
-				<td><input type="text" style="width: 40px;">
+				<td><input type="text" style="width: 40px;" id="time_to">
 				</td>
 				<td rowspan="2" class="editline"><textarea style="width: 250px; height: 60px;"></textarea>
 				</td>
@@ -63,8 +87,8 @@
 			
 			<tr class="editline">
 			<td colspan="3"><img src="images/information.png"> Ez a kategória ebben a projektben ezt jeleni</td>
-				<td><a href="#">Now</a></td>
-				<td><a href="#">Now</a></td>
+				<td><a href="#" id="time_from_link">Now</a></td>
+				<td><a href="#" id="time_to_link">Now</a></td>
 				 
 				<td></td>
 				<td> </td>
