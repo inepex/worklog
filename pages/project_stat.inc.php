@@ -5,7 +5,7 @@
 			<img src="photos/tibi.jpg">
 		</div>
 		<div class="titlebar">
-			<h4>Hidi Tibor's Worklog - LogView</h4>
+			<h4>Hidi Tibor's Worklog - ProjectStat View</h4>
 			<select>
 				<option value="1">Active projects</option>
 				<option value="2">Closed projects</option>
