@@ -127,7 +127,7 @@
 				 	<td>20</td>
 				 </tr>
 			</table>
-			<input typ="submit" class="btn btn-primary" value="Save">
+			<input typ="submit" class="btn btn-primary" value="Save" style="width: 35px;">
 		</form>	
 			
 	</div>
