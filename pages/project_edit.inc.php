@@ -27,7 +27,7 @@
 				</tr>
 				<tr>
 					<td>Description:</td>
-					<td><textarea></textarea></td>
+					<td><textarea style="width: 700px; height: 100px;"></textarea></td>
 				</tr>
 				<tr>
 					<td>Start:</td>
