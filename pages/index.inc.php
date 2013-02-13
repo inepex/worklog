@@ -15,7 +15,7 @@
 				<option value="201302">Csordas Mihaly</option>
 				<option value="201302">Madi Gabor</option>
 			</select>
-			<input type="sumbit" value="OK" class="btn btn-primary"
+			<input type="sumbit" value="OK" class="btn"
 					style="width: 20px;">
 		</div>
 	</div>
