@@ -45,6 +45,13 @@
 		    }
 		);
 	</script>
+	
+	<div class="alert">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <strong>Warning!</strong> You have already had a log entry at this time.
+</div>
+
+
 	<form method="post">
 		<table class="table table-bordered">
 			<tr>
