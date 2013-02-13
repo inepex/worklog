@@ -12,6 +12,8 @@
 				<option value="3">Archive projects</option>
 				<option value="4">All projects</option>
 			</select>
+			<input type="sumbit" value="OK" class="btn"
+					style="width: 20px;">
 		</div>
 	</div>
 	<hr>
