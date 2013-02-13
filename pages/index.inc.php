@@ -20,7 +20,7 @@
 					style="width: 20px;">
 					
 		</div>
-		<div class="personal_note">My personal note:  <input type="sumbit" class="btn btn-mini" value="Save" style="width:30px; float:right; margin-bottom: 3px;"> <br><textarea style="width: 250px; height: 60px;"></textarea></div>
+		<div class="personal_note">My personal note:  <input type="sumbit" class="btn btn-mini" value="Save" style="width:30px; float:right; margin-bottom: 3px;"> <br><textarea style="width: 250px; height: 60px;">Ide beírhatsz bármit magadnak emlékeztetőül</textarea></div>
 		<div style="clear: both;"></div>
 	</div>
 	
