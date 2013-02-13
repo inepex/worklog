@@ -43,11 +43,52 @@
 			</td>
 		</tr>
 		<tr>
+			<td>Default place</td>
+			<td><select style="width: 80px;">
+						<option value="1">Iroda1</option>
+						<option value="1">Iroda2</option>
+						<option value="1">Tárgyaló1</option>
+						<option value="1">Tárgyaló2</option>
+						<option value="1">Otthon</option>
+				</select></td>
+		</tr>	
+		
+		<tr>
 			<td> </td>
 			<td><input type="submit" value="Save" class="btn btn-primary"></td>
 		</tr> 	 
 	</table>
  </form>
 	
+	
+	
+	<div>
+			<h4>Categories - csak adminoknak</h4>
+			<form method="post">
+			<table class="table table-bordered">
+				<tr>
+		 
+					<td><input type="text" style="width: 450px;">
+					</td>
+					<td><input type="submit" value="Add" class="btn">
+					</td>
+				</tr>
+				<tr>
+					<td width="120">megbeszélés</td>
+					<td><img src="images/modify.png"> <img src="images/delete.png"></td>
+				</tr>
+				<tr>
+					<td width="120">design</td>
+					<td><img src="images/modify.png"> <img src="images/delete.png"></td>
+				</tr>
+				<tr>
+					<td width="120">adatbázis</td>
+					<td> </td>
+				</tr>
+			</table>
+			</form>
+		</div>
+		
+		
 </div>
 </div>

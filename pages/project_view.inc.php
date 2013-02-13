@@ -8,9 +8,9 @@
 				<i>Inepex Kft project</i>
 			</div>
 			<div style="float: right;">
-				<a href="#" class="btn">Duplicate project</a> <a href="project_view.php"
-					class="btn btn-inverse">Project Page</a> <a href="project_edit.php" class="btn ">Edit
-					Project</a>
+				<a href="#" class="btn">Duplicate project</a> <a
+					href="project_view.php" class="btn btn-inverse">Project Page</a> <a
+					href="project_edit.php" class="btn ">Edit Project</a>
 			</div>
 		</div>
 		<div style="clear: both;"></div>
@@ -92,30 +92,82 @@
 
 
 
+
+
+
+
+	<hr>
+	<h4 style="float: left;">Statistics</h4>
+
+	<table class="table table-bordered">
+
+		<tr>
+			<td>megbeszélés <img src="images/information.png"
+				title="Ez a kategória itt ezt és azt jelenti">
+			</td>
+			<td><div
+					style="height: 20px; width: 600px; border: 1px solid #d0d0d0;">
+					<div style="height: 20px; width: 150px; background: #005826;"></div>
+				</div>
+			</td>
+			<td>1:00 / 3:00 (30%)</td>
+		</tr>
+		<tr>
+			<td>design <img src="images/information.png"
+				title="Ez a kategória itt ezt és azt jelenti">
+			</td>
+			<td><div
+					style="height: 20px; width: 600px; border: 1px solid #d0d0d0;">
+					<div style="height: 20px; width: 150px; background: #005826;"></div>
+				</div>
+			</td>
+			<td>1:00 / 3:00 (30%)</td>
+		</tr>
+		<tr>
+			<td>megbeszélés <img src="images/information.png"
+				title="Ez a kategória itt ezt és azt jelenti">
+			</td>
+			<td><div
+					style="height: 20px; width: 600px; border: 1px solid #d0d0d0;">
+					<div style="height: 20px; width: 600px; background: #ed1c24;"></div>
+				</div>
+			</td>
+			<td>4:00 / 3:00 (125%)</td>
+		</tr>
+
+		<tr>
+			<th>overall SUM</th>
+			<td><div
+					style="height: 20px; width: 600px; border: 1px solid #d0d0d0;">
+					<div style="height: 20px; width: 400px; background: #0054a6;"></div>
+				</div>
+			</td>
+			<td>2:00 / 3:00 (75%)</td>
+		</tr>
+
+
+	</table>
+
 	<hr>
 
-	<div style="float: left;">
-		<h4 style="float: left;">Latest logs</h4>
-	</div>
-	<div style="float: left; padding: 8px;">
-		<a href="#">(View all)</a>
-	</div>
+
+	<h4 style="float: left;">Latest logs</h4>
+
+
 	<div style="float: right;">
-		Filters: 
-		<select style="width: 120px !important;">
+		Filters: <select style="width: 120px !important;">
 			<option value="1">Hidi Tibor</option>
 			<option value="2">Osvath Judit</option>
 		</select> <select style="width: 120px !important;">
 			<option value="1">design</option>
 			<option value="2">megbeszélés</option>
-		</select>
-		<input type="text" style="width:60px;" value="datefrom">
-		<input type="text" style="width:60px;" value="dateto">
-		<input type="sumbit" class="btn" value="OK" style="width:20px;">
+		</select> <input type="text" style="width: 60px;" value="datefrom"> <input
+			type="text" style="width: 60px;" value="dateto"> <input type="sumbit"
+			class="btn" value="OK" style="width: 20px;">
 	</div>
-	
+
 	<div style="clear: both;"></div>
-	
+
 	<table class="table table-bordered">
 		<tr>
 			<th>Workmate</th>
@@ -129,18 +181,23 @@
 		</tr>
 
 		<tr>
-			<td><a href="project_view.php">Hidi Tibor</a></td>
-			<td><a href="#">Design</a></td>
+			<td><a href="project_view.php">Hidi Tibor</a>
+			</td>
+			<td><a href="#">Design</a>
+			</td>
 			<td>2013-02-01</td>
 			<td>09:30</td>
 			<td>10:30</td>
 			<td>Ezt csináltam, azt csináltam</td>
 			<td>iroda1</td>
-			<td><img src="images/modify.png"> <img src="images/delete.png"></td>
+			<td><img src="images/modify.png"> <img src="images/delete.png">
+			</td>
 		</tr>
 		<tr>
-			<td><a href="project_view.php">Gabor Madi</a></td>
-			<td><a href="#">Design</a></td>
+			<td><a href="project_view.php">Gabor Madi</a>
+			</td>
+			<td><a href="#">Design</a>
+			</td>
 			<td>2013-02-01</td>
 			<td>09:30</td>
 			<td>10:30</td>
@@ -149,8 +206,10 @@
 			<td></td>
 		</tr>
 		<tr>
-			<td><a href="project_view.php">Judit Osvath</a></td>
-			<td><a href="#">Design</a></td>
+			<td><a href="project_view.php">Judit Osvath</a>
+			</td>
+			<td><a href="#">Design</a>
+			</td>
 			<td>2013-02-01</td>
 			<td>09:30</td>
 			<td>10:30</td>
@@ -160,28 +219,16 @@
 		</tr>
 
 	</table>
-	
-	<hr>
-	<h4 style="float: left;">Statistics</h4>
 
-	<table class="table table-bordered">
-	
-	<tr>
-	<td>megbeszélés <img src="images/information.png" title="Ez a kategória itt ezt és azt jelenti"></td><td><div style="height: 20px; width: 600px; border:1px  solid #d0d0d0;"><div style="height: 20px;  width:150px; background: #005826;"></div></div></td><td>1:00 / 3:00 (30%)</td>
-	</tr>
-		<tr>
-	<td>design <img src="images/information.png" title="Ez a kategória itt ezt és azt jelenti"></td><td><div style="height: 20px; width: 600px; border:1px  solid #d0d0d0;"><div style="height: 20px;  width:150px; background: #005826;"></div></div></td><td>1:00 / 3:00 (30%)</td>
-	</tr>
-		<tr>
-	<td>megbeszélés <img src="images/information.png" title="Ez a kategória itt ezt és azt jelenti"></td><td><div style="height: 20px; width: 600px; border:1px  solid #d0d0d0;"><div style="height: 20px;  width:600px; background: #ed1c24;"></div></div></td><td>4:00 / 3:00 (125%)</td>
-	</tr>
-	
-	<tr>
-	<th>overall SUM </th><td><div style="height: 20px; width: 600px; border:1px  solid #d0d0d0;"><div style="height: 20px;  width:400px; background: #0054a6;"></div></div></td><td>2:00 / 3:00 (75%)</td>
-	</tr>
-	
-	
-	</table>
-	
+	<div class="pagination pagination-centered">
+		<ul>
+			<li><a href="#">Prev</a></li>
+			<li><a href="#">1</a></li>
+			<li><a href="#">2</a></li>
+			<li><a href="#">3</a></li>
+			<li><a href="#">Next</a></li>
+		</ul>
+	</div>
+
 </div>
 </div>
