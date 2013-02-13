@@ -30,7 +30,7 @@ if (  $_SESSION['loggedin_worklog'] !="true" ) {
 
 		if ($_SESSION['loggedin_worklog']=="true") {
 			// ha be van lépve
-			$nev=$_SESSION['entername'];
+			$nev=$_SESSION['enterusername'];
 			$b="SELECT worklog_user_id,user_status,name FROM worklog_users where worklog_users.username='$nev'";
 			$eredmeny=mysql_query($b);
 			while ($lines = mysql_fetch_row($eredmeny)) {
