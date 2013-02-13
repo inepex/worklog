@@ -62,6 +62,69 @@
 	
 	
 	
+	<hr>
+	
+	<div>
+			<h4>Companies - csak adminoknak</h4>
+			<form method="post">
+			<table class="table table-bordered">
+				<tr>
+		 
+					<td><input type="text" style="width: 450px;">
+					</td>
+					<td><input type="submit" value="Add" class="btn">
+					</td>
+				</tr>
+				<tr>
+					<td width="120">Inepex kft</td>
+					<td><img src="images/modify.png"> <img src="images/delete.png"></td>
+				</tr>
+				<tr>
+					<td width="120">Szélkhelyszolgálat.net</td>
+					<td><img src="images/modify.png"> <img src="images/delete.png"></td>
+				</tr>
+				<tr>
+					<td width="120">Inclust</td>
+					<td> </td>
+				</tr>
+			</table>
+			</form>
+		</div>
+		
+		
+		
+	<hr>
+	
+	<div>
+			<h4>Places - csak adminoknak</h4>
+			<form method="post">
+			<table class="table table-bordered">
+				<tr>
+		 
+					<td><input type="text" style="width: 450px;">
+					</td>
+					<td><input type="submit" value="Add" class="btn">
+					</td>
+				</tr>
+				<tr>
+					<td width="120">Iroda1</td>
+					<td><img src="images/modify.png"> <img src="images/delete.png"></td>
+				</tr>
+				<tr>
+					<td width="120">Iroda2</td>
+					<td><img src="images/modify.png"> <img src="images/delete.png"></td>
+				</tr>
+				<tr>
+					<td width="120">Tárgyaló1</td>
+					<td> </td>
+				</tr>
+			</table>
+			</form>
+		</div>
+		
+	
+	<hr>
+	
 	<div>
 			<h4>Categories - csak adminoknak</h4>
 			<form method="post">
@@ -88,6 +151,8 @@
 			</table>
 			</form>
 		</div>
+		
+		
 		
 		
 </div>
