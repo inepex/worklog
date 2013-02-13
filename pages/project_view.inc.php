@@ -162,7 +162,7 @@
 			<option value="1">design</option>
 			<option value="2">megbeszélés</option>
 		</select> <input type="text" style="width: 60px;" value="datefrom"> <input
-			type="text" style="width: 60px;" value="dateto"> <input type="sumbit"
+			type="text" style="width: 60px;" value="dateto"> <input type="submit"
 			class="btn" value="OK" style="width: 20px;">
 	</div>
 

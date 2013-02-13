@@ -23,11 +23,10 @@ $user_picture = $user->get_picture();
 				<option value="201302">Csordas Mihaly</option>
 				<option value="201302">Madi Gabor</option>
 			</select>
-			<input type="sumbit" value="OK" class="btn"
-					style="width: 20px;">
+			<input type="submit" value="OK" class="btn" >
 					
 		</div>
-		<div class="personal_note">My personal note:  <input type="sumbit" class="btn btn-mini" value="Save" style="width:30px; float:right; margin-bottom: 3px;"> <br><textarea style="width: 250px; height: 60px;">Ide beírhatsz bármit magadnak emlékeztetőül</textarea></div>
+		<div class="personal_note">My personal note:  <input type="submit" class="btn btn-mini" value="Save" style="float:right; margin-bottom: 3px;"> <br><textarea style="width: 250px; height: 60px;">Ide beírhatsz bármit magadnak emlékeztetőül</textarea></div>
 		<div style="clear: both;"></div>
 	</div>
 	
@@ -99,8 +98,7 @@ $user_picture = $user->get_picture();
 						<option value="1">Otthon</option>
 				</select>
 				</td>
-				<td><input type="sumbit" value="OK" class="btn btn-primary"
-					style="width: 20px;">
+				<td><input type="submit" value="OK" class="btn btn-primary" >
 				</td>
 			</tr>
 			

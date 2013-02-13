@@ -18,8 +18,7 @@
 	<hr>
 
 	<div style="clear: both;"></div>
-		
-		<form method="post">
+ 	<form method="post">
 			<table class="table table-bordered">
 				<tr>
 					<td width="120">Project name:</td>
@@ -127,7 +126,7 @@
 				 	<td>20</td>
 				 </tr>
 			</table>
-			<input typ="submit" class="btn btn-primary" value="Save" style="width: 35px;">
+			<input type="submit" class="btn btn-primary" value="Save">
 		</form>	
 			
 	</div>
