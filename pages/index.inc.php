@@ -1,12 +1,19 @@
+<?php
+error_reporting(E_ALL);
+$user_id = $_SESSION['enterid'];
+$user = new User($user_id);
+$user_name = $user->get_name();
+$user_picture = $user->get_picture();
+?>
 <div class="worklog-container">
 
 	<div class="subheader" ">
 	
 		<div class="profile_photo" style="margin-top:10px;">
-			<img src="photos/tibi.jpg">
+			<img src="photos/<?php echo $user_picture;?>">
 		</div>
 		<div class="titlebar" style="float:left;">
-			<h4>Hidi Tibor's Worklog - LogView</h4>
+			<h4><?php echo $user_name;?>'s Worklog - LogView</h4>
 			<select>
 				<option value="201301">2013. January</option>
 				<option value="201302">2013. February</option>

@@ -3,7 +3,12 @@
 	error_reporting(E_WARNING);
 	header("Content-type: text/html; charset=utf-8");
 	require_once '../worklog-config.php';
+	require_once 'classes/User.php';
+	require_once 'classes/WorkPlace.php';
+	require_once 'classes/Company.php';
+	require_once 'classes/PhpConsole.php';
 	include('include/login_functions.php');
+	PhpConsole::start();
 ?>
 
 <!DOCTYPE html>

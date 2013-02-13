@@ -1,12 +1,17 @@
+<?php
+error_reporting(E_ALL);
+$user_id = $_SESSION['enterid'];
+$user = new User($user_id);
+?>
 <div class="worklog-container">
 
 <div class="subheader">
 	<div class="profile_photo">
-			<img src="photos/tibi.jpg">
+			<img src="photos/<?php echo $user->get_picture();?>">
 		</div>
 		<div class="titlebar">
-			<h4>Tibor Hidi's Settings</h4>
-			Last login: 2012-12-12 12:12
+			<h4><?php echo $user->get_name();?>'s Settings</h4>
+			Last login: <?php echo $user->get_enter_date();?>
 		</div>
 	</div>
 	
@@ -18,39 +23,47 @@
 	<table class="table table-bordered" style="width: 0;">
 		<tr>
 			<td>Full name</td>
-			<td>Tibor Hidi</td>
+			<td><?php echo $user->get_name();?></td>
 		</tr>
 		<tr>
 			<td>E-mail</td>
-			<td>tibor.hidi@inepex.com</td>
+			<td><?php echo $user->get_email();?></td>
 		</tr>
 		<tr>
 			<td>Username</td>
-			<td><input type="text" value="tibor.hidi"></td>
+			<td><input type="text" value="<?php echo $user->get_user_name();?>"></td>
 		</tr>
 		<tr>
 			<td>Password</td>
-			<td><input type="password" value="tibor.hidi"></td>
+			<td><input type="password"></td>
 		</tr>
 		<tr>
 			<td>Password again</td>
-			<td><input type="password" value="tibor.hidi"></td>
+			<td><input type="password"></td>
 		</tr>		
 		<tr>
 			<td>Profile photo</td>
 			<td><input type="file" value="tibor.hidi"><br/>
-			<img src="photos/tibi.jpg">
+			<img src="photos/<?php echo $user->get_picture();?>">
 			</td>
 		</tr>
 		<tr>
 			<td>Default place</td>
-			<td><select style="width: 80px;">
-						<option value="1">Iroda1</option>
-						<option value="1">Iroda2</option>
-						<option value="1">Tárgyaló1</option>
-						<option value="1">Tárgyaló2</option>
-						<option value="1">Otthon</option>
-				</select></td>
+			<td>
+				<select style="width: 80px;">
+				<?php 
+				$workPlaces = WorkPlace::get_places();
+				foreach($workPlaces as $workPlace){
+				/* @var $workPlace WorkPlace */
+					$selected = "";
+					if($user->get_default_place()->get_id() == $workPlace->get_id()){
+						$selected = "selected";						
+					}
+					echo '<option value="'.$workPlace->get_id().'" '.$selected.' >'.$workPlace->get_name().'</option>';
+				}
+			?>
+				</select>
+			</td>
 		</tr>	
 		
 		<tr>
@@ -75,18 +88,16 @@
 					<td><input type="submit" value="Add" class="btn">
 					</td>
 				</tr>
-				<tr>
-					<td width="120">Inepex kft</td>
+				<?php
+				$companies = Company::get_companies();
+				foreach($companies as $company){
+					/* @var $company Company */
+					echo '<tr>
+					<td width="120">'.$company->get_name().'</td>
 					<td><img src="images/modify.png"> <img src="images/delete.png"></td>
-				</tr>
-				<tr>
-					<td width="120">Szélkhelyszolgálat.net</td>
-					<td><img src="images/modify.png"> <img src="images/delete.png"></td>
-				</tr>
-				<tr>
-					<td width="120">Inclust</td>
-					<td> </td>
-				</tr>
+					</tr>';
+				} 
+				?>
 			</table>
 			</form>
 		</div>

@@ -1,5 +1,7 @@
 <?php
-if (  $_GET['log'] =="logout" ) {
+require_once 'classes/PhpConsole.php';
+PhpConsole::start();
+if ( isset($_GET['log']) && $_GET['log'] =="logout" ) {
 	// kilépés
 	$_SESSION['loggedin_worklog']="false";
 	$_SESSION['enterstatus']=0;
@@ -40,7 +42,7 @@ if (  $_SESSION['loggedin_worklog'] !="true" ) {
 			}
 			$enterdate = date("Y-m-d");
 			$entertime=date("G:i:s");
-			$login="update worklog_users set enterdate='$enterdate $entertime'  where id='$_SESSION[enterid]';";
+			$login="UPDATE worklog_users SET enterdate='$enterdate $entertime'  WHERE worklog_user_id='$_SESSION[enterid]';";
 			mysql_query($login);
 		}
 

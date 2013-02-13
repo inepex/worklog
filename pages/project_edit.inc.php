@@ -17,7 +17,7 @@
 
 	<hr>
 
-	<div style="clear: both;></div>
+	<div style="clear: both;"></div>
 		
 		<form method="post">
 			<table class="table table-bordered">
