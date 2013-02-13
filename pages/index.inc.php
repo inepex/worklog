@@ -10,6 +10,13 @@
 				<option value="201301">2013. January</option>
 				<option value="201302">2013. February</option>
 			</select>
+			<select>
+				<option value="201301">Hidi Tibor</option>
+				<option value="201302">Csordas Mihaly</option>
+				<option value="201302">Madi Gabor</option>
+			</select>
+			<input type="sumbit" value="OK" class="btn btn-primary"
+					style="width: 20px;">
 		</div>
 	</div>
 	<hr>
