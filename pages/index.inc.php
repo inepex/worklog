@@ -10,7 +10,7 @@ $user_picture = $user->get_picture();
 	<div class="subheader" ">
 	
 		<div class="profile_photo" style="margin-top:10px;">
-			<img src="photos/<?php echo $user_picture;?>">
+			<a href="user_edit.php" ><img src="photos/<?php echo $user_picture;?>" title="Click to edit profile"></a>
 		</div>
 		<div class="titlebar" style="float:left;">
 			<h4><?php echo $user_name;?>'s Worklog - LogView</h4>
@@ -58,7 +58,7 @@ $user_picture = $user->get_picture();
 		);
 	</script>
 	
-	<div class="alert">
+	<div class="alert"><img src="images/warning.png"/>
   <button type="button" class="close" data-dismiss="alert">&times;</button>
   <strong>Warning!</strong> You have already had a log entry at this time.
 </div>

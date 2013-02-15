@@ -2,6 +2,77 @@
 error_reporting(E_ALL);
 $user_id = $_SESSION['enterid'];
 $user = new User($user_id);
+//SAVE PROFILE CHANGES
+$error=0;
+if(isset($_POST['save-profile-button'])){
+	if(isset($_POST['user-name']) && $_POST['user-name'] == ""){
+		$error=1;
+		Notification::warn("The user name cant be empty!");
+	}
+	if(isset($_POST['user-name']) && $_POST['user-name'] != ""){
+		$user->edit_user_name($_POST['user-name']);
+	}
+	if(isset($_POST['default-workplace']) && $_POST['default-workplace'] != ""){
+		$user->edit_default_workplace($_POST['default-workplace']);
+	}
+	if((isset($_POST['password']) || isset($_POST['re-password'])) && $_POST['password'] != $_POST['re-password']){
+		$error=1;
+		Notification::warn("The passwords are not the same!");
+	}
+	else if(isset($_POST['password']) && isset($_POST['re-password']) && (strlen($_POST['password'])<6 || strlen($_POST['re-password'])<6) && (strlen($_POST['password'])!="" || strlen($_POST['re-password'])!="")){
+		$error=1;
+		Notification::warn("The password is too short (min. 6 character)!");
+	}
+	else if(isset($_POST['password']) && isset($_POST['re-password']) && $_POST['password'] != "" && $_POST['re-password'] != "" && $_POST['re-password'] == $_POST['password']){
+		$user->edit_password($_POST['password']);
+	}
+	if(isset($_FILES['profile-photo']['name']) && $_FILES['profile-photo']['name'] != ""){
+		$user->edit_profile_picture($_FILES['profile-photo']);
+	}
+	if($error==0){
+		Notification::notice("Saved successfully");
+	}
+}
+//
+//SAVE ADMIN CHANGES
+if($user->get_status() == "2"){
+	if(isset($_GET['action']) && $_GET['action'] =='delete'){
+		if(isset($_GET['company_id']) && $_GET['company_id'] !=''){
+			Company::delete_company($_GET['company_id']);
+		}
+		if(isset($_GET['place_id']) && $_GET['place_id'] !=''){
+			WorkPlace::delete_work_place($_GET['place_id']);
+		}
+		if(isset($_GET['category_id']) && $_GET['category_id'] !=''){
+			Category::delete_category($_GET['category_id']);
+		}
+	}
+	if(isset($_POST['action']) && $_POST['action'] =='add'){
+		if(isset($_POST['company_name']) && $_POST['company_name'] !=''){
+			Company::new_company($_POST['company_name']);
+		}
+		if(isset($_POST['place_name']) && $_POST['place_name'] !=''){
+			WorkPlace::new_place($_POST['place_name']);
+		}
+		if(isset($_POST['category_name']) && $_POST['category_name'] !=''){
+			Category::new_category($_POST['category_name']);
+		}
+	}
+	if(isset($_POST['action']) && $_POST['action'] =='edit'){
+		if(isset($_POST['company_id']) && $_POST['company_id'] !='' && isset($_POST['company_name']) && $_POST['company_name'] !=''){
+			$company = new Company($_POST['company_id']);
+			$company->edit_name($_POST['company_name']);
+		}
+		if(isset($_POST['place_id']) && $_POST['place_id'] !='' && isset($_POST['place_name']) && $_POST['place_name'] !=''){
+			$place = new WorkPlace($_POST['place_id']);
+			$place->edit_name($_POST['place_name']);
+		}
+		if(isset($_POST['category_id']) && $_POST['category_id'] !='' && isset($_POST['category_name']) && $_POST['category_name'] !=''){
+			$category = new Category($_POST['category_id']);
+			$category->edit_name($_POST['category_name']);
+		}
+	}
+}//
 ?>
 <div class="worklog-container">
 
@@ -17,9 +88,18 @@ $user = new User($user_id);
 	
 		<div style="clear: both;"></div>
 	<hr>
+ <div id="notifications">
+ <?php 
+ $notifications = Notification::get_notifications();
+ foreach($notifications as $notification){
+ 	/* @var $notification Notification */
+ 	echo $notification->get_notification();
+ }
+ Notification::clear_notifications();
+ ?>
+ </div>
  
- 
-<form method="post">
+<form method="post" enctype="multipart/form-data">
 	<table class="table table-bordered" style="width: 0;">
 		<tr>
 			<td>Full name</td>
@@ -31,26 +111,26 @@ $user = new User($user_id);
 		</tr>
 		<tr>
 			<td>Username</td>
-			<td><input type="text" value="<?php echo $user->get_user_name();?>"></td>
+			<td><input type="text" name="user-name" value="<?php echo $user->get_user_name();?>"></td>
 		</tr>
 		<tr>
 			<td>Password</td>
-			<td><input type="password"></td>
+			<td><input type="password" name="password"></td>
 		</tr>
 		<tr>
 			<td>Password again</td>
-			<td><input type="password"></td>
+			<td><input type="password" name="re-password"></td>
 		</tr>		
 		<tr>
 			<td>Profile photo</td>
-			<td><input type="file" value="tibor.hidi"><br/>
+			<td class="profile_photo"><input type="file" name="profile-photo"><br/>
 			<img src="photos/<?php echo $user->get_picture();?>">
 			</td>
 		</tr>
 		<tr>
 			<td>Default place</td>
 			<td>
-				<select style="width: 80px;">
+				<select style="width: 80px;" name="default-workplace">
 				<?php 
 				$workPlaces = WorkPlace::get_places();
 				foreach($workPlaces as $workPlace){
@@ -68,103 +148,14 @@ $user = new User($user_id);
 		
 		<tr>
 			<td> </td>
-			<td><input type="submit" value="Save" class="btn btn-primary"></td>
+			<td><input type="submit" value="Save" name="save-profile-button" class="btn btn-primary"></td>
 		</tr> 	 
 	</table>
  </form>
-	
-	
-	
-	<hr>
-	
-	<div>
-			<h4>Companies - csak adminoknak</h4>
-			<form method="post">
-			<table class="table table-bordered">
-				<tr>
-		 
-					<td><input type="text" style="width: 450px;">
-					</td>
-					<td><input type="submit" value="Add" class="btn">
-					</td>
-				</tr>
-				<?php
-				$companies = Company::get_companies();
-				foreach($companies as $company){
-					/* @var $company Company */
-					echo '<tr>
-					<td width="120">'.$company->get_name().'</td>
-					<td><img src="images/modify.png"> <img src="images/delete.png"></td>
-					</tr>';
-				} 
-				?>
-			</table>
-			</form>
-		</div>
-		
-		
-		
-	<hr>
-	
-	<div>
-			<h4>Places - csak adminoknak</h4>
-			<form method="post">
-			<table class="table table-bordered">
-				<tr>
-		 
-					<td><input type="text" style="width: 450px;">
-					</td>
-					<td><input type="submit" value="Add" class="btn">
-					</td>
-				</tr>
-				<tr>
-					<td width="120">Iroda1</td>
-					<td><img src="images/modify.png"> <img src="images/delete.png"></td>
-				</tr>
-				<tr>
-					<td width="120">Iroda2</td>
-					<td><img src="images/modify.png"> <img src="images/delete.png"></td>
-				</tr>
-				<tr>
-					<td width="120">Tárgyaló1</td>
-					<td> </td>
-				</tr>
-			</table>
-			</form>
-		</div>
-		
-	
-	<hr>
-	
-	<div>
-			<h4>Categories - csak adminoknak</h4>
-			<form method="post">
-			<table class="table table-bordered">
-				<tr>
-		 
-					<td><input type="text" style="width: 450px;">
-					</td>
-					<td><input type="submit" value="Add" class="btn">
-					</td>
-				</tr>
-				<tr>
-					<td width="120">megbeszélés</td>
-					<td><img src="images/modify.png"> <img src="images/delete.png"></td>
-				</tr>
-				<tr>
-					<td width="120">design</td>
-					<td><img src="images/modify.png"> <img src="images/delete.png"></td>
-				</tr>
-				<tr>
-					<td width="120">adatbázis</td>
-					<td> </td>
-				</tr>
-			</table>
-			</form>
-		</div>
-		
-		
-		
-		
-</div>
+	<?php 
+	if($user->get_status()=='2'){
+		require_once 'include/admin_part.php';
+	}
+	?>
+	<hr>	
 </div>

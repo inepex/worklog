@@ -5,7 +5,9 @@
 	require_once '../worklog-config.php';
 	require_once 'classes/User.php';
 	require_once 'classes/WorkPlace.php';
+	require_once 'classes/Notification.php';
 	require_once 'classes/Company.php';
+	require_once 'classes/Category.php';
 	require_once 'classes/PhpConsole.php';
 	include('include/login_functions.php');
 	PhpConsole::start();
@@ -22,6 +24,7 @@
 	<link rel="stylesheet" href="css/bootstrap-responsive.css">
 	<script type="text/javascript" src="js/jquery.min.js"></script>   
 	<script src="js/bootstrap-dropdown.js"></script>
+	<script src="js/globalFunctions.js"></script>
  	   
 </head>
 <body>

@@ -17,4 +17,5 @@ $users = User::get_users();
 foreach($users as $user){
 	echo $user->get_name()."<br>";
 }
+echo md5("123456");
 ?>

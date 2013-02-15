@@ -23,7 +23,7 @@ class User{
 		$query = "SELECT * FROM worklog_users WHERE worklog_user_id = ".$id;
 		$select_result = mysql_query($query);
 		if(mysql_affected_rows() == 0){
-			debug("Nincs ilyen user: id=".$id);
+			Notification::error("Nincs ilyen user: id=".$id);
 		}
 		else{
 			$this->id = $id;
@@ -64,6 +64,75 @@ class User{
 	}
 	public function get_default_place(){
 		return $this->default_place;
+	}
+	public function edit_user_name($user_name){
+		if($user_name == ''){
+			return false;
+		}
+		else{
+			$query = "UPDATE worklog_users SET username='".$user_name."' WHERE worklog_user_id=".$this->id;
+			$update_result = mysql_query($query);
+			if(mysql_error() == ""){
+				$this->user_name = $user_name;
+				return true;
+			}
+			else{
+				Notification::error(mysql_error());
+				return false;
+			}
+		}
+	}
+	public function edit_default_workplace($default_workplace_id){
+		if($default_workplace_id == ''){
+			return false;
+		}
+		else{
+			$query = "UPDATE worklog_users SET default_place_id='".$default_workplace_id."' WHERE worklog_user_id=".$this->id;
+			$update_result = mysql_query($query);
+			if(mysql_error() == ""){
+				$this->default_place = new WorkPlace($default_workplace_id);
+				return true;
+			}
+			else{
+				Notification::error(mysql_error());
+				return false;
+			}
+		}
+	}
+	public function edit_password($password){//folytatni
+		if($password == ''){
+			return false;
+		}
+		else{
+			$query = "UPDATE worklog_users SET password='".md5($password)."' WHERE worklog_user_id=".$this->id;
+			$update_result = mysql_query($query);
+			if(mysql_error() == ""){
+				$this->password = md5($password);
+				return true;
+			}
+			else{
+				Notification::warn(mysql_error());
+				return false;
+			}
+		}
+	}
+	public function edit_profile_picture($picture_file){
+		$target_path = "photos/";
+		if(file_exists($target_path.$picture_file['name'])){
+			Notification::warn("The picture name is already exists");
+			return false;
+		}
+		else{
+			if(move_uploaded_file($picture_file['tmp_name'], $target_path . basename( $picture_file['name']))) {
+				unlink($target_path.$this->picture);
+				$this->picture = $picture_file['name'];
+				$query = "UPDATE worklog_users SET picture='".$this->picture."' WHERE worklog_user_id=".$this->id;
+				$update_result = mysql_query($query);
+				Notification::notice("The file ".basename($picture_file['name'])." has been uploaded");
+			} else{
+				Notification::warn("There was an error uploading the file, please try again!");
+			}	
+		}
 	}
 }
 ?>
