@@ -2,6 +2,7 @@
 class Notification{
 	private $type;
 	private $message;
+	private $enter_id;
 	/*
 	 * $type:
 	 * 		1 - notice
@@ -10,7 +11,7 @@ class Notification{
 	 * */
 	public static function get_notifications(){
 		$notifications = array();
-		$query = "SELECT * FROM worklog_notifications";
+		$query = "SELECT * FROM worklog_notifications WHERE enter_id='".$_SESSION['enterid']."'";
 		$select_result = mysql_query($query);
 		while($row = mysql_fetch_assoc($select_result)){
 				array_push($notifications, new Notification($row['notification_type'], $row['notification_message']));
@@ -31,7 +32,7 @@ class Notification{
 		Notification::new_notification("1", $message);
 	}
 	private static function new_notification($type, $message){
-		$query = "INSERT INTO worklog_notifications (notification_type, notification_message) VALUES ('".$type."','".$message."')";
+		$query = "INSERT INTO worklog_notifications (notification_type, notification_message, enter_id) VALUES ('".$type."','".$message."', '".$_SESSION['enterid']."')";
 		mysql_query($query);
 	}
 	public function __construct($type, $message){

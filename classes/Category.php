@@ -1,8 +1,8 @@
 <?php 
 class Category{
-	private $id;
-	private $name;
-	
+	protected $id;
+	protected $name;
+
 	public static function get_categories(){
 		$categories = array();
 		$query = "SELECT worklog_category_id FROM worklog_categories order by category_name";
@@ -11,6 +11,16 @@ class Category{
 			array_push($categories, new Category($row['worklog_category_id']));
 		}
 		return $categories;
+	}
+	public static function is_exist($category_id){
+		$query = "SELECT * FROM worklog_categories WHERE worklog_category_id = ".$category_id;
+		$select_result = mysql_query($query);
+		if(mysql_affected_rows()>0){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 	public static function new_category($category_name){
 		$query = "INSERT INTO worklog_categories (category_name) VALUES ('".$category_name."')";
@@ -23,13 +33,19 @@ class Category{
 		}
 	}
 	public static function  delete_category($category_id){
-		$query = "DELETE FROM worklog_categories WHERE worklog_category_id=".$category_id;
-		$delete_result = mysql_query($query);
-		if(mysql_error() != ""){
-			Notification::error(mysql_error());
+		$category = new Category($category_id);
+		if(!$category->is_in_use()){
+			$query = "DELETE FROM worklog_categories WHERE worklog_category_id=".$category_id;
+			$delete_result = mysql_query($query);
+			if(mysql_error() != ""){
+				Notification::error(mysql_error());
+			}
+			else{
+				Notification::notice("Deleted successfully!");
+			}
 		}
 		else{
-			Notification::notice("Deleted successfully!");
+			Notification::warn("The category is in use!");
 		}
 	}
 	public function __construct($id){
@@ -60,6 +76,21 @@ class Category{
 	}
 	public function get_name(){
 		return $this->name;
+	}
+	public function is_in_use(){
+		$query = "SELECT worklog_log_id FROM worklog_log WHERE worklog_category_id = ".$this->id;
+		$select_result = mysql_query($query);
+		if(mysql_error()!=''){
+			Notification::error(mysql_error());
+		}
+		else{
+			if(mysql_affected_rows() == 0){
+				return false;
+			}
+			else{
+				return true;
+			}
+		}
 	}
 }
 ?>

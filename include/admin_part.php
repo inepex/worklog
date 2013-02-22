@@ -30,7 +30,7 @@
 				/* @var $company Company */
 				echo '<tr>
 				<td width="120">'.$company->get_name().'</td>
-				<td><a href="?action=edit&company_id='.$company->get_id().'#companies"><img src="images/modify.png"></a>&nbsp;<a href="?action=delete&company_id='.$company->get_id().'"><img src="images/delete.png"></a></td>
+				<td><a href="?action=edit&company_id='.$company->get_id().'#companies"><img src="images/modify.png"></a>&nbsp;<a href="?action=delete&company_id='.$company->get_id().'">'.(($company->is_in_use())?'':'<img src="images/delete.png">').'</a></td>
 				</tr>';
 			}
 			?>
@@ -74,7 +74,7 @@
 			foreach($places as $place){
 				echo '<tr>
 				<td width="120">'.$place->get_name().'</td>
-				<td><a href="?action=edit&place_id='.$place->get_id().'#places"><img src="images/modify.png"></a>&nbsp;<a href="?action=delete&place_id='.$place->get_id().'"><img src="images/delete.png"></a></td>
+				<td><a href="?action=edit&place_id='.$place->get_id().'#places"><img src="images/modify.png"></a>&nbsp;<a href="?action=delete&place_id='.$place->get_id().'">'.(($place->is_in_use())?'':'<img src="images/delete.png">').'</a></td>
 				</tr>';
 			}
 			?>
@@ -117,7 +117,7 @@
 				/* @var $category Category */
 				echo '<tr>
 				<td width="120">'.$category->get_name().'</td>
-				<td><a href="?action=edit&category_id='.$category->get_id().'#categories"><img src="images/modify.png"></a>&nbsp;<a href="?action=delete&category_id='.$category->get_id().'"><img src="images/delete.png"></a></td>
+				<td><a href="?action=edit&category_id='.$category->get_id().'#categories"><img src="images/modify.png"></a>&nbsp;<a href="?action=delete&category_id='.$category->get_id().'">'.(($category->is_in_use())?'':'<img src="images/delete.png">').'</a></td>
 				</tr>';
 			}
 			?>

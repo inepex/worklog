@@ -1,14 +1,14 @@
 <?php 
 class User{
-	private $id;
-	private $user_name;
-	private $password;
-	private $status;
-	private $email;
-	private $enter_date;
-	private $name;
-	private $picture;
-	private $default_place;
+	protected $id;
+	protected $user_name;
+	protected $password;
+	protected $status;
+	protected $email;
+	protected $enter_date;
+	protected $name;
+	protected $picture;
+	protected $default_place;
 	
 	public static function get_users(){
 		$users = array();
@@ -18,6 +18,16 @@ class User{
 			array_push($users, new User($row['worklog_user_id']));
 		}
 		return $users;
+	}
+	public static function is_exist($user_id){
+		$query = "SELECT * FROM worklog_users WHERE worklog_user_id = ".$user_id;
+		$select_result = mysql_query($query);
+		if(mysql_affected_rows()>0){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 	public function __construct($id){
 		$query = "SELECT * FROM worklog_users WHERE worklog_user_id = ".$id;
@@ -132,6 +142,30 @@ class User{
 			} else{
 				Notification::warn("There was an error uploading the file, please try again!");
 			}	
+		}
+	}
+	public function update_personal_note($note_text){
+		$query = "UPDATE worklog_users SET personal_note = '".$note_text."' WHERE worklog_user_id = ".$this->id;
+		$update_result = mysql_query($query);
+		if(mysql_error() == ""){
+			Notification::notice("Personal note has been updated successfully!");
+		}
+		else{
+			Notification::error(mysql_error());
+		}
+	}
+	public function get_personal_note(){
+		$query = "SELECT personal_note FROM worklog_users WHERE worklog_user_id = ".$this->id;
+		$select_result = mysql_query($query);
+		$row = mysql_fetch_assoc($select_result);
+		return $row['personal_note'];
+	}
+	public function is_admin(){
+		if($this->status == 2){
+			return true;
+		}
+		else{
+			return false;
 		}
 	}
 }

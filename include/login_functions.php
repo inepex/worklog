@@ -7,6 +7,7 @@ if ( isset($_GET['log']) && $_GET['log'] =="logout" ) {
 	$_SESSION['enterstatus']=0;
 	$_SESSION['enterid']=0;
 	header('Location:index.php');
+	exit();
 }
 
 if (  $_SESSION['loggedin_worklog'] !="true" ) {

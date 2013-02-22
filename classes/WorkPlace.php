@@ -18,13 +18,19 @@ class WorkPlace{
 		}
 	}
 	public static function  delete_work_place($place_id){
-		$query = "DELETE FROM worklog_places WHERE worklog_place_id=".$place_id;
-		$delete_result = mysql_query($query);
-		if(mysql_error() != ""){
-			Notification::error(mysql_error());
+		$place = new WorkPlace($place_id);
+		if(!$place->is_in_use()){
+			$query = "DELETE FROM worklog_places WHERE worklog_place_id=".$place_id;
+			$delete_result = mysql_query($query);
+			if(mysql_error() != ""){
+				Notification::error(mysql_error());
+			}
+			else{
+				Notification::notice("Deleted successfully!");
+			}
 		}
 		else{
-			Notification::notice("Deleted successfully!");
+			Notification::warn("The place is in use!");
 		}
 	}
 	public static function get_places(){
@@ -64,6 +70,21 @@ class WorkPlace{
 	}
 	public function get_name(){
 		return $this->name;
+	}
+	public function is_in_use(){
+		$query = "SELECT worklog_log_id FROM worklog_log WHERE worklog_place_id = ".$this->id;
+		$select_result = mysql_query($query);
+		if(mysql_error()!=''){
+			Notification::error(mysql_error());
+		}
+		else{
+			if(mysql_affected_rows() == 0){
+				return false;
+			}
+			else{
+				return true;
+			}
+		}
 	}
 }
 ?>

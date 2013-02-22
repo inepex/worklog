@@ -1,7 +1,4 @@
 <?php
-error_reporting(E_ALL);
-$user_id = $_SESSION['enterid'];
-$user = new User($user_id);
 //SAVE PROFILE CHANGES
 $error=0;
 if(isset($_POST['save-profile-button'])){
@@ -76,86 +73,86 @@ if($user->get_status() == "2"){
 ?>
 <div class="worklog-container">
 
-<div class="subheader">
-	<div class="profile_photo">
+	<div class="subheader">
+		<div class="profile_photo">
 			<img src="photos/<?php echo $user->get_picture();?>">
 		</div>
 		<div class="titlebar">
-			<h4><?php echo $user->get_name();?>'s Settings</h4>
-			Last login: <?php echo $user->get_enter_date();?>
+			<h4>
+				<?php echo $user->get_name();?>
+				's Settings
+			</h4>
+			Last login:
+			<?php echo $user->get_enter_date();?>
 		</div>
 	</div>
-	
-		<div style="clear: both;"></div>
+
+	<div style="clear: both;"></div>
 	<hr>
- <div id="notifications">
- <?php 
- $notifications = Notification::get_notifications();
- foreach($notifications as $notification){
- 	/* @var $notification Notification */
- 	echo $notification->get_notification();
- }
- Notification::clear_notifications();
- ?>
- </div>
- 
-<form method="post" enctype="multipart/form-data">
-	<table class="table table-bordered" style="width: 0;">
-		<tr>
-			<td>Full name</td>
-			<td><?php echo $user->get_name();?></td>
-		</tr>
-		<tr>
-			<td>E-mail</td>
-			<td><?php echo $user->get_email();?></td>
-		</tr>
-		<tr>
-			<td>Username</td>
-			<td><input type="text" name="user-name" value="<?php echo $user->get_user_name();?>"></td>
-		</tr>
-		<tr>
-			<td>Password</td>
-			<td><input type="password" name="password"></td>
-		</tr>
-		<tr>
-			<td>Password again</td>
-			<td><input type="password" name="re-password"></td>
-		</tr>		
-		<tr>
-			<td>Profile photo</td>
-			<td class="profile_photo"><input type="file" name="profile-photo"><br/>
-			<img src="photos/<?php echo $user->get_picture();?>">
-			</td>
-		</tr>
-		<tr>
-			<td>Default place</td>
-			<td>
-				<select style="width: 80px;" name="default-workplace">
-				<?php 
-				$workPlaces = WorkPlace::get_places();
-				foreach($workPlaces as $workPlace){
-				/* @var $workPlace WorkPlace */
-					$selected = "";
-					if($user->get_default_place()->get_id() == $workPlace->get_id()){
-						$selected = "selected";						
-					}
-					echo '<option value="'.$workPlace->get_id().'" '.$selected.' >'.$workPlace->get_name().'</option>';
-				}
-			?>
+	
+	<?php
+	//Show notifications 
+	require_once 'include/notifications.php';
+	?>
+
+	<form method="post" enctype="multipart/form-data">
+		<table class="table table-bordered" style="width: 0;">
+			<tr>
+				<td>Full name</td>
+				<td><?php echo $user->get_name();?></td>
+			</tr>
+			<tr>
+				<td>E-mail</td>
+				<td><?php echo $user->get_email();?></td>
+			</tr>
+			<tr>
+				<td>Username</td>
+				<td><input type="text" name="user-name"
+					value="<?php echo $user->get_user_name();?>"></td>
+			</tr>
+			<tr>
+				<td>Password</td>
+				<td><input type="password" name="password"></td>
+			</tr>
+			<tr>
+				<td>Password again</td>
+				<td><input type="password" name="re-password"></td>
+			</tr>
+			<tr>
+				<td>Profile photo</td>
+				<td class="profile_photo"><input type="file" name="profile-photo"><br />
+					<img src="photos/<?php echo $user->get_picture();?>">
+				</td>
+			</tr>
+			<tr>
+				<td>Default place</td>
+				<td><select style="width: 80px;" name="default-workplace">
+						<?php 
+						$workPlaces = WorkPlace::get_places();
+						foreach($workPlaces as $workPlace){
+							/* @var $workPlace WorkPlace */
+							$selected = "";
+							if($user->get_default_place()->get_id() == $workPlace->get_id()){
+								$selected = "selected";
+							}
+							echo '<option value="'.$workPlace->get_id().'" '.$selected.' >'.$workPlace->get_name().'</option>';
+						}
+						?>
 				</select>
-			</td>
-		</tr>	
-		
-		<tr>
-			<td> </td>
-			<td><input type="submit" value="Save" name="save-profile-button" class="btn btn-primary"></td>
-		</tr> 	 
-	</table>
- </form>
+				</td>
+			</tr>
+
+			<tr>
+				<td></td>
+				<td><input type="submit" value="Save" name="save-profile-button"
+					class="btn btn-primary"></td>
+			</tr>
+		</table>
+	</form>
 	<?php 
 	if($user->get_status()=='2'){
 		require_once 'include/admin_part.php';
 	}
 	?>
-	<hr>	
+	<hr>
 </div>

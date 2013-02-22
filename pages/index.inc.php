@@ -1,13 +1,11 @@
 <?php
-error_reporting(E_ALL);
-$user_id = $_SESSION['enterid'];
-$user = new User($user_id);
-$user_name = $user->get_name();
-$user_picture = $user->get_picture();
+//save personal note
+if(isset($_POST['save-personal-note']) && isset($_POST['personal-note']) && $_POST['personal-note'] != $user->get_personal_note()){
+	$user->update_personal_note($_POST['personal-note']);
+}
 ?>
 <div class="worklog-container">
-
-	<div class="subheader" ">
+	<div class="subheader">
 	
 		<div class="profile_photo" style="margin-top:10px;">
 			<a href="user_edit.php" ><img src="photos/<?php echo $user_picture;?>" title="Click to edit profile"></a>
@@ -26,7 +24,7 @@ $user_picture = $user->get_picture();
 			<input type="submit" value="OK" class="btn" >
 					
 		</div>
-		<div class="personal_note">My personal note:  <input type="submit" class="btn btn-mini" value="Save" style="float:right; margin-bottom: 3px;"> <br><textarea style="width: 250px; height: 60px;">Ide beírhatsz bármit magadnak emlékeztetőül</textarea></div>
+		<div class="personal_note"><form method="Post">My personal note:  <input type="submit" name="save-personal-note" class="btn btn-mini" value="Save" style="float:right; margin-bottom: 3px;"> <br><textarea name="personal-note" style="width: 250px; height: 60px;"><?php echo $user->get_personal_note();?></textarea></form></div>
 		<div style="clear: both;"></div>
 	</div>
 	
@@ -34,42 +32,22 @@ $user_picture = $user->get_picture();
 	<hr>
 	<div style="clear: both;"></div>
 	
-	<script>
-	$(
-		    function(){
-		     
-		        $('#time_from_link').click(function(){
-		                  var time = new Date();                
-		                  $('#time_from').val(time.getHours() + ":" + time.getMinutes());  
-		        });
-		        
-		    }
-		);
-
-	$(
-		    function(){
-		     
-		        $('#time_to_link').click(function(){
-		                  var time = new Date();                
-		                  $('#time_to').val(time.getHours() + ":" + time.getMinutes());  
-		        });
-		        
-		    }
-		);
-	</script>
-	
-	<div class="alert"><img src="images/warning.png"/>
-  <button type="button" class="close" data-dismiss="alert">&times;</button>
-  <strong>Warning!</strong> You have already had a log entry at this time.
-</div>
-
+	<?php
+	//Show notifications 
+	require_once 'include/notifications.php';
+	?>
 
 	<form method="post">
 		<table class="table table-bordered">
 			<tr>
 				<td><select style="width: 120px !important;">
-						<option value="1">IneTrack új weboldal</option>
-						<option value="2">Iktató bugfix</option>
+				<?php 
+					$projects = Project::get_projects();
+					foreach($projects as $project){
+						/* @var $project Project */
+						echo '<option value="'.$project->get_id().'">'.$project->get_name().'</option>';
+					}
+				?>
 				</select>
 				</td>
 				<td><select style="width: 120px !important;">
@@ -105,8 +83,8 @@ $user_picture = $user->get_picture();
 			
 			<tr class="editline">
 			<td colspan="3"><img src="images/information.png"> Ez a kategória ebben a projektben ezt jeleni</td>
-				<td><a href="#" id="time_from_link">Now</a></td>
-				<td><a href="#" id="time_to_link">Now</a></td>
+				<td><a href="" id="time_from_link">Now</a></td>
+				<td><a href="" id="time_to_link">Now</a></td>
 				 
 				<td></td>
 				<td> </td>

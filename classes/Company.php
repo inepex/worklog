@@ -2,7 +2,7 @@
 class Company{
 	private $id;
 	private $name;
-	
+
 	public static function get_companies(){
 		$companies = array();
 		$query = "SELECT worklog_company_id FROM worklog_companies order by company_name";
@@ -23,13 +23,19 @@ class Company{
 		}
 	}
 	public static function  delete_company($company_id){
-		$query = "DELETE FROM worklog_companies WHERE worklog_company_id=".$company_id;
-		$delete_result = mysql_query($query);
-		if(mysql_error() != ""){
-			Notification::error(mysql_error());
+		$company = new Company($company_id);
+		if(!$company->is_in_use()){
+			$query = "DELETE FROM worklog_companies WHERE worklog_company_id=".$company_id;
+			$delete_result = mysql_query($query);
+			if(mysql_error() != ""){
+				Notification::error(mysql_error());
+			}
+			else{
+				Notification::notice("Deleted successfully!");
+			}
 		}
 		else{
-			Notification::notice("Deleted successfully!");
+			Notification::warn("The company is in use!");
 		}
 	}
 	public function __construct($id){
@@ -60,6 +66,21 @@ class Company{
 	}
 	public function get_name(){
 		return $this->name;
+	}
+	public function is_in_use(){
+		$query = "SELECT worklog_project_id FROM worklog_projects WHERE worklog_company_id = ".$this->id;
+		$select_result = mysql_query($query);
+		if(mysql_error()!=''){
+			Notification::error(mysql_error());
+		}
+		else{
+			if(mysql_affected_rows() == 0){
+				return false;
+			}
+			else{
+				return true;
+			}
+		}
 	}
 }
 ?>

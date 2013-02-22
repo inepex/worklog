@@ -8,9 +8,20 @@
 	require_once 'classes/Notification.php';
 	require_once 'classes/Company.php';
 	require_once 'classes/Category.php';
+	require_once 'classes/AssociatedUser.php';
+	require_once 'classes/AssociatedCategory.php';
+	require_once 'classes/ProjectPlan.php';
+	require_once 'classes/ProjectPlanEntry.php';
+	require_once 'classes/Project.php';
 	require_once 'classes/PhpConsole.php';
 	include('include/login_functions.php');
 	PhpConsole::start();
+	error_reporting(E_ALL);
+	$user_id = $_SESSION['enterid'];
+	$user = new User($user_id);
+	$user_name = $user->get_user_name();
+	$user_picture = $user->get_picture();
+	
 ?>
 
 <!DOCTYPE html>
@@ -22,7 +33,10 @@
 	<link rel="stylesheet" href="css/style.css">
 	<link rel="stylesheet" href="css/bootstrap.css">
 	<link rel="stylesheet" href="css/bootstrap-responsive.css">
+	<link href="css/jquery/smoothness/jquery-ui-1.10.1.custom.css" rel="stylesheet">
+	<script type="text/javascript" src="js/jquery-1.9.1.js"></script>   
 	<script type="text/javascript" src="js/jquery.min.js"></script>   
+	<script type="text/javascript" src="js/jquery-ui-1.10.1.custom.min.js"></script>   
 	<script src="js/bootstrap-dropdown.js"></script>
 	<script src="js/globalFunctions.js"></script>
  	   
