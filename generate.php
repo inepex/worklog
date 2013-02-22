@@ -17,10 +17,13 @@
 	include('include/login_functions.php');
 	PhpConsole::start();
 	error_reporting(E_ALL);
-	$user_id = $_SESSION['enterid'];
-	$user = new User($user_id);
-	$user_name = $user->get_user_name();
-	$user_picture = $user->get_picture();
+	if(isset($_SESSION['enterid'])){
+		$user_id = $_SESSION['enterid'];
+		$user = new User($user_id);
+		$user_name = $user->get_user_name();
+		$user_picture = $user->get_picture();
+	}
+	
 	
 ?>
 
