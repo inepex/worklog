@@ -44,7 +44,7 @@
 <hr>
 
 <div>
-	<h5>Work places</h5>
+	<h5>Workplaces</h5>
 	<a name="places"></a>
 	<form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
 		<table class="table table-bordered">

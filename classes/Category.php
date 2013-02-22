@@ -41,7 +41,7 @@ class Category{
 				Notification::error(mysql_error());
 			}
 			else{
-				Notification::notice("Deleted successfully!");
+				Notification::notice("Category deleted successfully!");
 			}
 		}
 		else{

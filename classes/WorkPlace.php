@@ -26,7 +26,7 @@ class WorkPlace{
 				Notification::error(mysql_error());
 			}
 			else{
-				Notification::notice("Deleted successfully!");
+				Notification::notice("Workplace deleted successfully!");
 			}
 		}
 		else{

@@ -31,7 +31,7 @@ class Company{
 				Notification::error(mysql_error());
 			}
 			else{
-				Notification::notice("Deleted successfully!");
+				Notification::notice("Company deleted successfully!");
 			}
 		}
 		else{
