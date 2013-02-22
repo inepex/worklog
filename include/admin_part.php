@@ -1,6 +1,6 @@
 <div>
 	<a name="companies"></a>
-	<h4>Companies - csak adminoknak</h4>
+	<h4>Admin</h4>
 	<form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
 		<table class="table table-bordered">
 			<?php
@@ -44,7 +44,6 @@
 
 <div>
 	<a name="places"></a>
-	<h4>Places - csak adminoknak</h4>
 	<form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
 		<table class="table table-bordered">
 			<?php 
@@ -87,7 +86,6 @@
 
 <div>
 	<a name="categories"></a>
-	<h4>Categories - csak adminoknak</h4>
 	<form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
 		<table class="table table-bordered">
 			<?php 

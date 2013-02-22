@@ -27,4 +27,5 @@ $company = new Company(2);
 $place = new WorkPlace(10);
 echo "is_in_use:";
 var_dump($place->is_in_use());
+echo md5("123456");
 ?>

@@ -122,7 +122,7 @@ class Project{
 			return false;
 		}
 		else{
-			$query = "UPDATE worklog_projects SET worklog_company_id=".$company_id.", project_name='".$name."', project_description='".$description."', start_date='".$start."', end_date='".$deadline."', project_status=".$status;
+			$query = "UPDATE worklog_projects SET worklog_company_id=".$company_id.", project_name='".$name."', project_description='".$description."', start_date='".$start."', end_date='".$deadline."', project_status=".$status." WHERE worklog_project_id = ".$this->id;
 			$update_result = mysql_query($query);
 			if(mysql_error() != ""){
 				Notification::error(mysql_error());

@@ -78,7 +78,7 @@ class Category{
 		return $this->name;
 	}
 	public function is_in_use(){
-		$query = "SELECT worklog_log_id FROM worklog_log WHERE worklog_category_id = ".$this->id;
+		$query = "SELECT worklog_projects_category_assoc_id FROM worklog_projects_category_assoc WHERE worklog_category_id = ".$this->id;
 		$select_result = mysql_query($query);
 		if(mysql_error()!=''){
 			Notification::error(mysql_error());
