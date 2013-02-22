@@ -1,6 +1,7 @@
 <div>
 	<a name="companies"></a>
 	<h4>Admin</h4>
+	<h5>Companies</h5>
 	<form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
 		<table class="table table-bordered">
 			<?php
@@ -43,6 +44,7 @@
 <hr>
 
 <div>
+	<h5>Work places</h5>
 	<a name="places"></a>
 	<form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
 		<table class="table table-bordered">
@@ -85,6 +87,7 @@
 <hr>
 
 <div>
+	<h5>Categories</h5>
 	<a name="categories"></a>
 	<form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>">
 		<table class="table table-bordered">

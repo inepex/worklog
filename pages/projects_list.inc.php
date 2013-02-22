@@ -15,7 +15,7 @@ $projects = Project::get_projects();
 <?php require_once 'include/notifications.php';?>
 	<div style="clear: both;"></div>
 	<div id="projects_list">
-	<table>
+	<table class="table table-bordered">
 	<tr>
 	<th>ID</th><th>Name</th><th>Delete</th>
 	<?php 
