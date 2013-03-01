@@ -2,147 +2,321 @@
 //save personal note
 if(isset($_POST['save-personal-note']) && isset($_POST['personal-note']) && $_POST['personal-note'] != $user->get_personal_note()){
 	$user->update_personal_note($_POST['personal-note']);
+	header('Location:index.php');
+}
+//
+//edit log
+if(isset($_POST['log_id'])){
+	$error = false;
+	if(!Project::is_project_exist($_POST['project_id'])){
+		Notification::warn("Project doesnt exist!");
+		$error = true;
+	}
+	else{
+		$project = new Project($_POST['project_id']);
+		if(!$project->is_associated_category_in_project($_POST['category_assoc_id'])){
+			Notification::warn("The category is not in the project!");
+			$error = true;
+		}
+	}
+	$date = new DateTime($_POST['date']);
+	$now = new DateTime();
+	$interval = $now->diff($date);
+	$difference = $interval->format('%R%a');
+	if($difference<-4){
+		Notification::warn("The date is too early!");
+		$error = true;
+	}
+	else if($difference>0){
+		Notification::warn("The date cannot be in the future");
+		$error = true;
+	}
+	else{
+		if(!isset($_POST['from']) || $_POST['from'] == ''){
+			Notification::warn("FROM cannot be empty!");
+		}
+		if(!isset($_POST['to']) || $_POST['to'] == ''){
+			Notification::warn("TO cannot be empty!");
+		}
+		if(isset($_POST['to']) && $_POST['to'] != '' && isset($_POST['from']) && $_POST['from'] != ''){
+			$seconds_diff = strtotime($_POST['date']." ".date($_POST['to'])) - strtotime($_POST['date']." ".date($_POST['from']));
+			if($seconds_diff == 0){
+				Notification::warn("TO cannot be the same as FROM!");
+				$error = true;
+			}
+			else if($seconds_diff < 0){
+					
+				Notification::warn("TO is smaller then FROM!");
+				$error = true;
+			}
+			else{
+				if(Log::is_overlap($user->get_id(), $_POST['date'], $_POST['from'], $_POST['to'],$_POST['log_id'])){
+					Notification::warn("Time overlap!");
+					$error = true;
+				}
+			}
+
+		}
+	}
+	if(!isset($_POST['log_entry']) || $_POST['log_entry'] == ""){
+		Notification::warn("Log entry cannot be empty!");
+		$error = true;
+	}
+	if(!WorkPlace::is_workplace_exist($_POST['work_place_id'])){
+		Notification::warn("Workplace doesnt exist!");
+		$error = true;
+	}
+	if(!$error){
+		$log_to_edit = new Log($_POST['log_id']);
+		$log_to_edit->edit_log($_POST['project_id'], $_POST['category_assoc_id'], $_POST['date'], $_POST['from'], $_POST['to'], $_POST['log_entry'], $_POST['work_place_id']);
+		//TODO: edit
+		header('Location:index.php');
+		exit();
+	}
+}
+//
+//add new log
+if(isset($_POST['add_log'])){
+	$error = false;
+	if(!Project::is_project_exist($_POST['project_id'])){
+		Notification::warn("Project doesnt exist!");
+		$error = true;
+	}
+	else{
+		$project = new Project($_POST['project_id']);
+		if(!$project->is_associated_category_in_project($_POST['category_assoc_id'])){
+			Notification::warn("The category is not in the project!");
+			$error = true;
+		}
+	}
+	$date = new DateTime($_POST['date']);
+	$now = new DateTime();
+	$interval = $now->diff($date);
+	$difference = $interval->format('%R%a');
+	if($difference<-4){
+		Notification::warn("The date is too early!");
+		$error = true;
+	}
+	else if($difference>0){
+		Notification::warn("The date cannot be in the future");
+		$error = true;
+	}
+	else{
+		if(!isset($_POST['from']) || $_POST['from'] == ''){
+			Notification::warn("FROM cannot be empty!");
+		}
+		if(!isset($_POST['to']) || $_POST['to'] == ''){
+			Notification::warn("TO cannot be empty!");
+		}
+		if(isset($_POST['to']) && $_POST['to'] != '' && isset($_POST['from']) && $_POST['from'] != ''){
+			$seconds_diff = strtotime($_POST['date']." ".date($_POST['to'])) - strtotime($_POST['date']." ".date($_POST['from']));
+			if($seconds_diff == 0){
+				Notification::warn("TO cannot be the same as FROM!");
+				$error = true;
+			}
+			else if($seconds_diff < 0){
+					
+				Notification::warn("TO is smaller then FROM!");
+				$error = true;
+			}
+			else{
+				if(Log::is_overlap($user->get_id(), $_POST['date'], $_POST['from'], $_POST['to'])){
+					Notification::warn("Time overlap!");
+					$error = true;
+				}
+			}
+
+		}
+	}
+	if(!isset($_POST['log_entry']) || $_POST['log_entry'] == ""){
+		Notification::warn("Log entry cannot be empty!");
+		$error = true;
+	}
+	if(!WorkPlace::is_workplace_exist($_POST['work_place_id'])){
+		Notification::warn("Workplace doesnt exist!");
+		$error = true;
+	}
+	if(!$error){
+		Log::add_log($_POST['project_id'], $_POST['category_assoc_id'], $user->get_id(), $_POST['date'], $_POST['from'], $_POST['to'], $_POST['log_entry'], $_POST['work_place_id']);
+		header('Location:index.php');
+		exit();
+	}
+}
+//
+//selected user
+if(!isset($_GET['user_id'])){
+	$selected_user = $user;
+}
+else if(isset($_GET['user_id']) && !User::is_exist($_GET['user_id'])){
+	Notification::warn("User does not exist!");
+	$selected_user = $user;
+}
+else{
+	$selected_user = new User($_GET['user_id']);
+}
+//
+//selected date
+if(!isset($_GET['date'])){
+	$selected_date = new DateTime("now");
+}
+else{
+	$result_array = date_parse($_GET['date']);
+	if($result_array['year'] && $result_array['month'] && $result_array['day']){
+		$selected_date = new DateTime($result_array['year']."-".$result_array['month']."-".$result_array['day']);
+	}
+	else{
+		$selected_date = new DateTime("now");
+	}
+}
+$selected_date->modify("first day of this month");
+//
+//delete log
+if(isset($_GET['delete_log']) && Log::is_log_exist($_GET['delete_log'])){
+	$log = new Log($_GET['delete_log']);
+	if($user->get_id() == $selected_user->get_id() && $log->is_editable($selected_user->get_id())){
+		Log::delete_log($_GET['delete_log']);
+		Notification::notice("Log entry deleted successfully!");
+		header('Location:index.php');
+		exit();
+	}
+	else{
+		Notification::warn("You dont have the permission to delete this log!");
+	}
 }
 ?>
+<script
+	type="text/javascript" src="js/index.js"></script>
 <div class="worklog-container">
 	<div class="subheader">
-	
-		<div class="profile_photo" style="margin-top:10px;">
-			<a href="user_edit.php" ><img src="photos/<?php echo $user_picture;?>" title="Click to edit profile"></a>
+
+		<div class="profile_photo" style="margin-top: 10px;">
+			<a href="user_edit.php"><img
+				src="photos/<?php echo $selected_user->get_picture();?>"
+				title="Click to edit profile"> </a>
 		</div>
-		<div class="titlebar" style="float:left;">
-			<h4><?php echo $user_name;?>'s Worklog - LogView</h4>
-			<select>
-				<option value="201301">2013. January</option>
-				<option value="201302">2013. February</option>
-			</select>
-			<select>
-				<option value="201301">Hidi Tibor</option>
-				<option value="201302">Csordas Mihaly</option>
-				<option value="201302">Madi Gabor</option>
-			</select>
-			<input type="submit" value="OK" class="btn" >
-					
+		<div class="titlebar" style="float: left;">
+			<h4>
+				<?php echo $selected_user->get_name();?>
+				's Worklog - LogView
+			</h4>
+			<form method="GET">
+				<select name="date">
+					<?php 
+					$todayDate = new DateTime("now");
+					$todayDate->modify("first day of this month");
+					$earliest_log_date =  new DateTime($selected_user->get_earlies_log_date());
+					$earliest_log_date->modify("first day of this month");
+					if($earliest_log_date){
+						$date = $todayDate;
+						for($i=1; $earliest_log_date->format("Y-m-d") <= $date->format("Y-m-d"); $i++){
+							$selected = "";
+							if($selected_date->format("Y F") == $date->format("Y F")){
+								$selected = "selected";
+							}
+							echo '<option value="'.$date->format('Y-m-d').'" '.$selected.'>'.$date->format('Y F').'</option>';
+							$date->modify("-1 month");
+						}
+					}
+					else{
+						echo '<option value="201301">'.$todayDate->format('Y F').'</option>';
+					}
+					?>
+				</select> <select name="user_id">
+					<?php 
+					$users = User::get_users();
+					foreach($users as $u){
+						/* @var $u User */
+						$selected = "";
+						if($u->get_id() == $selected_user->get_id()){
+							$selected = "selected";
+						}
+						echo '<option value="'.$u->get_id().'" '.$selected.'>'.$u->get_name().'</option>';
+					}
+					?>
+				</select> <input type="submit" value="OK" class="btn">
+			</form>
 		</div>
-		<div class="personal_note"><form method="Post">My personal note:  <input type="submit" name="save-personal-note" class="btn btn-mini" value="Save" style="float:right; margin-bottom: 3px;"> <br><textarea name="personal-note" style="width: 250px; height: 60px;"><?php echo $user->get_personal_note();?></textarea></form></div>
+		<div class="personal_note">
+			<form method="Post">
+				My personal note: <input type="submit" name="save-personal-note"
+					class="btn btn-mini" value="Save"
+					style="float: right; margin-bottom: 3px;"> <br>
+				<textarea name="personal-note" style="width: 250px; height: 60px;"><?php echo $user->get_personal_note();?></textarea>
+			</form>
+		</div>
 		<div style="clear: both;"></div>
 	</div>
-	
-					
+
+
 	<hr>
 	<div style="clear: both;"></div>
-	
+
 	<?php
-	//Show notifications 
+	//Show notifications
 	require_once 'include/notifications.php';
 	?>
 
-	<form method="post">
-		<table class="table table-bordered">
-			<tr>
-				<td><select style="width: 120px !important;">
-				<?php 
-					$projects = Project::get_projects();
-					foreach($projects as $project){
-						/* @var $project Project */
-						echo '<option value="'.$project->get_id().'">'.$project->get_name().'</option>';
-					}
-				?>
-				</select>
-				</td>
-				<td><select style="width: 120px !important;">
-						<option value="1">megbeszélés</option>
-						<option value="2">design</option>
-				</select>
-				</td>
-				<td><select style="width: 120px;"> 
-						<option value="1">2013-02-12 (Monday)</option>
-						<option value="1">2013-02-11 (Sunday)</option>
-						<option value="1">2013-02-10 (Saturday)</option>
-						<option value="1">2013-02-09 (Friday)</option>
-				</select>
-				</td>
-				<td><input type="text" style="width: 40px;" id="time_from">
-				</td>
-				<td><input type="text" style="width: 40px;" id="time_to">
-				</td>
-				<td rowspan="2" class="editline"><textarea style="width: 250px; height: 60px;"></textarea>
-				</td>
-				<td><select style="width: 80px;">
-						<option value="1">Iroda1</option>
-						<option value="1">Iroda2</option>
-						<option value="1">Tárgyaló1</option>
-						<option value="1">Tárgyaló2</option>
-						<option value="1">Otthon</option>
-				</select>
-				</td>
-				<td><input type="submit" value="OK" class="btn btn-primary" >
-				</td>
-			</tr>
-			
-			
-			<tr class="editline">
-			<td colspan="3"><img src="images/information.png"> Ez a kategória ebben a projektben ezt jeleni</td>
-				<td><a href="" id="time_from_link">Now</a></td>
-				<td><a href="" id="time_to_link">Now</a></td>
-				 
-				<td></td>
-				<td> </td>
-				
-			
-			
-			</tr>
-			<tr>
-				<th>Project</th>
-				<th>Category</th>
-				<th>Date</th>
-				<th>From</th>
-				<th>To</th>
-				<th>Log</th>
-				<th>Place</th>
-				<th></th>
-			</tr>
 
-			<tr>
-				<td><a href="project_view.php">Inepex új weboldal</a>
-				</td>
-				<td><a href="#">Design</a>
-				</td>
-				<td>2013-02-01</td>
-				<td>09:30</td>
-				<td>10:30</td>
-				<td>Ezt csináltam, azt csináltam</td>
-				<td>iroda1</td>
-				<td><img src="images/modify.png"> <img src="images/delete.png">
-				</td>
-			</tr>
-			<tr>
-				<td><a href="project_view.php">Inepex új weboldal</a>
-				</td>
-				<td><a href="#">Design</a>
-				</td>
-				<td>2013-02-01</td>
-				<td>09:30</td>
-				<td>10:30</td>
-				<td>Ezt csináltam, azt csináltam</td>
-				<td>iroda1</td>
-				<td></td>
-			</tr>
-			<tr>
-				<td><a href="project_view.php">Inepex új weboldal</a>
-				</td>
-				<td><a href="#">Design</a>
-				</td>
-				<td>2013-02-01</td>
-				<td>09:30</td>
-				<td>10:30</td>
-				<td>Ezt csináltam, azt csináltam</td>
-				<td>iroda1</td>
-				<td></td>
-			</tr>
-
-		</table>
-	</form>
+	<table class="table table-bordered">
+		<tr>
+		<?php 
+			if(isset($_GET['edit_log']) && Log::is_log_exist($_GET['edit_log'])){
+				$log = new Log($_GET['edit_log']);
+				if($log->is_editable($user->get_id())){
+					include 'include/edit_log_form.php';
+				}
+				else{
+					Notification::warn("You do not have the permission to edit this log!");
+				}
+			}
+			else{
+				include 'include/add_log_form.php';
+			}
+			?>
+			
+		</tr>
+		<tr class="editline">
+			<td colspan="3"><img src="images/information.png"><span id="category_description"></span></td>
+			<td><a href="" id="time_from_link">Now</a></td>
+			<td><a href="" id="time_to_link">Now</a></td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<th>Project</th>
+			<th>Category</th>
+			<th>Date</th>
+			<th>From</th>
+			<th>To</th>
+			<th>Log</th>
+			<th>Place</th>
+			<th></th>
+		</tr>
+		<?php 
+		$logs = $selected_user->get_logs($selected_date->format("Y-m-d"));
+		foreach($logs as $log){
+			/* @var $log Log */
+			$project  = new Project($log->get_project_id());
+			$category = new AssociatedCategory($log->get_category_assoc_id());
+			$work_place = new WorkPlace($log->get_working_place_id());
+			echo '<tr>';
+			echo '<td><a href="project_view.php?project_id='.$project->get_id().'">'.$project->get_name().'</a></td>';
+			echo '<td>'.$category->get_name().'</td>';
+			echo '<td>'.$log->get_date().'</td>';
+			echo '<td>'.$log->get_from().'</td>';
+			echo '<td>'.$log->get_to().'</td>';
+			echo '<td>'.$log->get_entry().'</td>';
+			echo '<td>'.$work_place->get_name().'</td>';
+			if($user->get_id() == $selected_user->get_id() && $log->is_editable($user->get_id())){
+				echo '<td><a href="index.php?edit_log='.$log->get_id().'&date='.$selected_date->format('Y-m-d').'"><img src="images/modify.png"></a><a href="index.php?date='.$selected_date->format('Y-m-d').'&user_id='.$selected_user->get_id().'&delete_log='.$log->get_id().'"><img src="images/delete.png"></a></td>';
+			}
+			else{
+				echo '<td></td>';
+			}
+			echo '</tr>';
+		}
+		?>
+	</table>
 
 
 

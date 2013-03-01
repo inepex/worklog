@@ -95,6 +95,7 @@ if(isset($_GET['project_id']) && Project::is_project_exist($_GET['project_id']))
 				$project->get_project_plan()->add_entry($_POST['plan_entry_user_id'][$i], $_POST['plan_entry_category_assoc_id'][$i], $_POST['plan_entry_value'][$i]);
 			}
 		}
+		Notification::notice("Project plan updated successfully!");
 	}
 	//
 }

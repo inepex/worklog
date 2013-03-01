@@ -22,6 +22,20 @@ class Project{
 		}
 		return $projects;
 	}
+	public static function get_projects_which_contain_category($user_id){
+		$projects = array();
+		$query = "SELECT worklog_project_id FROM worklog_projects";
+		$select_result = mysql_query($query);
+		while($row = mysql_fetch_assoc($select_result)){
+			$project = new Project($row['worklog_project_id']);
+			$user = $project->get_user();
+			$workmates = $project->get_workmates();
+			if(count($project->get_categories()) > 0 && ($user->get_id() == $user_id || $project->is_user_workmate($user_id))){
+				array_push($projects,$project);
+			}
+		}
+		return $projects;
+	}
 	public static function is_project_exist($project_id){
 		$query = "SELECT worklog_project_id FROM worklog_projects WHERE worklog_project_id = ".$project_id;
 		$select_result = mysql_query($query);
@@ -185,6 +199,15 @@ class Project{
 				unset($this->categories[$i]);
 			}
 		}
+	}
+	public function is_associated_category_in_project($category_assoc_id){
+		foreach($this->categories as $category){
+			/* @var $category AssociatedCategory */
+			if($category->get_assoc_id() == $category_assoc_id){
+				return true;
+			}
+		}
+		return false;
 	}
 }
 ?>

@@ -13,6 +13,7 @@
 	require_once 'classes/ProjectPlan.php';
 	require_once 'classes/ProjectPlanEntry.php';
 	require_once 'classes/Project.php';
+	require_once 'classes/Log.php';
 	require_once 'classes/PhpConsole.php';
 	include('include/login_functions.php');
 	PhpConsole::start();

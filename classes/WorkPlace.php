@@ -42,6 +42,22 @@ class WorkPlace{
 		}
 		return $places;
 	}
+	public static function is_workplace_exist($workplace_id){
+		$query = "SELECT worklog_place_id FROM worklog_places WHERE worklog_place_id = ".$workplace_id;
+		$select_result = mysql_query($query);
+		if(mysql_error() != ""){
+			Notification::error(mysql_error());
+			return false;
+		}
+		else{
+			if(mysql_affected_rows() > 0){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+	}
 	public function __construct($id){
 		$query = "SELECT * FROM worklog_places WHERE worklog_place_id=".$id;
 		$select_result = mysql_query($query);

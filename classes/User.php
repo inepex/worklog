@@ -168,5 +168,19 @@ class User{
 			return false;
 		}
 	}
+	public function get_logs($date){
+			return Log::get_logs($this->id, $date);		
+	}
+	public function get_earlies_log_date(){
+		$query = "SELECT log_date FROM worklog_log WHERE worklog_user_id = ".$this->id." order by log_date ASC";
+		$select_result = mysql_query($query);
+		if(mysql_affected_rows() == 0){
+			return false;
+		}
+		else{
+			$row = mysql_fetch_assoc($select_result);
+			return $row['log_date'];
+		}
+	}
 }
 ?>
