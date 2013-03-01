@@ -33,7 +33,7 @@ class Log{
 			return false;
 		}
 	}
-	public static function is_overlap($user_id ,$date, $from, $to,$log_id){
+	public static function is_overlap($user_id ,$date, $from, $to,$log_id=""){
 		$condition = "";
 		if($log_id != "" && Log::is_log_exist($log_id)){
 			$condition = " AND worklog_log_id != ".$log_id;
