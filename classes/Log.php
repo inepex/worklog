@@ -45,7 +45,7 @@ class Log{
 		$number_of_rows = 0;	
 		$query1 = "SELECT * FROM worklog_log WHERE worklog_user_id = ".$user_id." AND log_date = '".$date."' AND log_from < '".date("H:i:s", strtotime($from))."' AND log_to > '".date("H:i:s", strtotime($from))."'".$condition;//inside 
 		$select_result = mysql_query($query1);
-		$query1 = "SELECT count(*) FROM worklog_log WHERE worklog_user_id = ".$user_id." AND log_date = '".$date."' AND log_from < '".date("H:i:s", strtotime($from))."' AND log_to > '".date("H:i:s", strtotime($from))."'".$condition;//inside 
+		$query1 = "SELECT worklog_log_id FROM worklog_log WHERE worklog_user_id = ".$user_id." AND log_date = '".$date."' AND log_from < '".date("H:i:s", strtotime($from))."' AND log_to > '".date("H:i:s", strtotime($from))."'".$condition;//inside 
 		$select_result = mysql_query($query1);
 		debug(print_r("fetch-elve: ".mysql_fetch_row($select_result)));
 		$number_of_rows += mysql_num_rows($select_result);
