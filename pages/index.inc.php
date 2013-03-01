@@ -138,7 +138,7 @@ if(isset($_POST['add_log'])){
 		$error = true;
 	}
 	if(!$error){
-		Log::add_log($_POST['project_id'], $_POST['category_assoc_id'], $user->get_id(), $_POST['date'], $_POST['from'], $_POST['to'], $_POST['log_entry'], $_POST['work_place_id']);
+		Log::add_log($_POST['project_id'], $_POST['category_assoc_id'], $user->get_id(), $_POST['date'], date("H:i",strtotime($_POST['from'])),date("H:i",strtotime($_POST['to'])), $_POST['log_entry'], $_POST['work_place_id']);
 		header('Location:index.php');
 		exit();
 	}
