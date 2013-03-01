@@ -304,8 +304,8 @@ if(isset($_GET['delete_log']) && Log::is_log_exist($_GET['delete_log'])){
 			echo '<td><a href="project_view.php?project_id='.$project->get_id().'">'.$project->get_name().'</a></td>';
 			echo '<td>'.$category->get_name().'</td>';
 			echo '<td>'.$log->get_date().'</td>';
-			echo '<td>'.$log->get_from().'</td>';
-			echo '<td>'.$log->get_to().'</td>';
+			echo '<td>'.date("H:i",strtotime($log->get_from())).'</td>';
+			echo '<td>'.date("H:i",strtotime($log->get_to())).'</td>';
 			echo '<td>'.$log->get_entry().'</td>';
 			echo '<td>'.$work_place->get_name().'</td>';
 			if($user->get_id() == $selected_user->get_id() && $log->is_editable($user->get_id())){
