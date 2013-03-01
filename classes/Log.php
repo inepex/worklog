@@ -34,7 +34,7 @@ class Log{
 		}
 	}
 	public static function is_overlap($user_id ,$date, $from, $to,$log_id=""){
-		mysql_query("SELECT worklog_log_id FROM worklog_log WHERE worklog_user_id = ".$user_id." AND log_date = '".$date."'");
+		mysql_query("SELECT worklog_log_id FROM worklog_log");
 		debug(mysql_affected_rows());
 		debug("SELECT worklog_log_id FROM worklog_log WHERE worklog_user_id = ".$user_id." AND log_date = '".$date."'");
 		debug("user_id".$user_id);
