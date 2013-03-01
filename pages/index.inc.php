@@ -67,6 +67,7 @@ if(isset($_POST['log_id'])){
 		$error = true;
 	}
 	if(!$error){
+		Notification::notice("Log was updated successfully!");
 		$log_to_edit = new Log($_POST['log_id']);
 		$log_to_edit->edit_log($_POST['project_id'], $_POST['category_assoc_id'], $_POST['date'], $_POST['from'], $_POST['to'], $_POST['log_entry'], $_POST['work_place_id']);
 		//TODO: edit
