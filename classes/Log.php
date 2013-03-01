@@ -43,22 +43,26 @@ class Log{
 		debug(mysql_affected_rows());
 		//
 		$number_of_rows = 0;	
-		$query = "SELECT * FROM worklog_log WHERE worklog_user_id = ".$user_id." AND log_date = '".$date."' AND log_from < '".date("H:i:s", strtotime($from))."' AND log_to > '".date("H:i:s", strtotime($from))."'".$condition;//inside 
-		$select_result = mysql_query($query);
+		$query1 = "SELECT * FROM worklog_log WHERE worklog_user_id = ".$user_id." AND log_date = '".$date."' AND log_from < '".date("H:i:s", strtotime($from))."' AND log_to > '".date("H:i:s", strtotime($from))."'".$condition;//inside 
+		$select_result = mysql_query($query1);
 		$number_of_rows += mysql_num_rows($select_result);
 		debug($number_of_rows);
-		$query = "SELECT * FROM worklog_log WHERE worklog_user_id = ".$user_id." AND log_date = '".$date."' AND log_from > '".date("H:i:s", strtotime($from))."' AND log_to < '".date("H:i:s", strtotime($to))."'".$condition;//outside
-		$select_result = mysql_query($query);
+		$query2 = "SELECT * FROM worklog_log WHERE worklog_user_id = ".$user_id." AND log_date = '".$date."' AND log_from > '".date("H:i:s", strtotime($from))."' AND log_to < '".date("H:i:s", strtotime($to))."'".$condition;//outside
+		$select_result = mysql_query($query2);
 		$number_of_rows += mysql_num_rows($select_result);
 		debug($number_of_rows);
-		$query = "SELECT * FROM worklog_log WHERE worklog_user_id = ".$user_id." AND log_date = '".$date."' AND (log_from = '".date("H:i:s", strtotime($from))."' OR log_to = '".date("H:i:s", strtotime($to))."')".$condition;//same start or same end
-		$select_result = mysql_query($query);
+		$query3 = "SELECT * FROM worklog_log WHERE worklog_user_id = ".$user_id." AND log_date = '".$date."' AND (log_from = '".date("H:i:s", strtotime($from))."' OR log_to = '".date("H:i:s", strtotime($to))."')".$condition;//same start or same end
+		$select_result = mysql_query($query3);
 		$number_of_rows += mysql_num_rows($select_result);
 		debug($number_of_rows);
-		$query = "SELECT worklog_log_id FROM worklog_log WHERE worklog_user_id = ".$user_id." AND log_date = '".$date."' AND ((log_from < '".date("H:i:s", strtotime($from))."' AND log_to > '".date("H:i:s", strtotime($from))."') OR (log_to > '".date("H:i:s", strtotime($to))."' AND log_from < '".date("H:i:s", strtotime($to))."'))".$condition;//fade
-		$select_result = mysql_query($query);
+		$query4 = "SELECT worklog_log_id FROM worklog_log WHERE worklog_user_id = ".$user_id." AND log_date = '".$date."' AND ((log_from < '".date("H:i:s", strtotime($from))."' AND log_to > '".date("H:i:s", strtotime($from))."') OR (log_to > '".date("H:i:s", strtotime($to))."' AND log_from < '".date("H:i:s", strtotime($to))."'))".$condition;//fade
+		$select_result = mysql_query($query4);
 		$number_of_rows += mysql_num_rows($select_result);
 		debug($number_of_rows);
+		debug($query1);
+		debug($query2);
+		debug($query3);
+		debug($query4);
 		if($number_of_rows>0){
 			return true;
 		}
