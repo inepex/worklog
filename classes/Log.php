@@ -41,6 +41,7 @@ class Log{
 		$number_of_rows = 0;	
 		$query = "SELECT * FROM worklog_log WHERE worklog_user_id = ".$user_id." AND log_date = '".$date."' AND log_from < '".date("H:i:s", strtotime($from))."' AND log_to > '".date("H:i:s", strtotime($from))."'".$condition;//inside 
 		$select_result = mysql_query($query);
+		debug($query);
 		$number_of_rows += mysql_affected_rows();
 		$query = "SELECT * FROM worklog_log WHERE worklog_user_id = ".$user_id." AND log_date = '".$date."' AND log_from > '".date("H:i:s", strtotime($from))."' AND log_to < '".date("H:i:s", strtotime($to))."'".$condition;//outside
 		$select_result = mysql_query($query);
@@ -51,6 +52,7 @@ class Log{
 		$query = "SELECT worklog_log_id FROM worklog_log WHERE worklog_user_id = ".$user_id." AND log_date = '".$date."' AND ((log_from < '".date("H:i:s", strtotime($from))."' AND log_to > '".date("H:i:s", strtotime($from))."') OR (log_to > '".date("H:i:s", strtotime($to))."' AND log_from < '".date("H:i:s", strtotime($to))."'))".$condition;//fade
 		$select_result = mysql_query($query);
 		$number_of_rows += mysql_affected_rows();
+		debug($number_of_rows);
 		if($number_of_rows>0){
 			return true;
 		}

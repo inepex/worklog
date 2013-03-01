@@ -278,7 +278,7 @@ else{
 			<?php 
 			foreach ($associated_categories as $associated_category){
 				echo '<tr class="project-plan">';
-				echo '<td>'.$associated_category->get_name().'</td>';
+				echo '<th>'.$associated_category->get_name().'</th>';
 				foreach ($workmates as $workmate){
 					//$entry['user_id'] = $workmate->get_id();
 					//$entry['category_assoc_id'];         = 
@@ -290,7 +290,7 @@ else{
 				echo '</tr>';
 			}
 			echo '<tr class="project-plan">';
-			echo '<td></td>';
+			echo '<th>SUM</th>';
 			foreach ($workmates as $workmate){
 				echo '<td>'.$project->get_project_plan()->get_sum_for_user($workmate->get_id()).'</td>';
 			}

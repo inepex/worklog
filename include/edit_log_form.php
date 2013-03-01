@@ -28,9 +28,9 @@
 				</select>
 				</td>
 				<td><input type="text" style="width: 40px;" id="time_from"
-					name="from" value="<?php echo $log->get_from();?>">
+					name="from" value="<?php echo date("H:i",strtotime($log->get_from()));?>">
 				</td>
-				<td><input type="text" style="width: 40px;" id="time_to" name="to" value="<?php echo $log->get_to();?>">
+				<td><input type="text" style="width: 40px;" id="time_to" name="to" value="<?php echo date("H:i",strtotime($log->get_to()));?>">
 				</td>
 				<td rowspan="2" class="editline"><textarea
 						style="width: 250px; height: 60px;" name="log_entry"><?php echo $log->get_entry();?></textarea>

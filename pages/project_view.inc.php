@@ -1,11 +1,22 @@
+<?php 
+if(Project::is_project_exist($_GET['project_id'])){
+	$project = new Project($_GET['project_id']);
+}
+else{
+	Notification::warn("Project does not exist!");
+	header('Location:index.php');
+	exit();
+}
+
+?>
 <div class="worklog-container">
 
 	<div class="subheader">
 
 		<div class="titlebar">
 			<div style="float: left;">
-				<h4>Inetrack új weboldal</h4>
-				<i>Inepex Kft project</i>
+				<h4><?php echo $project->get_name();?></h4>
+				<i><?php echo $project->get_company()->get_name()?> project</i>
 			</div>
 			<div style="float: right;">
 				<a href="#" class="btn">Duplicate project</a> <a
@@ -17,84 +28,76 @@
 	</div>
 
 	<hr>
-
-
-
-	Lorem ipsum dolor sit amet, consectetur adipiscing elit. In sit amet
-	venenatis augue. Donec ullamcorper, massa at dapibus porta, quam sapien
-	elementum quam, et sollicitudin sapien nisi eu erat. Nunc sed lacus nec
-	felis posuere aliquam. Donec aliquet, risus vitae venenatis iaculis,
-	ipsum leo tincidunt ante, lobortis imperdiet odio neque nec neque. Cras
-	metus odio, viverra eget pretium id, pellentesque at nunc. Fusce
-	viverra fermentum purus, vitae fermentum mauris fringilla non. In hac
-	habitasse platea dictumst. Fusce egestas, erat sed aliquam cursus,
-	purus augue viverra ipsum, eu porta metus augue non mauris. Cras quis
-	nunc diam. Nam et massa bibendum sem suscipit dignissim. Aliquam erat
-	volutpat. Vivamus quis dui erat. Nam quis diam sit amet erat pretium
-	tincidunt. Ut imperdiet nisi sed nunc aliquam scelerisque. Quisque
-	consequat erat ac ante ornare commodo. Proin ligula ante, gravida at
-	laoreet at, rhoncus quis eros.
-
+		<?php echo $project->get_description();?>
 	<hr>
+	<?php 
+	$owner = $project->get_user();
+	?>
 	<h4>Workmates:</h4>
 
-	<a href="#"> <img src="photos/tibi.jpg" width="60" height="60"
-		style="border: 4px solid #12ad2b;">
-	</a> | <a href="#"><img src="photos/tibi.jpg" width="60" height="60"> </a>
-	<a href="#"><img src="photos/tibi.jpg" width="60" height="60"> </a> <a
-		href="#"><img src="photos/tibi.jpg" width="60" height="60"> </a>
-
-
+	<a href="#"> <img src="photos/<?php echo $owner->get_picture();?>" width="60" height="60" style="border: 4px solid #12ad2b;"></a> |
+	<?php 
+	$workmates = $project->get_workmates();
+	foreach($workmates as $workmate){
+		/* @var $workmate AssociatedUser */
+		echo '<a href="#"><img src="photos/'.$workmate->get_picture().'" width="60" height="60"> </a>';
+	}
+	?>
 	<hr>
 	<h4>Categories:</h4>
-
+	<?php
+	$categories = $project->get_categories();
+	?>
 	<table class="table table-bordered" style="width: 0;">
-		<tr>
-			<th>megbeszélés</th>
-			<td>Itt ezt és azt jelenti ez a kategória</td>
-		</tr>
-		<tr>
-			<th>design</th>
-			<td>Itt ezt és azt jelenti ez a kategória</td>
-		</tr>
+		<?php 
+		foreach($categories as $category){
+			/* @var $category AssociatedCategory */
+			echo '<tr>
+					<th>'.$category->get_name().'</th>
+					<td>'.$category->get_description().'</td>
+				  </tr>';
+		}
+		?>
 	</table>
 
 	<hr>
 	<div style="clear: both;"></div>
 	<h4>Project Plan</h4>
-
+	
+	
 	<table class="table table-bordered" style="width: 0;">
-		<tr>
-			<th></th>
-			<th>Hidi Tibor</th>
-			<th>Madi Gabor</th>
-			<th>SUM</th>
-		</tr>
-		<tr>
-			<th>design</th>
-			<td>10</td>
-			<td>10</td>
-			<td>20</td>
-		</tr>
-		<tr>
-			<th>megbeszélés</th>
-			<td>10</td>
-			<td>10</td>
-			<td>20</td>
-		</tr>
-		<tr>
-			<th>SUM</th>
-			<td>10</td>
-			<td>10</td>
-			<td>20</td>
-		</tr>
-	</table>
+			<tr>
+				<th></th>
+				<?php
 
-
-
-
-
-
+				foreach($workmates as $workmate){
+					/* @var $u AssociatedUser */
+					echo '<th>'.$workmate->get_name().'</th>';
+				}
+				?>
+				<th>SUM</th>
+			</tr>
+			<?php 
+			foreach ($categories as $associated_category){
+				echo '<tr class="project-plan">';
+				echo '<th>'.$associated_category->get_name().'</th>';
+				foreach ($workmates as $workmate){
+					//$entry['user_id'] = $workmate->get_id();
+					//$entry['category_assoc_id'];         = 
+					echo '<td>'.$project->get_project_plan()->get_sum_for_category_and_user($workmate->get_id(), $associated_category->get_assoc_id()).'</td>';
+				}
+				echo '<td>'.$project->get_project_plan()->get_sum_for_category($associated_category->get_assoc_id()).'</td>';
+				echo '</tr>';
+			}
+			echo '<tr class="project-plan">';
+			echo '<th>SUM</th>';
+			foreach ($workmates as $workmate){
+				echo '<td>'.$project->get_project_plan()->get_sum_for_user($workmate->get_id()).'</td>';
+			}
+			echo '<td>'.$project->get_project_plan()->get_sum_of_entries().'</td>';
+			echo '</tr>';
+			?>
+		</table>
 
 	<hr>
 	<h4 style="float: left;">Statistics</h4>
