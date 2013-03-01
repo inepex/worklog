@@ -34,7 +34,7 @@ class Log{
 		}
 	}
 	public static function is_overlap($user_id ,$date, $from, $to,$log_id=""){
-		mysql_query("select * from worklog_log WHERE log_date = '2013-02-26'");
+		mysql_query("select * from worklog_log WHERE log_date = '2013-02-26' and worklog_user_id = 9");
 		debug(mysql_affected_rows());
 // 		$condition = "";
 // 		if($log_id != "" && Log::is_log_exist($log_id)){
