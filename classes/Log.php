@@ -38,6 +38,10 @@ class Log{
 		if($log_id != "" && Log::is_log_exist($log_id)){
 			$condition = " AND worklog_log_id != ".$log_id;
 		}
+		//test
+		mysql_query("select * from worklog_log");
+		debug(mysql_affected_rows());
+		//
 		$number_of_rows = 0;	
 		$query = "SELECT * FROM worklog_log WHERE worklog_user_id = ".$user_id." AND log_date = '".$date."' AND log_from < '".date("H:i:s", strtotime($from))."' AND log_to > '".date("H:i:s", strtotime($from))."'".$condition;//inside 
 		$select_result = mysql_query($query);
