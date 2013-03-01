@@ -39,7 +39,7 @@ class Log{
 			$condition = " AND worklog_log_id != ".$log_id;
 		}
 		//test
-		mysql_query("select * from worklog_log WHERE log_entry = 'tesztteszt'");
+		mysql_query("select * from worklog_log");
 		debug(mysql_affected_rows());
 		//
 		$number_of_rows = 0;	
