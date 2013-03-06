@@ -35,7 +35,7 @@ function fillCategoryDescription(categoryId){
 			console.log(categoryDescription);
 		}
 	}
-	$('#category_description').text(categoryDescription);
+	$('#category_description').text(" "+categoryDescription);
 }
 //
 //project select handler
@@ -111,7 +111,7 @@ function fillDateSelect(){
 		date.setDate(date.getDate() - i);
 		var year  = date.getFullYear();
 		var month = ('0' + (date.getMonth()+1)).slice(-2);
-		var day   = date.getDate();
+		var day   = ('0' + (date.getDate())).slice(-2);
 		if($("#selected_date").val() != undefined && year+"-"+month+"-"+day == $("#selected_date").val() ){
 			$('#date_select').append($("<option selected='selected'></option>").attr("value", year+"-"+month+"-"+day).text(year+"-"+month+"-"+day+" ("+weekday[date.getDay()]+")"));
 		}else{

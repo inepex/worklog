@@ -129,7 +129,7 @@ class Project{
 	public function get_project_plan(){
 		return $this->project_plan;
 	}
-	public function update_date($name,$company_id,$description,$start,$deadline,$status,$user_id){
+	public function update($name,$company_id,$description,$start,$deadline,$status,$user_id){
 		$user = new User($user_id);
 		if($user_id != $this->get_user()->get_id() && !$user->is_admin()){
 			Notification::warn("You do not have permission to do this operation!");
@@ -208,6 +208,35 @@ class Project{
 			}
 		}
 		return false;
+	}
+	public function get_logs_of_project($user_id = "", $category_assoc_id = "",$date_from, $date_to, $logs_from = 0){
+		$user_condition = "";
+		if($user_id != "" && User::is_exist($user_id)){
+			$user_condition = " AND worklog_user_id = ".$user_id;
+		}
+		$category_condition = "";
+		if($category_assoc_id != ""){
+			$category_condition = " AND worklog_category_assoc_id = ".$category_assoc_id;
+		}
+		$limit_condition = "";
+		if($logs_from != 0){
+			$limit_condition = " limit ".$logs_from.", ".($logs_from+Log::$LISTING_LIMIT);
+		}
+		$date_from_condition = "";
+		if($date_from != 0 && date_parse($date_from)){
+			$date_from_condition = " AND log_date>='".$date_from."'";
+		}
+		$date_to_condition = "";
+		if($date_to != 0 && date_parse($date_to)){
+			$date_to_condition = " AND log_date<='".$date_to."'";
+		}
+		$query  = "SELECT worklog_log_id FROM worklog_log WHERE worklog_project_id = ".$this->id.$category_condition.$user_condition.$limit_condition.$date_from_condition.$date_to_condition;
+		$select_result = mysql_query($query);
+		$logs = array();
+		while($row = mysql_fetch_assoc($select_result)){
+			array_push($logs, new Log($row['worklog_log_id']));
+		}
+		return $logs;
 	}
 }
 ?>

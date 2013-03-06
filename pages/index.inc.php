@@ -185,8 +185,8 @@ if(isset($_GET['delete_log']) && Log::is_log_exist($_GET['delete_log'])){
 	}
 }
 ?>
-<script
-	type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript"
+	src="js/index.js"></script>
 <div class="worklog-container">
 	<div class="subheader">
 
@@ -259,30 +259,21 @@ if(isset($_GET['delete_log']) && Log::is_log_exist($_GET['delete_log'])){
 
 
 	<table class="table table-bordered">
-		<tr>
-		<?php 
-			if(isset($_GET['edit_log']) && Log::is_log_exist($_GET['edit_log'])){
-				$log = new Log($_GET['edit_log']);
-				if($log->is_editable($user->get_id())){
-					include 'include/edit_log_form.php';
+			<?php if($selected_user->get_id() == $user->get_id()){
+				if(isset($_GET['edit_log']) && Log::is_log_exist($_GET['edit_log'])){
+					$log = new Log($_GET['edit_log']);
+					if($log->is_editable($user->get_id())){
+						include 'include/edit_log_form.php';
+					}
+					else{
+						Notification::warn("You do not have the permission to edit this log!");
+					}
 				}
 				else{
-					Notification::warn("You do not have the permission to edit this log!");
+					include 'include/add_log_form.php';
 				}
 			}
-			else{
-				include 'include/add_log_form.php';
-			}
 			?>
-			
-		</tr>
-		<tr class="editline">
-			<td colspan="3"><img src="images/information.png"><span id="category_description"></span></td>
-			<td><a href="" id="time_from_link">Now</a></td>
-			<td><a href="" id="time_to_link">Now</a></td>
-			<td></td>
-			<td></td>
-		</tr>
 		<tr>
 			<th>Project</th>
 			<th>Category</th>

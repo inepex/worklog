@@ -1,9 +1,11 @@
 <?php
 error_reporting(E_ALL);
 class AssociatedCategory extends Category{
+	public static $NUMBER_OF_LOGS_TO_LIST;
 	private $assoc_id;
 	private $project_id;
 	private $description;
+	//private $estimate_time;
 	public static function new_associated_category($project_id, $category_id, $category_description){
 		$query = "INSERT INTO worklog_projects_category_assoc (worklog_project_id, worklog_category_id, category_description) VALUES ('".$project_id."','".$category_id."','".$category_description."')";
 		$select_result = mysql_query($query);
@@ -36,6 +38,31 @@ class AssociatedCategory extends Category{
 	}
 	public function get_assoc_id(){
 		return $this->assoc_id;
+	}
+	public function get_sum_of_worked_hours(){
+		$query = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(log_to)-TIME_TO_SEC(log_from))) FROM worklog_log WHERE worklog_category_assoc_id = ".$this->assoc_id;
+		$select_result = mysql_query($query);
+		$row = mysql_fetch_array($select_result);
+		if($row[0] == NULL){
+			return "0:00";
+		}
+		return substr($row[0], 0, -3);
+	}
+	public function get_category_status_in_percent(){
+		$project = new Project($this->project_id);
+		$percent = 0;
+		$work_time = $this->get_sum_of_worked_hours();
+		$pieces = explode(":", $work_time);
+		$worked_hours   = $pieces[0];
+		$worked_minutes = $pieces[1];
+		$sum_for_category = $project->get_project_plan()->get_sum_for_category($this->assoc_id);
+		if($sum_for_category != 0){
+			$percent = round(($worked_hours*60+$worked_minutes)/(($sum_for_category*60)/100));
+		}
+		return $percent;
+	}
+	public function get_logs(){
+		
 	}
 }
 ?>

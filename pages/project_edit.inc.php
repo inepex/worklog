@@ -1,6 +1,6 @@
 <?php
 error_reporting(E_ALL);
-if(isset($_GET['project_id']) && Project::is_project_exist($_GET['project_id'])){
+if(isset($_GET['project_id']) && $_GET['project_id'] != "" && Project::is_project_exist($_GET['project_id'])){
 	$project = new Project($_GET['project_id']);
 
 	//update project informations
@@ -35,7 +35,7 @@ if(isset($_GET['project_id']) && Project::is_project_exist($_GET['project_id']))
 			Notification::warn("Deadline is bigger then start date!");
 		}
 		if(!$error){
-			$project->update_date($_POST['project_name'], $_POST['company_id'], $_POST['project_description'], $_POST['start'], $_POST['deadline'], $_POST['project_status'], $user->get_id());
+			$project->update($_POST['project_name'], $_POST['company_id'], $_POST['project_description'], $_POST['start'], $_POST['deadline'], $_POST['project_status'], $user->get_id());
 			Notification::notice("Updated successfully!");
 		}
 	}
@@ -116,7 +116,7 @@ else{
 			</div>
 			<div style="float: right;">
 				<a href="#" class="btn">Duplicate project</a> <a
-					href="project_view.php" class="btn ">Project Page</a> <a
+					href="project_view.php?project_id=<?php echo $project->get_id();?>" class="btn ">Project Page</a> <a
 					href="project_edit.php" class="btn btn-inverse">Edit Project</a>
 			</div>
 		</div>
@@ -188,8 +188,9 @@ else{
 	<hr>
 
 	<div style="width: 30%; float: left;">
+	<a name="workmates"></a>
 		<h4>Workmates</h4>
-		<form method="post">
+		<form method="post" action="project_edit.php?project_id=<?php echo $project->get_id();?>#workmates">
 			<table class="table table-bordered">
 				<tr>
 					<td><select name="workmate_id">
@@ -224,8 +225,9 @@ else{
 	</div>
 
 	<div style="width: 68%; float: right;">
+	<a name="categories"></a>
 		<h4>Categories</h4>
-		<form method="post">
+		<form method="post" action = "project_edit.php?project_id=<?php echo $project->get_id();?>#categories">
 			<table class="table table-bordered">
 				<tr>
 					<td><select style="width: 120px;" name="category_id">
@@ -260,9 +262,9 @@ else{
 
 	<div style="clear: both;"></div>
 	<hr>
-
+	<a name="project_plan"></a>
 	<h4>Project Plan</h4>
-	<form method="post">
+	<form method="post" action = "project_edit.php?project_id=<?php echo $project->get_id();?>#project_plan">
 		<table class="table table-bordered" style="width: 0;">
 			<tr>
 				<th></th>
@@ -298,7 +300,7 @@ else{
 			echo '</tr>';
 			?>
 		</table>
-		<input type="submit" class="btn btn-primary" name="update_project_plan" value="Save">
+		<input type="submit" class="btn btn-primary" name="update_project_plan" value="Save project plan">
 	</form>
 
 </div>
