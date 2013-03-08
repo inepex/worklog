@@ -9,7 +9,19 @@ class User{
 	protected $name;
 	protected $picture;
 	protected $default_place;
-	
+	public static function authenticate_user($user_name, $md5password){
+		$query = "SELECT * FROM worklog_users WHERE username ='".$user_name."'";
+		$select_result = mysql_query($query);
+		if(mysql_affected_rows() == 0){
+			return false;
+		}
+		else{
+			$row = mysql_fetch_assoc($select_result);
+			if($row['password'] == $md5password){
+				return $row['worklog_user_id'];
+			}
+		}
+	}
 	public static function get_users(){
 		$users = array();
 		$query = "SELECT worklog_user_id FROM worklog_users order by name";
