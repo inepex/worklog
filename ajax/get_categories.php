@@ -10,7 +10,9 @@ require_once '../classes/AssociatedCategory.php';
 require_once '../classes/ProjectPlan.php';
 require_once '../classes/ProjectPlanEntry.php';
 require_once '../classes/Project.php';
+require_once '../classes/Log.php';
 require_once '../classes/PhpConsole.php';
+
 	if(isset($_POST['project_id']) && $_POST['project_id'] != ""){
 		if(Project::is_project_exist($_POST['project_id'])){
 			$project = new Project($_POST['project_id']);

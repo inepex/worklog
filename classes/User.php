@@ -168,6 +168,24 @@ class User{
 			return false;
 		}
 	}
+	public function get_projects_where_user_have_planned_hour($status=""){
+		$projects = array();
+		$query = 'SELECT worklog_projects.worklog_project_id FROM `worklog_projects`, worklog_project_plan WHERE worklog_projects.worklog_project_id = worklog_project_plan.worklog_project_id AND worklog_project_plan.worklog_user_id = '.$this->id.' AND plan_value != 0 group by worklog_projects.worklog_project_id';
+		$select_result = mysql_query($query);
+		while($row = mysql_fetch_assoc($select_result)){
+			if((int)$status >= 0 && (int)$status <=2){
+				$project = new Project($row['worklog_project_id']);
+				if($project->get_status() ==  $status){
+					array_push($projects,$project);
+				}
+			}
+			else{
+				array_push($projects, new Project($row['worklog_project_id']));
+			}
+		
+		}
+		return $projects;
+	}
 	public function get_logs($date){
 			return Log::get_logs($this->id, $date);		
 	}

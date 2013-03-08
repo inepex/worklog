@@ -57,12 +57,19 @@ class ProjectPlan{
 		}
 		return $sum;
 	}
-	public function get_sum_for_category($category_assoc_id){
+	public function get_sum_for_category($category_assoc_id, $user_id=""){
 		$sum = 0;
 		foreach($this->entries as $entry){
 			/* @var $entry ProjectPlanEntry */
-			if($entry->get_category_assoc_id() == $category_assoc_id){
-				$sum += $entry->get_value();
+			if($entry->get_category_assoc_id() == $category_assoc_id ){
+				if($user_id != "" && User::is_exist($user_id)){
+					if($entry->get_user_id()== $user_id){
+						$sum += $entry->get_value();
+					}
+				}
+				else{
+					$sum += $entry->get_value();
+				}	
 			}
 		}
 		return $sum;

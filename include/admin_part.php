@@ -10,7 +10,7 @@
 				echo '<tr>
 				<td><input type="text" style="width: 450px;"  name="company_name" value="'.$company->get_name().'">
 				</td>
-				<td><input type="submit" value="Save" class="btn"> <a href="user_edit.php#companies">Mégse</a>
+				<td><input type="submit" value="Save" class="btn">   <a href="user_edit.php#companies">Mégse</a>
 				</td>
 				</tr>
 				<input type="hidden" name="action" value="edit" />
@@ -54,7 +54,7 @@
 				echo '<tr>
 				<td><input type="text" style="width: 450px;"  name="place_name" value="'.$place->get_name().'">
 				</td>
-				<td><input type="submit" value="Save" class="btn"> <a href="user_edit.php#places">Mégse</a>
+				<td><input type="submit" value="Save" class="btn">   <a href="user_edit.php#places">Mégse</a>
 				</td>
 				</tr>
 				<input type="hidden" name="action" value="edit" />
@@ -97,7 +97,7 @@
 				echo '<tr>
 				<td><input type="text" style="width: 450px;"  name="category_name" value="'.$category->get_name().'">
 				</td>
-				<td><input type="submit" value="Save" class="btn"> <a href="user_edit.php#categories">Mégse</a>
+				<td><input type="submit" value="Save" class="btn">   <a href="user_edit.php#categories">Mégse</a>
 				</td>
 				</tr>
 				<input type="hidden" name="action" value="edit" />

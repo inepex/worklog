@@ -9,9 +9,9 @@ else{
 }
 
 ?>
-<script type="text/javascript" src="js/projectView.js"></script>
+<script
+	type="text/javascript" src="js/projectView.js"></script>
 <div class="worklog-container">
-
 	<div class="subheader">
 
 		<div class="titlebar">
@@ -21,9 +21,24 @@ else{
 				</h4>
 				<i><?php echo $project->get_company()->get_name()?> project</i>
 			</div>
-			<div style="float: right;">
-				<a href="#" class="btn">Duplicate project</a> <a
-					href="project_view.php" class="btn btn-inverse">Project Page</a> <a
+			<span style="float: right;">
+				<div class="dropdown">
+					<a href="#" class="btn dropdown-toggle" data-toggle="dropdown">Duplicate
+						project</a>
+					<ul class="dropdown-menu">
+					<table>
+					<tr>
+						<td>Név:</td>
+						<td><input type="text" name="duplicate" id="duplicate_name"/></td>
+					</tr>
+					<tr>
+						<td colspan="2" align="center"><a href="#" class="btn" id="duplicate">Duplikálás</a></td>
+					</tr>
+					</table>
+					</ul>
+				</span>
+				<a href="project_view.php" class="btn btn-inverse">Project Page</a>
+				<a
 					href="project_edit.php?project_id=<?php echo $project->get_id()?>"
 					class="btn ">Edit Project</a>
 			</div>
@@ -119,9 +134,9 @@ else{
 			<td>'.$category->get_name().' <img src="images/information.png"
 			title="'.$category->get_description().'">
 			</td>
-			<td><div
-			style="height: 20px; width: 600px; border: 1px solid #d0d0d0;">
-			<div style="height: 20px; width: '.($percent<100?$percent:'100').'%; background: rgb('.(50+$percent).','.(150-$percent).',0);"></div>
+			<td>
+			<div class="progress progress-info progress-striped" style=" width: 700px;">
+			<div class="bar" style="width: '.$percent.'%"></div>
 			</div>
 			</td>
 			<td>'.$category->get_sum_of_worked_hours().' / '.$project_plan->get_sum_for_category($category->get_assoc_id()).':00 ('.$percent.'%)</td>
@@ -137,8 +152,9 @@ else{
 
 	<form method="GET" action="project_view.php">
 		<div style="float: right;">
-			<input type="hidden" style="width: 60px;" name="project_id" value="<?php echo $project->get_id();?>">
-			Filters: <select style="width: 120px !important;" name="user_id">
+			<input type="hidden" name="project_id" id="project_id"
+				value="<?php echo $project->get_id();?>"> Filters: <select
+				style="width: 120px !important;" name="user_id">
 				<?php foreach($workmates as $workmate){
 					$selected = "";
 					if(isset($_GET['user_id']) &&$_GET['user_id'] == $workmate->get_id()){
@@ -147,7 +163,8 @@ else{
 					echo '<option value="'.$workmate->get_id().'" '.$selected.' >'.$workmate->get_name().'</option>';
 			}?>
 
-			</select> <select style="width: 120px !important;" name="associated_category_id">
+			</select> <select style="width: 120px !important;"
+				name="associated_category_id">
 				<?php 
 				foreach($categories as $category){
 					$selected = "";
@@ -157,10 +174,11 @@ else{
 					echo '<option value="'.$category->get_assoc_id().'" '.$selected.' >'.$category->get_name().'</option>';
 				}
 				?>
-			</select> 
-			<input type="text" style="width: 80px;" value="datefrom" class="datepicker" name="date_from">
-			<input type="text" style="width: 80px;" value="dateto" class="datepicker" name="date_to">
-			<input type="submit" class="btn" value="OK" style="width: 60px;">
+			</select> <input type="text" style="width: 80px;" value="datefrom"
+				class="datepicker" name="date_from"> <input type="text"
+				style="width: 80px;" value="dateto" class="datepicker"
+				name="date_to"> <input type="submit" class="btn" value="OK"
+				style="width: 60px;">
 		</div>
 	</form>
 	<div style="clear: both;"></div>

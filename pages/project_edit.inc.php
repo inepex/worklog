@@ -107,7 +107,7 @@ else{
 
 ?>
 <div class="worklog-container">
-
+<input type="hidden" name="project_id" id="project_id" value="<?php echo $project->get_id();?>">
 	<div class="subheader">
 
 		<div class="titlebar">
@@ -115,8 +115,23 @@ else{
 				<h4>Create New Project / Edit Project</h4>
 			</div>
 			<div style="float: right;">
-				<a href="#" class="btn">Duplicate project</a> <a
-					href="project_view.php?project_id=<?php echo $project->get_id();?>" class="btn ">Project Page</a> <a
+				<span style="float: right;">
+				<div class="dropdown">
+					<a href="#" class="btn dropdown-toggle" data-toggle="dropdown">Duplicate
+						project</a>
+					<ul class="dropdown-menu">
+					<table>
+					<tr>
+						<td>Név:</td>
+						<td><input type="text" name="duplicate" id="duplicate_name"/></td>
+					</tr>
+					<tr>
+						<td colspan="2" align="center"><a href="#" class="btn" id="duplicate">Duplikálás</a></td>
+					</tr>
+					</table>
+					</ul>
+				</span> 
+				<a href="project_view.php?project_id=<?php echo $project->get_id();?>" class="btn ">Project Page</a> <a
 					href="project_edit.php" class="btn btn-inverse">Edit Project</a>
 			</div>
 		</div>

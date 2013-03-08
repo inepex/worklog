@@ -39,8 +39,11 @@ class AssociatedCategory extends Category{
 	public function get_assoc_id(){
 		return $this->assoc_id;
 	}
-	public function get_sum_of_worked_hours(){
+	public function get_sum_of_worked_hours($user_id=""){
 		$query = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(log_to)-TIME_TO_SEC(log_from))) FROM worklog_log WHERE worklog_category_assoc_id = ".$this->assoc_id;
+		if($user_id != "" && User::is_exist($user_id)){
+			$query = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(log_to)-TIME_TO_SEC(log_from))) FROM worklog_log WHERE worklog_category_assoc_id = ".$this->assoc_id." AND worklog_user_id = ".$user_id;
+		}
 		$select_result = mysql_query($query);
 		$row = mysql_fetch_array($select_result);
 		if($row[0] == NULL){
@@ -48,20 +51,21 @@ class AssociatedCategory extends Category{
 		}
 		return substr($row[0], 0, -3);
 	}
-	public function get_category_status_in_percent(){
-		$project = new Project($this->project_id);
-		$percent = 0;
-		$work_time = $this->get_sum_of_worked_hours();
-		$pieces = explode(":", $work_time);
-		$worked_hours   = $pieces[0];
-		$worked_minutes = $pieces[1];
-		$sum_for_category = $project->get_project_plan()->get_sum_for_category($this->assoc_id);
-		if($sum_for_category != 0){
-			$percent = round(($worked_hours*60+$worked_minutes)/(($sum_for_category*60)/100));
-		}
-		return $percent;
+	public function get_category_status_in_percent($user_id="", $category_assoc_id=""){
+			$project = new Project($this->project_id);
+			$percent = 0;
+			$work_time = $this->get_sum_of_worked_hours($user_id);
+			$pieces = explode(":", $work_time);
+			$worked_hours   = $pieces[0];
+			$worked_minutes = $pieces[1];
+			$sum_for_category = $project->get_project_plan()->get_sum_for_category($this->assoc_id, $user_id);
+			if($sum_for_category != 0){
+				$percent = round(($worked_hours*60+$worked_minutes)/(($sum_for_category*60)/100));
+			}
+			return $percent;
 	}
-	public function get_logs(){
+	public function get_logs
+	(){
 		
 	}
 }

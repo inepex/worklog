@@ -1,6 +1,6 @@
 <?php 
 	session_start();
-	error_reporting(E_WARNING);
+	error_reporting(E_ALL);
 	header("Content-type: text/html; charset=utf-8");
 	require_once '../worklog-config.php';
 	require_once 'classes/User.php';

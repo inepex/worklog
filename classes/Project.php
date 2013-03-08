@@ -12,7 +12,36 @@ class Project{
 	private $workmates  = array();
 	private $categories = array();
 	private $project_plan;
-
+	public static function is_project_used($project_id){ //are logs in the project?
+		$query = "SELECT worklog_log_id FROM worklog_log WHERE worklog_project_id = ".$project_id;
+		$select_result = mysql_query($query);
+		if(mysql_affected_rows() == 0){
+			return false;
+		}
+		else{
+			return true;
+		}
+	}
+	public static function delete_project($project_id){
+		if(!Project::is_project_used($project_id)){
+			$project = new Project($project_id);
+			$workmates = $project->get_workmates();
+			foreach ($workmates as $workmate){
+				$project->delete_workmate($workmate->get_assoc_id());
+			}
+			$categories = $project->get_categories();
+			foreach ($categories as $category){
+				$project->delete_category($category->get_assoc_id());
+			}
+			$query  = "DELETE FROM worklog_projects WHERE worklog_project_id = ".$project->get_id();
+			$delete_result = mysql_query($query);
+			unset($project);
+			Notification::notice("Deleted successfully");
+		}
+		else{
+			Notification::warn("There are logs in this project!");
+		}
+	}
 	public static function get_projects(){
 		$projects = array();
 		$query = "SELECT worklog_project_id FROM worklog_projects";
@@ -21,6 +50,27 @@ class Project{
 			array_push($projects,new Project($row['worklog_project_id']));
 		}
 		return $projects;
+	}
+	public static function duplicate_project($project_id, $duplicate_name){
+		$project = new Project($project_id);//befejezni
+		$duplicated_project =  Project::new_project($duplicate_name, $project->get_company()->get_id(), $project->get_description(), $project->get_start_date(), $project->get_end_date(), $project->get_status(), $project->get_user()->get_id());
+		$project_categories = $project->get_categories();
+		foreach($project_categories as $project_category){
+			/* @var $project_category AssociatedCategory */
+			$duplicated_project->add_category($project_category->get_id(), $project_category->get_description());
+		}
+		$project_workmates = $project->get_workmates();
+		foreach($project_workmates as $project_workmate){
+			/* @var $project_workmate AssociatedUser */
+			$duplicated_project->add_workmate($project_workmate->get_id());
+		}
+		//		$project_plan = $project->get_project_plan();//folytatni
+		//		$entries = $project_plan->get_entries();
+		// 		foreach($entries as $entry){
+		// 			/* @var $entry ProjectPlanEntry */
+		// 			$duplicated_project->project_plan->add_entry($entry->get_user_id(),$entry-> $category_assoc_id, $entry->get_value());
+		// 		}
+		return $duplicated_project;
 	}
 	public static function get_projects_which_contain_category($user_id){
 		$projects = array();
@@ -178,11 +228,13 @@ class Project{
 		$this->project_plan->delete_entry_of_user($associated_user->get_id());
 		$query = "DELETE FROM worklog_projects_user_assoc WHERE worklog_projects_user_assoc_id = ".$workmate_assoc_id;
 		$delete_result = mysql_query($query);
-		for($i=0; $i<count($this->workmates); $i++){
-			if($this->workmates[$i]->get_assoc_id() == $workmate_assoc_id)	{
-				unset($this->workmates[$i]);
+		//
+		foreach($this->workmates as $key =>$workmate){
+			if($workmate->get_assoc_id() == $workmate_assoc_id)	{
+				unset($this->workmates[$key]);
 			}
 		}
+		//
 	}
 	public function add_category($category_id, $description){
 		$query = "INSERT INTO worklog_projects_category_assoc (worklog_project_id, worklog_category_id, category_description) VALUES ('".$this->id."', '".$category_id."', '".$description."')";
@@ -194,9 +246,9 @@ class Project{
 		$this->project_plan->delete_entries_of_category($category_assoc_id);
 		$query = "DELETE FROM worklog_projects_category_assoc WHERE worklog_projects_category_assoc_id = ".$category_assoc_id;
 		$delete_result = mysql_query($query);
-		for($i=0; $i<count($this->categories); $i++){
-			if($this->categories[$i]->get_assoc_id() == $category_assoc_id)	{
-				unset($this->categories[$i]);
+		foreach($this->categories as $key =>$category){
+			if($category->get_assoc_id() == $category_assoc_id)	{
+				unset($this->categories[$key]);
 			}
 		}
 	}

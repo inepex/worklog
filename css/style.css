@@ -62,3 +62,6 @@ th {
 .project-plan td{
 	text-align: center!important;
 }
+.highlight{
+	background:rgba(255, 0, 0, 0.28)!important;
+}
