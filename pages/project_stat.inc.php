@@ -59,10 +59,11 @@ if(isset($_GET['projects_status']) && $_GET['projects_status'] != "" && $_GET['p
 				<td width="140px">'.$category->get_name().' <img src="images/information.png"
 				title="'.$category->get_description().'">
 				</td>
-				<td><div
-				style="height: 20px; width: 600px; border: 1px solid #d0d0d0;">
-				<div style="height: 20px; width: '.$total_hour_per_worked_hour.'%; background: #005826;"></div>
-				</div></td>
+				<td>
+				<div class="progress progress-info progress-striped" style=" width: 700px;">
+				<div class="bar" style="width: '.$total_hour_per_worked_hour.'%"></div>
+				</div>
+				</td>
 				<td>'.$category->get_sum_of_worked_hours($selected_user->get_id()).'/ '.$planned_hours.':00 ('.$total_hour_per_worked_hour.'%)</td>
 				</tr>';
 			}
