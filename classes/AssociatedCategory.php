@@ -64,9 +64,5 @@ class AssociatedCategory extends Category{
 			}
 			return $percent;
 	}
-	public function get_logs
-	(){
-		
-	}
 }
 ?>

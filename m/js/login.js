@@ -6,7 +6,7 @@ $(document).ready(function() {
 			source : $("#password").val()
 		});
 		$.ajax({
-			url : "http://worklog.h1v3.com/API/authenticate.php",
+			url : "../API/authenticate.php",
 			type : "get",
 			data : {
 				username : username,

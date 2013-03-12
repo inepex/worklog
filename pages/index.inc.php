@@ -2,7 +2,8 @@
 //save personal note
 if(isset($_POST['save-personal-note']) && isset($_POST['personal-note']) && $_POST['personal-note'] != $user->get_personal_note()){
 	$user->update_personal_note($_POST['personal-note']);
-	header('Location:index.php');
+	echo"<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=index.php\">";
+	exit();
 }
 //
 //edit log
@@ -71,7 +72,7 @@ if(isset($_POST['log_id'])){
 		$log_to_edit = new Log($_POST['log_id']);
 		$log_to_edit->edit_log($_POST['project_id'], $_POST['category_assoc_id'], $_POST['date'], $_POST['from'], $_POST['to'], $_POST['log_entry'], $_POST['work_place_id']);
 		//TODO: edit
-		header('Location:index.php');
+		echo"<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=index.php\">";
 		exit();
 	}
 }
@@ -139,7 +140,7 @@ if(isset($_POST['add_log'])){
 	}
 	if(!$error){
 		Log::add_log($_POST['project_id'], $_POST['category_assoc_id'], $user->get_id(), $_POST['date'], date("H:i",strtotime($_POST['from'])),date("H:i",strtotime($_POST['to'])), $_POST['log_entry'], $_POST['work_place_id']);
-		header('Location:index.php');
+		echo"<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=index.php\">";
 		exit();
 	}
 }
@@ -177,7 +178,7 @@ if(isset($_GET['delete_log']) && Log::is_log_exist($_GET['delete_log'])){
 	if($user->get_id() == $selected_user->get_id() && $log->is_editable($selected_user->get_id())){
 		Log::delete_log($_GET['delete_log']);
 		Notification::notice("Log entry deleted successfully!");
-		header('Location:index.php');
+		echo"<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=index.php\">";
 		exit();
 	}
 	else{
@@ -185,8 +186,7 @@ if(isset($_GET['delete_log']) && Log::is_log_exist($_GET['delete_log'])){
 	}
 }
 ?>
-<script type="text/javascript"
-	src="js/index.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
 <div class="worklog-container">
 	<div class="subheader">
 
@@ -242,7 +242,9 @@ if(isset($_GET['delete_log']) && Log::is_log_exist($_GET['delete_log'])){
 				My personal note: <input type="submit" name="save-personal-note"
 					class="btn btn-mini" value="Save"
 					style="float: right; margin-bottom: 3px;"> <br>
-				<textarea name="personal-note" style="width: 250px; height: 60px;"><?php echo $user->get_personal_note();?></textarea>
+				<textarea name="personal-note" style="width: 250px; height: 60px;">
+					<?php echo $user->get_personal_note();?>
+				</textarea>
 			</form>
 		</div>
 		<div style="clear: both;"></div>
@@ -259,21 +261,21 @@ if(isset($_GET['delete_log']) && Log::is_log_exist($_GET['delete_log'])){
 
 
 	<table class="table table-bordered">
-			<?php if($selected_user->get_id() == $user->get_id()){
-				if(isset($_GET['edit_log']) && Log::is_log_exist($_GET['edit_log'])){
-					$log = new Log($_GET['edit_log']);
-					if($log->is_editable($user->get_id())){
-						include 'include/edit_log_form.php';
-					}
-					else{
-						Notification::warn("You do not have the permission to edit this log!");
-					}
+		<?php if($selected_user->get_id() == $user->get_id()){
+			if(isset($_GET['edit_log']) && Log::is_log_exist($_GET['edit_log'])){
+				$log = new Log($_GET['edit_log']);
+				if($log->is_editable($user->get_id())){
+					include 'include/edit_log_form.php';
 				}
 				else{
-					include 'include/add_log_form.php';
+					Notification::warn("You do not have the permission to edit this log!");
 				}
 			}
-			?>
+			else{
+				include 'include/add_log_form.php';
+			}
+		}
+		?>
 		<tr>
 			<th>Project</th>
 			<th>Category</th>

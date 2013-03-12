@@ -72,7 +72,7 @@ if(isset($_GET['project_id']) && $_GET['project_id'] != "" && Project::is_projec
 	if(isset($_GET['delete_workmate'])){
 		$project->delete_workmate($_GET['delete_workmate']);
 		Notification::notice("Workmated removed!");
-		header('Location:project_edit.php?project_id='.$project->get_id());
+		echo"<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=project_edit.php?project_id=".$project->get_id()."\">";
 		exit();
 	}
 	//
@@ -81,7 +81,7 @@ if(isset($_GET['project_id']) && $_GET['project_id'] != "" && Project::is_projec
 	if(isset($_GET['delete_category'])){
 		$project->delete_category($_GET['delete_category']);
 		Notification::notice("Category removed!");
-		header('Location:project_edit.php?project_id='.$project->get_id());
+		echo"<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=project_edit.php?project_id=".$project->get_id()."\">";
 		exit();
 	}
 	//
@@ -101,7 +101,7 @@ if(isset($_GET['project_id']) && $_GET['project_id'] != "" && Project::is_projec
 }
 else{
 	Notification::warn("The requested project does not exist!");
-	header('Location:index.php');
+	echo"<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=index.php\">";
 	exit();
 }
 

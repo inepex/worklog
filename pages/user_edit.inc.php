@@ -36,17 +36,17 @@ if($user->get_status() == "2"){
 	if(isset($_GET['action']) && $_GET['action'] =='delete'){
 		if(isset($_GET['company_id']) && $_GET['company_id'] !=''){
 			Company::delete_company($_GET['company_id']);
-			header('Location:user_edit.php');
+			echo"<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=user_edit.php\">";
 			exit();
 		}
 		if(isset($_GET['place_id']) && $_GET['place_id'] !=''){
 			WorkPlace::delete_work_place($_GET['place_id']);
-			header('Location:user_edit.php');
+			echo"<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=user_edit.php\">";
 			exit();
 		}
 		if(isset($_GET['category_id']) && $_GET['category_id'] !=''){
 			Category::delete_category($_GET['category_id']);
-			header('Location:user_edit.php');
+			echo"<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=user_edit.php\">";
 			exit();
 		}
 	}

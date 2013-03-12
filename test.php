@@ -17,6 +17,11 @@ require_once 'classes/ProjectPlanEntry.php';
 require_once 'classes/Log.php';
 require_once 'classes/WorkPlace.php';
 require_once 'include/notifications.php';
-$duplicated_project = Project::duplicate_project(1, "első duplikálás");
-header('location:project_edit.php?project_id='.$duplicated_project->get_id());
+echo "first: ".Log::get_first_log_date();
+$date = new DateTime(Log::get_first_log_date());
+$date->modify("first day of this month");
+echo '<br>'.$date->format("Y-m-d");
+$date->modify("first day of next month");
+echo '<br>'.$date->format("Y-m-d");
+echo "letezik-e:".Company::is_company_exist("2");
 ?>

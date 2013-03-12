@@ -6,7 +6,7 @@ if ( isset($_GET['log']) && $_GET['log'] =="logout" ) {
 	$_SESSION['loggedin_worklog']="false";
 	$_SESSION['enterstatus']=0;
 	$_SESSION['enterid']=0;
-	header('Location:index.php');
+	echo"<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=index.php\">";
 	exit();
 }
 

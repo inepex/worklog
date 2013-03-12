@@ -4,7 +4,7 @@ if(isset($_GET['project_id']) && $_GET['project_id'] !="" && Project::is_project
 }
 else{
 	Notification::warn("Project does not exist!");
-	header('Location:index.php');
+	echo"<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=index.php\">";
 	exit();
 }
 

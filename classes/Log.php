@@ -12,6 +12,38 @@ class Log{
 	private $entry;
 	private $working_place_id;
 	
+	public static function get_sum_time_of_logs($user_id, $date,$company_id){
+		$user_condition    = "";
+		$date_condition    = "";
+		$company_condition = "";
+		if($user_id != "" && User::is_exist($user_id)){
+			$user_condition = " AND worklog_log.worklog_user_id = ".$user_id;
+		}
+		if($date != ""){
+			$date_array = date_parse($date);
+			if($date_array['year'] && $date_array['month'] && $date_array['day']){
+				$date = new DateTime($date_array['year'].'-'.$date_array['month'].'-'.$date_array['day']);
+				$date->modify("first day of this month");
+				$from_date = $date->format("Y-m-d");
+				$date->modify("last day of this month");
+				$to_date = $date->format("Y-m-d");
+				$date_condition = " AND worklog_log.log_date >= ".$from_date." AND worklog_log.log_date <= ".$to_date;
+			}
+		}
+		if($company_id != "" && Company::is_company_exist($company_id)){
+			$company_condition = " AND worklog_projects.worklog_company_id = ".$company_id;
+		}
+		$query ='select SEC_TO_TIME(SUM(TIME_TO_SEC(log_to)-TIME_TO_SEC(log_from))) sum_time from worklog_log, worklog_projects WHERE worklog_log.worklog_project_id = worklog_projects.worklog_project_id'.$user_condition.$date_condition.$company_condition;
+		$select_result = mysql_query($query);
+		if(mysql_affected_rows() == 0){
+			return '00:00';
+		}
+		else{
+			$row = mysql_fetch_assoc($select_result);
+			return $row['sum_time'];
+		}
+		
+	}
 	public static function add_log($project_id, $category_assoc_id, $user_id, $date, $from, $to, $entry, $working_place_id){
 		$query = "INSERT INTO worklog_log (worklog_project_id, worklog_category_assoc_id, worklog_user_id, log_date, log_from, log_to, log_entry, worklog_place_id) VALUES ('".$project_id."','".$category_assoc_id."','".$user_id."','".$date."','".$from."','".$to."','".$entry."','".$working_place_id."')";
 		$insert_result = mysql_query($query);
@@ -68,6 +100,17 @@ class Log{
 		else{
 			debug(mysql_error());
 			//Notification::error(mysql_error());
+		}
+	}
+	public static function get_first_log_date(){
+		$query = "SELECT min(log_date) min_date FROM worklog_log";
+		$select_result = mysql_query($query);
+		if(mysql_affected_rows()  == 0){
+			return '0000-00-00';
+		}
+		else{
+			$row = mysql_fetch_assoc($select_result);
+			return $row['min_date'];
 		}
 	}
 	public static function get_logs($user_id, $date){

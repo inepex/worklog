@@ -2,7 +2,16 @@
 class Company{
 	private $id;
 	private $name;
-
+	public static function is_company_exist($company_id){
+		$query = "SELECT worklog_company_id FROM worklog_companies WHERE worklog_company_id = ".$company_id;
+		$select_result = mysql_query($query);
+		if(mysql_affected_rows() == 1){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
 	public static function get_companies(){
 		$companies = array();
 		$query = "SELECT worklog_company_id FROM worklog_companies order by company_name";
