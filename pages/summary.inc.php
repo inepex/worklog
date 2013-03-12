@@ -68,7 +68,7 @@ if(isset($_GET['company_id']) && $_GET['company_id'] != "" && Company::is_compan
 						$first_log_date->modify("first day of this month");
 						$date = new DateTime("now");
 						$date->modify("first day of this month");
-						while($date->format('Y-m-d') != $first_log_date->format('Y-m-d')){
+						do{
 							$selected = "";
 							if($selected_date == $date->format('Y-m-d')){
 								$selected = 'selected = "selected"';
@@ -76,6 +76,7 @@ if(isset($_GET['company_id']) && $_GET['company_id'] != "" && Company::is_compan
 							echo '<option value="'.$date->format('Y-m-d').'" '.$selected.'>'.$date->format('Y. F').'</option>';
 							$date->modify("first day of previous month");
 						}
+						while($date->format('Y-m-d') != $first_log_date->format('Y-m-d'));
 						?>
 				</select>
 				</td>
