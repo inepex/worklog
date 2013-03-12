@@ -242,9 +242,7 @@ if(isset($_GET['delete_log']) && Log::is_log_exist($_GET['delete_log'])){
 				My personal note: <input type="submit" name="save-personal-note"
 					class="btn btn-mini" value="Save"
 					style="float: right; margin-bottom: 3px;"> <br>
-				<textarea name="personal-note" style="width: 250px; height: 60px;">
-					<?php echo $user->get_personal_note();?>
-				</textarea>
+				<textarea name="personal-note" style="width: 250px; height: 60px;"><?php echo $user->get_personal_note();?></textarea>
 			</form>
 		</div>
 		<div style="clear: both;"></div>

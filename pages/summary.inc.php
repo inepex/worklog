@@ -1,11 +1,16 @@
 <?php 
-$selected_user    = $user;
-if(isset($_GET['user_id']) && $_GET['user_id'] != "" && User::is_exist($_GET['user_id'])){
-	$selected_user = new User($_GET['user_id']);
+$selected_user_id    = $user->get_id();
+if(isset($_GET['user_id']) && $_GET['user_id'] == ""){
+	$selected_user_id = "";
+}
+else if(isset($_GET['user_id']) && User::is_exist($_GET['user_id'])){
+	$selected_user_id = $_GET['user_id'];
 }
 $selected_date    = new DateTime();
 $selected_date->modify("first day of this month");
 $selected_date = $selected_date->format('Y-m-d');
+
+$selected_date = "";
 if(isset($_GET['date']) && $_GET['date'] != ""){
 	$date_array = date_parse($_GET['date']);
 	if($date_array['year'] && $date_array['month'] && $date_array['day']){
@@ -47,8 +52,8 @@ if(isset($_GET['company_id']) && $_GET['company_id'] != "" && Company::is_compan
 						foreach($users as $u){
 							/* @var $u User */
 							$selected = "";
-							if($selected_user->get_id() == $u->get_id()){
-									$selected = 'selected = "selected"';
+							if($selected_user_id == $u->get_id()){
+								$selected = 'selected = "selected"';
 							}
 							echo '<option value="'.$u->get_id().'" '.$selected.'>'.$u->get_name().'</option>';
 						}
@@ -68,7 +73,7 @@ if(isset($_GET['company_id']) && $_GET['company_id'] != "" && Company::is_compan
 							if($selected_date == $date->format('Y-m-d')){
 								$selected = 'selected = "selected"';
 							}
-							echo '<option value="'.$date->format('Y-m-d').'" '.$selected.'>'.$date->format('Y-m-d').'</option>';
+							echo '<option value="'.$date->format('Y-m-d').'" '.$selected.'>'.$date->format('Y. F').'</option>';
 							$date->modify("first day of previous month");
 						}
 						?>
@@ -93,30 +98,21 @@ if(isset($_GET['company_id']) && $_GET['company_id'] != "" && Company::is_compan
 				</td>
 			</tr>
 			<?php 
-				//TODO: lekérést megírni:$user->get_worked_hours($date,$company);
-			
+			$summary = Log::get_sum_time_of_logs($selected_user_id, $selected_date,$selected_company);
+			if($summary){
+				foreach($summary as $row){
+					$u = new User($row['worklog_user_id']);
+					$c = new Company($row['worklog_company_id']);
+					$monthName = date("F", mktime(0, 0, 0, $row['log_month'], 10));
+					echo '<tr>
+					<th>'.$u->get_name().'</th>
+					<td>'.$row['log_year'].'. '.$monthName.'</td>
+					<td>'.$c->get_name().'</td>
+					<td>'.$row['sum_time'].'</td>
+					</tr>';
+				}
+			}
 			?>
-
-
-			<tr>
-				<th>Judit Osvath</th>
-				<td>2012. January</td>
-				<td>Inepex Ltd</td>
-				<td>120:10</td>
-			</tr>
-			<tr>
-				<th>Judit Osvath</th>
-				<td>2012. January</td>
-				<td>Székhelyszolgálat.net</td>
-				<td>40:10</td>
-			</tr>
-			<tr>
-				<th>Tibor Hidi</th>
-				<td>2012. January</td>
-				<td>Székhelyszolgálat.net</td>
-				<td>40:10</td>
-			</tr>
-
 		</table>
 	</form>
 

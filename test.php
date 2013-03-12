@@ -24,4 +24,5 @@ echo '<br>'.$date->format("Y-m-d");
 $date->modify("first day of next month");
 echo '<br>'.$date->format("Y-m-d");
 echo "letezik-e:".Company::is_company_exist("2");
+var_dump(Log::get_sum_time_of_logs(9));
 ?>

@@ -12,7 +12,7 @@ class Log{
 	private $entry;
 	private $working_place_id;
 	
-	public static function get_sum_time_of_logs($user_id, $date,$company_id){
+	public static function get_sum_time_of_logs($user_id="", $date="",$company_id=""){
 		$user_condition    = "";
 		$date_condition    = "";
 		$company_condition = "";
@@ -27,20 +27,24 @@ class Log{
 				$from_date = $date->format("Y-m-d");
 				$date->modify("last day of this month");
 				$to_date = $date->format("Y-m-d");
-				$date_condition = " AND worklog_log.log_date >= ".$from_date." AND worklog_log.log_date <= ".$to_date;
+				$date_condition = " AND worklog_log.log_date >= '".$from_date."' AND worklog_log.log_date <= '".$to_date."'";
 			}
 		}
 		if($company_id != "" && Company::is_company_exist($company_id)){
 			$company_condition = " AND worklog_projects.worklog_company_id = ".$company_id;
 		}
-		$query ='select SEC_TO_TIME(SUM(TIME_TO_SEC(log_to)-TIME_TO_SEC(log_from))) sum_time from worklog_log, worklog_projects WHERE worklog_log.worklog_project_id = worklog_projects.worklog_project_id'.$user_condition.$date_condition.$company_condition;
+		//$query ='select SEC_TO_TIME(SUM(TIME_TO_SEC(log_to)-TIME_TO_SEC(log_from))) sum_time, connected.worklog_user_id, connected.worklog_company_id from (SELECT worklog_log.worklog_user_id,worklog_log.log_from, worklog_log.log_to, worklog_projects.worklog_company_id FROM `worklog_log`, worklog_projects WHERE worklog_log.worklog_project_id = worklog_projects.worklog_project_id'.$user_condition.$company_condition.$date_condition.') as connected group by connected.worklog_user_id, connected.worklog_company_id';
+		$query ='select SEC_TO_TIME(SUM(TIME_TO_SEC(log_to)-TIME_TO_SEC(log_from))) sum_time, connected.worklog_user_id, connected.worklog_company_id, connected.log_date, YEAR(connected.log_date) log_year, MONTH(connected.log_date) log_month from (SELECT worklog_log.worklog_user_id,worklog_log.log_from, worklog_log.log_to, worklog_projects.worklog_company_id, worklog_log.log_date FROM `worklog_log`, worklog_projects WHERE worklog_log.worklog_project_id = worklog_projects.worklog_project_id'.$user_condition.$company_condition.$date_condition.' order by worklog_log.worklog_user_id ASC, log_date ASC) as connected group by connected.worklog_user_id, connected.worklog_company_id,YEAR(connected.log_date), MONTH(connected.log_date)';
 		$select_result = mysql_query($query);
 		if(mysql_affected_rows() == 0){
-			return '00:00';
+			return false;
 		}
 		else{
-			$row = mysql_fetch_assoc($select_result);
-			return $row['sum_time'];
+			$summary = array();
+			while($row = mysql_fetch_assoc($select_result)){
+				array_push($summary, $row);
+			}
+			return $summary;
 		}
 		
 	}
