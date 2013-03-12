@@ -1,6 +1,4 @@
 <?php
-require_once 'classes/PhpConsole.php';
-PhpConsole::start();
 if ( isset($_GET['log']) && $_GET['log'] =="logout" ) {
 	// kilépés
 	$_SESSION['loggedin_worklog']="false";
@@ -10,7 +8,7 @@ if ( isset($_GET['log']) && $_GET['log'] =="logout" ) {
 	exit();
 }
 
-if (  $_SESSION['loggedin_worklog'] !="true" ) {
+if (!isset($_SESSION['loggedin_worklog']) || $_SESSION['loggedin_worklog'] !="true" ) {
 
 	// ha épp nincs belépve
 	$_SESSION['loggedin_worklog']="false";
