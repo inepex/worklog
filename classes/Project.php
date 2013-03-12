@@ -118,7 +118,7 @@ class Project{
 		$query = "SELECT * FROM worklog_projects WHERE worklog_project_id=".$id;
 		$select_result = mysql_query($query);
 		if(mysql_affected_rows() != 1){
-			debug("Warning: the id is not unique!");
+			debug("Warning: the id is not unique! Called with project_id:".$id);
 		}
 		else{
 			$row = mysql_fetch_assoc($select_result);
