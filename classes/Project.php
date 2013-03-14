@@ -53,7 +53,7 @@ class Project{
 	}
 	public static function duplicate_project($project_id, $duplicate_name){
 		$project = new Project($project_id);//befejezni
-		$duplicated_project =  Project::new_project($duplicate_name, $project->get_company()->get_id(), $project->get_description(), $project->get_start_date(), $project->get_end_date(), $project->get_status(), $project->get_user()->get_id());
+		$duplicated_project =  Project::new_project($duplicate_name, $project->get_company()->get_id(), $project->get_description(), $project->get_start_date(), $project->get_end_date(), $project->get_status()->get_code(), $project->get_user()->get_id());
 		$project_categories = $project->get_categories();
 		foreach($project_categories as $project_category){
 			/* @var $project_category AssociatedCategory */
@@ -102,8 +102,8 @@ class Project{
 			}
 		}
 	}
-	public static function new_project($name,$company_id,$description,$start,$deadline,$status,$user_id){
-		$query = "INSERT INTO worklog_projects (worklog_company_id, worklog_user_id, project_name, project_description, start_date, end_date, project_status) VALUES ('".$company_id."','".$user_id."','".$name."','".$description."','".$start."','".$deadline."','".$status."')";
+	public static function new_project($name,$company_id,$description,$start,$deadline,$user_id){
+		$query = "INSERT INTO worklog_projects (worklog_company_id, worklog_user_id, project_name, project_description, start_date, end_date, project_status) VALUES ('".$company_id."','".$user_id."','".$name."','".$description."','".$start."','".$deadline."','2')";
 		$insert_result = mysql_query($query);
 		if(mysql_error() != ""){
 			Notification::error(mysql_error());
@@ -129,7 +129,7 @@ class Project{
 			$this->description  = $row['project_description'];
 			$this->start_date   = $row['start_date'];
 			$this->end_date     = $row['end_date'];
-			$this->status       = $row['project_status'];
+			$this->status       = new ProjectStatus($row['project_status']);
 			$this->project_plan = new ProjectPlan($this->id);
 		}
 		//workmates
@@ -179,14 +179,14 @@ class Project{
 	public function get_project_plan(){
 		return $this->project_plan;
 	}
-	public function update($name,$company_id,$description,$start,$deadline,$status,$user_id){
+	public function update($name,$company_id,$owner_id,$description,$start,$deadline,$status,$user_id){
 		$user = new User($user_id);
 		if($user_id != $this->get_user()->get_id() && !$user->is_admin()){
 			Notification::warn("You do not have permission to do this operation!");
 			return false;
 		}
 		else{
-			$query = "UPDATE worklog_projects SET worklog_company_id=".$company_id.", project_name='".$name."', project_description='".$description."', start_date='".$start."', end_date='".$deadline."', project_status=".$status." WHERE worklog_project_id = ".$this->id;
+			$query = "UPDATE worklog_projects SET worklog_company_id=".$company_id.",worklog_user_id='".$owner_id."', project_name='".$name."', project_description='".$description."', start_date='".$start."', end_date='".$deadline."', project_status=".$status." WHERE worklog_project_id = ".$this->id;
 			$update_result = mysql_query($query);
 			if(mysql_error() != ""){
 				Notification::error(mysql_error());
@@ -198,7 +198,8 @@ class Project{
 				$this->description  = $description;
 				$this->start_date   = $start;
 				$this->end_date     = $deadline;
-				$this->status       = $status;
+				$this->status       = new ProjectStatus($status);
+				$this->user         = new User($owner_id);
 				return true;
 			}
 		}
@@ -289,6 +290,20 @@ class Project{
 			array_push($logs, new Log($row['worklog_log_id']));
 		}
 		return $logs;
+	}
+	public function get_sum_of_worked_hours($user_id){
+		$query = 'SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(log_to)-TIME_TO_SEC(log_from))) sum_time FROM worklog_log WHERE worklog_project_id = '.$this->id." AND worklog_user_id = ".$user_id;
+		$selected_result = mysql_query($query);
+		$row = mysql_fetch_assoc($selected_result);
+		if($row['sum_time'] == NULL){
+			return '00:00';
+		}
+		return substr($row['sum_time'],0,-3);
+	}
+	public function get_worked_per_planned_hour_in_percent($user_id){
+		$sum_of_worked_hours_parts = explode(':',$this->get_sum_of_worked_hours($user_id));
+		$sum_percent = ($sum_of_worked_hours_parts[0]*60+$sum_of_worked_hours_parts[1])/($this->get_project_plan()->get_sum_of_entries()*60/100);
+		return round($sum_percent,2);
 	}
 }
 ?>

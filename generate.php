@@ -1,4 +1,4 @@
-<?php 
+<?php
 	session_start();
 	error_reporting(E_ALL);
 	header("Content-type: text/html; charset=utf-8");
@@ -11,11 +11,13 @@
 	require_once 'classes/AssociatedUser.php';
 	require_once 'classes/AssociatedCategory.php';
 	require_once 'classes/ProjectPlan.php';
+	require_once 'classes/ProjectStatus.php';
 	require_once 'classes/ProjectPlanEntry.php';
 	require_once 'classes/Project.php';
 	require_once 'classes/Log.php';
 	require_once 'classes/PhpConsole.php';
 	include('include/login_functions.php');
+	
 	PhpConsole::start();
 	error_reporting(E_ALL);
 	if(isset($_SESSION['enterid'])){
@@ -24,10 +26,7 @@
 		$user_name = $user->get_user_name();
 		$user_picture = $user->get_picture();
 	}
-	
-	
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>	

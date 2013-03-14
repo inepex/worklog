@@ -18,8 +18,8 @@
                     </ul>
                     
                     <ul class="nav pull-right">
-                      <li <?php if (strpos($_SERVER['PHP_SELF'],'index.php')) echo 'class="active"'; ?>><a href="index.php" >Log View</a></li>
-                      <li <?php if (strpos($_SERVER['PHP_SELF'],'project_stat.php')) echo 'class="active"'; ?>><a href="project_stat.php">ProjectStat View</a></li>
+                      <li <?php if (strpos($_SERVER['PHP_SELF'],'index.php')) echo 'class="active"'; ?>><a href="index.php" >Logs</a></li>
+                      <li <?php if (strpos($_SERVER['PHP_SELF'],'project_stat.php')) echo 'class="active"'; ?>><a href="project_stat.php">Status</a></li>
                       <li <?php if (strpos($_SERVER['PHP_SELF'],'summary.php')) echo 'class="active"'; ?>><a href="summary.php">Summary</a></li>
                       <li <?php if (strpos($_SERVER['PHP_SELF'],'projects_list.php')) echo 'class="active"'; ?>><a href="projects_list.php" >All Projects</a></li>
                       

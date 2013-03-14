@@ -187,7 +187,7 @@ class User{
 		while($row = mysql_fetch_assoc($select_result)){
 			if((int)$status >= 0 && (int)$status <=2){
 				$project = new Project($row['worklog_project_id']);
-				if($project->get_status() ==  $status){
+				if($project->get_status()->get_code() ==  $status){
 					array_push($projects,$project);
 				}
 			}

@@ -15,6 +15,7 @@ require_once 'classes/Project.php';
 require_once 'classes/ProjectPlan.php';
 require_once 'classes/ProjectPlanEntry.php';
 require_once 'classes/Log.php';
+require_once 'classes/ProjectStatus.php';
 require_once 'classes/WorkPlace.php';
 require_once 'include/notifications.php';
 echo "first: ".Log::get_first_log_date();
@@ -25,4 +26,6 @@ $date->modify("first day of next month");
 echo '<br>'.$date->format("Y-m-d");
 echo "letezik-e:".Company::is_company_exist("2");
 var_dump(Log::get_sum_time_of_logs(9));
+$status = new ProjectStatus("2");
+echo $status->get_name();
 ?>

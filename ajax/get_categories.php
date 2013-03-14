@@ -7,6 +7,7 @@ require_once '../classes/Company.php';
 require_once '../classes/Category.php';
 require_once '../classes/AssociatedUser.php';
 require_once '../classes/AssociatedCategory.php';
+require_once '../classes/ProjectStatus.php';
 require_once '../classes/ProjectPlan.php';
 require_once '../classes/ProjectPlanEntry.php';
 require_once '../classes/Project.php';

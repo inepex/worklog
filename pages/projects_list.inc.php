@@ -24,13 +24,16 @@ $projects = Project::get_projects();
 	<div id="projects_list">
 	<table class="table table-bordered">
 	<tr>
-	<th>ID</th><th>Name</th><th>Start</th><th>End</th><th>Edit</th><th>Delete</th>
+	<th>ID</th><th>Name</th><th>Owner</th><th>Status</th><th>Start</th><th>End</th><th>Edit</th><th>Delete</th>
 	<?php 
 	foreach($projects as $project){
 		/* @var $project Project */
+		//$status = new ProjectStatus($project->get_status());
 		echo '<tr>';
 		echo 	'<td>'.$project->get_id().'</td>
 			 	 <td><a href="project_view.php?project_id='.$project->get_id().'">'.$project->get_name().'</a></td>
+			 	 <td>'.$project->get_user()->get_name().'</td>
+			 	 <td>'.$project->get_status()->get_name().'</td>
 			 	 <td>'.$project->get_start_date().'</td>
 			 	 <td>'.$project->get_end_date().'</td>
 			 	 <td><a href="project_edit.php?project_id='.$project->get_id().'"><img src="images/modify.png"</a></td>

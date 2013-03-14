@@ -2,7 +2,11 @@
 error_reporting(E_ALL);
 if(isset($_GET['project_id']) && $_GET['project_id'] != "" && Project::is_project_exist($_GET['project_id'])){
 	$project = new Project($_GET['project_id']);
-
+	if($project->get_status()->get_code() != 2 && !$user->is_admin()){
+		Notification::warn("Only admin can edit an active project!");
+		echo"<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=index.php\">";
+		exit();
+	}
 	//update project informations
 	if(isset($_POST['update_project'])){
 		$error=false;
@@ -13,6 +17,14 @@ if(isset($_GET['project_id']) && $_GET['project_id'] != "" && Project::is_projec
 		if(!isset($_POST['company_id']) || $_POST['company_id'] ==""){
 			$error = true;
 			Notification::warn("Missing company!");
+		}
+		if(isset($_POST['owner_id']) && !User::is_exist($_POST['owner_id'])){
+			$error = true;
+			Notification::warn("User does not exist!");
+		}
+		if(!isset($_POST['owner_id']) || $_POST['owner_id'] ==""){
+			$error = true;
+			Notification::warn("Missing owner!");
 		}
 		if(!isset($_POST['project_description']) || $_POST['project_description'] ==""){
 			$error = true;
@@ -30,12 +42,16 @@ if(isset($_GET['project_id']) && $_GET['project_id'] != "" && Project::is_projec
 			$error = true;
 			Notification::warn("Missing status!");
 		}
+		else if($_POST['project_status'] != '2' && !$user->is_admin()){
+			$error = true;
+			Notification::warn('Only admin can modify the project status');
+		}
 		if(isset($_POST['start']) && isset($_POST['deadline']) && $_POST['start']>$_POST['deadline']){
 			$error = true;
 			Notification::warn("Deadline is bigger then start date!");
 		}
 		if(!$error){
-			$project->update($_POST['project_name'], $_POST['company_id'], $_POST['project_description'], $_POST['start'], $_POST['deadline'], $_POST['project_status'], $user->get_id());
+			$project->update($_POST['project_name'], $_POST['company_id'],$_POST['owner_id'], $_POST['project_description'], $_POST['start'], $_POST['deadline'], $_POST['project_status'], $user->get_id());
 			Notification::notice("Updated successfully!");
 		}
 	}
@@ -166,6 +182,27 @@ else{
 				</td>
 			</tr>
 			<tr>
+				<td>
+					Owner:
+				</td>
+				<td>
+					<select name="owner_id">
+					<?php 
+						$users = User::get_users();
+						foreach($users as $u){
+							$selected="";
+							if($u->get_id() == $project->get_user()->get_id()){
+								$selected = 'selected';
+							}
+							echo '<option value="'.$u->get_id().'" '.$selected.'>'.$u->get_name().'</option>';
+						}
+						
+						
+					?>
+					</select>
+				</td>
+			</tr>
+			<tr>
 				<td>Description:</td>
 				<td>
 				<textarea style="width: 700px; height: 100px;"
@@ -185,12 +222,12 @@ else{
 			<tr>
 				<td>Status:</td>
 				<td><input type="radio"
-				<?php echo(($project->get_status() == 1)?'checked':''); ?>
-					name="project_status" value="1"> Active <input type="radio"
-					<?php echo(($project->get_status() == 0)?'checked':''); ?>
-					name="project_status" value="0"> Closed <input type="radio"
-					<?php echo(($project->get_status() == 2)?'checked':''); ?>
-					name="project_status" value="2"> Archived</td>
+				<?php echo(($project->get_status()->get_code() == 1)?'checked':''); ?>
+					name="project_status" value="1" <?php echo (!$user->is_admin()?'disabled':'')?>> Active <input type="radio"
+					<?php echo(($project->get_status()->get_code()  == 0)?'checked':''); ?>
+					name="project_status" value="0" <?php echo (!$user->is_admin()?'disabled':'')?>> Closed <input type="radio"
+					<?php echo(($project->get_status()->get_code()  == 2)?'checked':''); ?>
+					name="project_status" value="2"> Requested</td>
 			</tr>
 			<tr>
 				<td></td>

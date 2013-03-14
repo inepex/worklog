@@ -17,7 +17,8 @@ else{
 		<div class="titlebar">
 			<div style="float: left;">
 				<h4>
-					<?php echo $project->get_name();?>
+					<?php
+					 echo $project->get_name().' ('.$project->get_status()->get_name().')'?>
 				</h4>
 				<i><?php echo $project->get_company()->get_name()?> project</i>
 			</div>
@@ -37,10 +38,14 @@ else{
 					</table>
 					</ul>
 				</span>
-				<a href="project_view.php" class="btn btn-inverse">Project Page</a>
-				<a
-					href="project_edit.php?project_id=<?php echo $project->get_id()?>"
-					class="btn ">Edit Project</a>
+				<a href="project_view.php?project_id=<?php echo $project->get_id();?>" class="btn btn-inverse">Project Page</a>
+				
+				<?php 
+				if($project->get_status()->get_code() == 2 || $user->is_admin()){
+					echo '<a href="project_edit.php?project_id='.$project->get_id().'" class="btn ">Edit Project</a>';
+				}
+				?>
+				
 			</div>
 		</div>
 		<div style="clear: both;"></div>
@@ -48,6 +53,8 @@ else{
 
 	<hr>
 	<?php echo $project->get_description();?>
+	<hr>
+	<h4>Start/Deadline:</h4> <?php echo $project->get_start_date().' - '.$project->get_start_date();?>
 	<hr>
 	<?php 
 	$owner = $project->get_user();

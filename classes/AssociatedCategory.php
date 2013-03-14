@@ -60,7 +60,7 @@ class AssociatedCategory extends Category{
 			$worked_minutes = $pieces[1];
 			$sum_for_category = $project->get_project_plan()->get_sum_for_category($this->assoc_id, $user_id);
 			if($sum_for_category != 0){
-				$percent = round(($worked_hours*60+$worked_minutes)/(($sum_for_category*60)/100));
+				$percent = round(($worked_hours*60+$worked_minutes)/(($sum_for_category*60)/100), 2);
 			}
 			return $percent;
 	}

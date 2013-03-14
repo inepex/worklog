@@ -35,9 +35,11 @@ if(isset($_POST['log_id'])){
 	else{
 		if(!isset($_POST['from']) || $_POST['from'] == ''){
 			Notification::warn("FROM cannot be empty!");
+			$error = true;
 		}
 		if(!isset($_POST['to']) || $_POST['to'] == ''){
 			Notification::warn("TO cannot be empty!");
+			$error = true;
 		}
 		if(isset($_POST['to']) && $_POST['to'] != '' && isset($_POST['from']) && $_POST['from'] != ''){
 			$seconds_diff = strtotime($_POST['date']." ".date($_POST['to'])) - strtotime($_POST['date']." ".date($_POST['from']));
@@ -86,7 +88,11 @@ if(isset($_POST['add_log'])){
 	}
 	else{
 		$project = new Project($_POST['project_id']);
-		if(!$project->is_associated_category_in_project($_POST['category_assoc_id'])){
+		if($project->get_status()->get_code() != 1){
+			Notification::warn("The project is not active!");
+			$error = true;
+		}
+		else if(!$project->is_associated_category_in_project($_POST['category_assoc_id'])){
 			Notification::warn("The category is not in the project!");
 			$error = true;
 		}
@@ -106,9 +112,11 @@ if(isset($_POST['add_log'])){
 	else{
 		if(!isset($_POST['from']) || $_POST['from'] == ''){
 			Notification::warn("FROM cannot be empty!");
+			$error = true;
 		}
 		if(!isset($_POST['to']) || $_POST['to'] == ''){
 			Notification::warn("TO cannot be empty!");
+			$error = true;
 		}
 		if(isset($_POST['to']) && $_POST['to'] != '' && isset($_POST['from']) && $_POST['from'] != ''){
 			$seconds_diff = strtotime($_POST['date']." ".date($_POST['to'])) - strtotime($_POST['date']." ".date($_POST['from']));

@@ -74,11 +74,18 @@ class ProjectPlan{
 		}
 		return $sum;
 	}
-	public function get_sum_of_entries(){
+	public function get_sum_of_entries($user_id=""){
 		$sum = 0;
 		foreach($this->entries as $entry){
 			/* @var $entry ProjectPlanEntry */
-			$sum += $entry->get_value();
+			if($user_id != "" && User::is_exist($user_id)){
+				if($entry->get_user_id() == $user_id){
+					$sum += $entry->get_value();
+				}	
+			}
+			else{
+				$sum += $entry->get_value();
+			}
 		}
 		return $sum;
 	}
