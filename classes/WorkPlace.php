@@ -62,7 +62,6 @@ class WorkPlace{
 		$query = "SELECT * FROM worklog_places WHERE worklog_place_id=".$id;
 		$select_result = mysql_query($query);
 		if(mysql_affected_rows() != 1){
-			debug_print_backtrace();
 			debug("Warning: the id is not unique! Called with workplace_id:".$id);
 		}
 		else{

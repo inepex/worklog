@@ -102,8 +102,7 @@ class Log{
 			return true;
 		}
 		else{
-			debug(mysql_error());
-			//Notification::error(mysql_error());
+			Notification::error(mysql_error());
 		}
 	}
 	public static function get_first_log_date(){
@@ -203,7 +202,6 @@ class Log{
 	public function edit_log($project_id, $category_assoc_id, $date, $from, $to, $entry,$workplace_id){
 		$query = "UPDATE worklog_log SET worklog_category_assoc_id = ".$category_assoc_id.", log_date = '".$date."', log_from = '".$from."', log_to = '".$to."', log_entry = '".$entry."', worklog_place_id = ".$workplace_id." WHERE worklog_log_id = ".$this->id;
 		$update_result = mysql_query($query);
-		debug(mysql_error());
 	}
 }
 ?>

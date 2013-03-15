@@ -147,7 +147,7 @@ if(isset($_GET['company_id']) && $_GET['company_id'] != "" && Company::is_compan
 					);
 
 					var options = {
-					title: "user worked hours in category","width":400,
+					title: "Categories","width":400,
 					"height":300,sliceVisibilityThreshold:0
 				};
 
@@ -170,7 +170,7 @@ if(isset($_GET['company_id']) && $_GET['company_id'] != "" && Company::is_compan
 					);
 
 					var options2 = {
-					title: "user worked hours in projects","width":400,
+					title: "Projects","width":400,
 					"height":300,sliceVisibilityThreshold:0
 				};
 
