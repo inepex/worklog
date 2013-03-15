@@ -244,14 +244,20 @@ class Project{
 	}
 	public function delete_category($category_assoc_id){
 		$associated_category = new AssociatedCategory($category_assoc_id);
-		$this->project_plan->delete_entries_of_category($category_assoc_id);
-		$query = "DELETE FROM worklog_projects_category_assoc WHERE worklog_projects_category_assoc_id = ".$category_assoc_id;
-		$delete_result = mysql_query($query);
-		foreach($this->categories as $key =>$category){
-			if($category->get_assoc_id() == $category_assoc_id)	{
-				unset($this->categories[$key]);
-			}
+		if(!$associated_category->is_associated_category_in_use()){
+			$this->project_plan->delete_entries_of_category($category_assoc_id);
+			$query = "DELETE FROM worklog_projects_category_assoc WHERE worklog_projects_category_assoc_id = ".$category_assoc_id;
+			$delete_result = mysql_query($query);
+			foreach($this->categories as $key =>$category){
+				if($category->get_assoc_id() == $category_assoc_id)	{
+					unset($this->categories[$key]);
+				}
+			}	
 		}
+		else{
+			Notification::warn("Already have log with this category!!!");
+		}
+		
 	}
 	public function is_associated_category_in_project($category_assoc_id){
 		foreach($this->categories as $category){
@@ -291,8 +297,14 @@ class Project{
 		}
 		return $logs;
 	}
-	public function get_sum_of_worked_hours($user_id){
-		$query = 'SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(log_to)-TIME_TO_SEC(log_from))) sum_time FROM worklog_log WHERE worklog_project_id = '.$this->id." AND worklog_user_id = ".$user_id;
+	public function get_sum_of_worked_hours($user_id, $category_assoc_id=""){
+		if($category_assoc_id == ""){
+			$query = 'SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(log_to)-TIME_TO_SEC(log_from))) sum_time FROM worklog_log WHERE worklog_project_id = '.$this->id." AND worklog_user_id = ".$user_id;
+		}
+		else{
+			$query = 'SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(log_to)-TIME_TO_SEC(log_from))) sum_time FROM worklog_log WHERE worklog_project_id = '.$this->id." AND worklog_user_id = ".$user_id.' AND worklog_category_assoc_id = '.$category_assoc_id;
+		}
+		
 		$selected_result = mysql_query($query);
 		$row = mysql_fetch_assoc($selected_result);
 		if($row['sum_time'] == NULL){
@@ -302,7 +314,7 @@ class Project{
 	}
 	public function get_worked_per_planned_hour_in_percent($user_id){
 		$sum_of_worked_hours_parts = explode(':',$this->get_sum_of_worked_hours($user_id));
-		$sum_percent = ($sum_of_worked_hours_parts[0]*60+$sum_of_worked_hours_parts[1])/($this->get_project_plan()->get_sum_of_entries()*60/100);
+		$sum_percent = ($sum_of_worked_hours_parts[0]*60+$sum_of_worked_hours_parts[1])/($this->get_project_plan()->get_sum_of_entries($user_id)*60/100);
 		return round($sum_percent,2);
 	}
 }

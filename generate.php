@@ -35,9 +35,11 @@
 	<link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
 	<link rel="stylesheet" href="css/style.css">
 	<link rel="stylesheet" href="css/bootstrap.css">
+	<link href="http://fonts.googleapis.com/css?family=Oswald" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" href="css/bootstrap-responsive.css">
 	<link href="css/jquery/smoothness/jquery-ui-1.10.1.custom.css" rel="stylesheet">
 	<script type="text/javascript" src="js/jquery-1.9.1.js"></script>   
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	<script type="text/javascript" src="js/jquery.min.js"></script>   
 	<script type="text/javascript" src="js/jquery-ui-1.10.1.custom.min.js"></script>   
 	<script src="js/bootstrap-dropdown.js"></script>

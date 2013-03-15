@@ -64,5 +64,15 @@ class AssociatedCategory extends Category{
 			}
 			return $percent;
 	}
+	public function is_associated_category_in_use(){
+		$query = "SELECT worklog_log_id from worklog_log WHERE worklog_category_assoc_id = ".$this->assoc_id;
+		$result = mysql_query($query);
+		if(mysql_affected_rows() > 0){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
 }
 ?>

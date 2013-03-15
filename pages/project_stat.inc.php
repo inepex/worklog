@@ -51,8 +51,6 @@ if(isset($_GET['projects_status']) && $_GET['projects_status'] != "" && $_GET['p
 	</div>
 	<hr>
 	<?php 
-	$user_worked_in_categories = array();
-	$user_worked_time_in_categories = array();
 	$projects = $selected_user->get_projects_where_user_have_planned_hour($projects_status);
 	foreach($projects as $project){
 		/* @var $project Project */
@@ -78,9 +76,6 @@ if(isset($_GET['projects_status']) && $_GET['projects_status'] != "" && $_GET['p
 				<td>'.$category->get_sum_of_worked_hours($selected_user->get_id()).'/ '.$planned_hours.':00 ('.$total_hour_per_worked_hour.'%)</td>
 				</tr>';
 				$user_worked_time_in_category = array();
-				array_push($user_worked_in_categories,$category->get_name());
-				array_push($user_worked_time_in_categories,$category->get_sum_of_worked_hours($selected_user->get_id()));
-				
 			}
 		}
 		$sum_of_worked_hours = $project->get_sum_of_worked_hours($selected_user->get_id());

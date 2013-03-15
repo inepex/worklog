@@ -57,7 +57,7 @@ class User{
 			$this->enter_date= $row['enterdate'];
 			$this->name      = $row['name'];
 			$this->picture   = $row['picture'];
-			$this->default_place = new WorkPlace($row['default_place_id']);		
+			$this->default_place = new WorkPlace($row['default_place_id']);
 		}
 	}
 	public function get_id(){
@@ -153,7 +153,7 @@ class User{
 				Notification::notice("The file ".basename($picture_file['name'])." has been uploaded");
 			} else{
 				Notification::warn("There was an error uploading the file, please try again!");
-			}	
+			}
 		}
 	}
 	public function update_personal_note($note_text){
@@ -194,12 +194,12 @@ class User{
 			else{
 				array_push($projects, new Project($row['worklog_project_id']));
 			}
-		
+
 		}
 		return $projects;
 	}
 	public function get_logs($date){
-			return Log::get_logs($this->id, $date);		
+		return Log::get_logs($this->id, $date);
 	}
 	public function get_earlies_log_date(){
 		$query = "SELECT log_date FROM worklog_log WHERE worklog_user_id = ".$this->id." order by log_date ASC";
@@ -211,6 +211,48 @@ class User{
 			$row = mysql_fetch_assoc($select_result);
 			return $row['log_date'];
 		}
+	}
+	public function get_worked_hours_in_categories($date){
+		$worked_hours_in_categories = array();
+		$result_array = date_parse($date);
+		if($result_array['year'] && $result_array['month'] && $result_array['day']){
+			$to = new DateTime($result_array['year']."-".$result_array['month']."-".$result_array['day']);
+			$from = new DateTime($result_array['year']."-".$result_array['month']."-".$result_array['day']);
+			$from->modify("first day of this month");
+			$to->modify("last day of this month");
+			$query = "select SUM(TIME_TO_SEC(log_to)-TIME_TO_SEC(log_from)) sum_time, s.worklog_category_id from (select worklog_log.worklog_user_id, log_from, log_to, worklog_projects_category_assoc.worklog_category_id from worklog_log, worklog_projects_category_assoc where worklog_projects_category_assoc.worklog_projects_category_assoc_id = worklog_log.worklog_category_assoc_id AND worklog_log.worklog_user_id = ".$this->id." AND worklog_log.log_date >= '".$from->format('Y-m-d')."'  AND worklog_log.log_date <= '".$to->format('Y-m-d')."') as s group by s.worklog_category_id";
+			$select_result = mysql_query($query);
+			
+			while($row = mysql_fetch_assoc($select_result)){
+				$worked_hours_in_category = array();
+				$worked_hours_in_category['category_id'] = $row['worklog_category_id'];
+				$worked_hours_in_category['worked_hours'] = $row['sum_time'];
+				array_push($worked_hours_in_categories, $worked_hours_in_category);
+			}
+			return $worked_hours_in_categories;
+		}
+		return false;
+	}
+	public function get_worked_hours_in_projects($date){
+		$worked_hours_in_projects = array();
+		$result_array = date_parse($date);
+		if($result_array['year'] && $result_array['month'] && $result_array['day']){
+			$to = new DateTime($result_array['year']."-".$result_array['month']."-".$result_array['day']);
+			$from = new DateTime($result_array['year']."-".$result_array['month']."-".$result_array['day']);
+			$from->modify("first day of this month");
+			$to->modify("last day of this month");
+			$query = 'select SUM(TIME_TO_SEC(log_to)-TIME_TO_SEC(log_from)) sum_time, worklog_project_id from (select * from worklog_log where worklog_user_id = '.$this->id.' AND log_date>="'.$from->format('Y-m-d').'" AND log_date<="'.$to->format('Y-m-d').'") as s group by worklog_project_id, worklog_user_id';
+			$select_result = mysql_query($query);
+				
+			while($row = mysql_fetch_assoc($select_result)){
+				$worked_hours_in_project = array();
+				$worked_hours_in_project['project_id'] = $row['worklog_project_id'];
+				$worked_hours_in_project['worked_hours'] = $row['sum_time'];
+				array_push($worked_hours_in_projects, $worked_hours_in_project);
+			}
+			return $worked_hours_in_projects;
+		}
+		return false;
 	}
 }
 ?>

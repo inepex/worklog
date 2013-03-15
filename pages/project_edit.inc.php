@@ -86,10 +86,19 @@ if(isset($_GET['project_id']) && $_GET['project_id'] != "" && Project::is_projec
 	}
 	//delete workmate
 	if(isset($_GET['delete_workmate'])){
-		$project->delete_workmate($_GET['delete_workmate']);
-		Notification::notice("Workmated removed!");
-		echo"<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=project_edit.php?project_id=".$project->get_id()."\">";
-		exit();
+		$workmate = new AssociatedUser($_GET['delete_workmate']);
+		if(!$workmate->is_have_log_in_project()){
+			$project->delete_workmate($_GET['delete_workmate']);
+			Notification::notice("Workmated removed!");
+			echo"<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=project_edit.php?project_id=".$project->get_id()."\">";
+			exit();
+		}
+		else{
+			Notification::warn("User already have log in this project");
+			echo"<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=project_edit.php?project_id=".$project->get_id()."\">";
+			exit();
+		}
+		
 	}
 	//
 	
@@ -268,7 +277,7 @@ else{
 					echo '<tr>
 					<td width="120"><img src="photos/'.$workmate->get_picture().'" width="20" height="20">
 					'.$workmate->get_name().'</td>
-					<td><a href="project_edit.php?project_id='.$project->get_id().'&delete_workmate='.$workmate->get_assoc_id().'"><img src="images/delete.png"></a></td>
+					<td>'.(!$workmate->is_have_log_in_project()?'<a href="project_edit.php?project_id='.$project->get_id().'&delete_workmate='.$workmate->get_assoc_id().'"><img src="images/delete.png"></a>':'').'</td>
 					</tr>';
 				}
 				?>
@@ -305,7 +314,7 @@ else{
 					/* @var $associated_category AssociatedCategory */
 					echo   '<tr><td width="120">'.$associated_category->get_name().'</td>
 					<td width="120">'.$associated_category->get_description().'</td>
-					<td><a href="project_edit.php?project_id='.$project->get_id().'&delete_category='.$associated_category->get_assoc_id().'"><img src="images/delete.png"></a></td></tr>';
+					<td>'.((!$associated_category->is_associated_category_in_use())?'<a href="project_edit.php?project_id='.$project->get_id().'&delete_category='.$associated_category->get_assoc_id().'"><img src="images/delete.png"></a>':'').'</td></tr>';
 				}
 				?>
 			</table>
