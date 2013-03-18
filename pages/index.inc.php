@@ -317,6 +317,14 @@ if(isset($_GET['delete_log']) && Log::is_log_exist($_GET['delete_log'])){
 		}
 		?>
 	</table>
+	<?php 
+	//show charts
+	if(count($logs)>0){
+		require_once 'include/show_charts.php';		
+	}
+	//
+	
+	?>
 
 
 

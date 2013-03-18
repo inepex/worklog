@@ -22,4 +22,8 @@ echo "first: ".Log::get_first_log_date();
 $user = new User(9);
 $ret = $user->get_worked_hours_in_projects('2013-02-01');
 var_dump($ret);
+echo "az ido:".gmdate("H:i:s", $ret[1]['worked_hours']);
+echo "<br><br><br><br>";
+$ret = $user->get_worked_hours_in_categories('2013-02-01');
+var_dump($ret);
 ?>
