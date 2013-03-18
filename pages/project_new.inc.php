@@ -27,7 +27,7 @@ if(isset($_POST['new_project'])){
 	}	
 	if(!$error){
 		if($project = Project::new_project($_POST['project_name'], $_POST['company_id'], $_POST['project_description'], $_POST['start'], $_POST['deadline'], $user->get_id())){
-			header('Location:project_edit.php?project_id='.$project->get_id());
+			echo"<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=project_edit.php?project_id=".$project->get_id()."\">";
 			exit();
 		}
 	}
