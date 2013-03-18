@@ -61,14 +61,14 @@ else{
 	?>
 	<h4>Workmates:</h4>
 
-	<a href="#"> <img src="photos/<?php echo $owner->get_picture();?>"
+	<a href="index.php?user_id=<?php echo $owner->get_id()?>"> <img src="photos/<?php echo $owner->get_picture();?>"
 		width="60" height="60" style="border: 4px solid #12ad2b;">
 	</a> |
 	<?php 
 	$workmates = $project->get_workmates();
 	foreach($workmates as $workmate){
 		/* @var $workmate AssociatedUser */
-		echo '<a href="#"><img src="photos/'.$workmate->get_picture().'" width="60" height="60"> </a>';
+		echo '<a href="index.php?user_id='.$workmate->get_id().'"><img src="photos/'.$workmate->get_picture().'" width="60" height="60"> </a>';
 	}
 	?>
 	<hr>
