@@ -35,9 +35,7 @@
 			value="<?php echo date("H:i",strtotime($log->get_to()));?>">
 		</td>
 		<td rowspan="2" class="editline"><textarea
-				style="width: 250px; height: 60px;" name="log_entry">
-				<?php echo $log->get_entry();?>
-			</textarea>
+				style="width: 250px; height: 60px;" name="log_entry"><?php echo $log->get_entry();?></textarea>
 		</td>
 		<td><?php 
 		$workplaces = WorkPlace::get_places();
