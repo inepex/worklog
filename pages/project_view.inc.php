@@ -59,11 +59,12 @@ else{
 	<?php 
 	$owner = $project->get_user();
 	?>
-	<h4>Workmates:</h4>
-
+	<h4>Owner:</h4>
 	<a href="index.php?user_id=<?php echo $owner->get_id()?>"> <img src="photos/<?php echo $owner->get_picture();?>"
 		width="60" height="60" style="border: 4px solid #12ad2b;">
-	</a> |
+	</a> 
+	<hr>
+	<h4>Workmates:</h4>
 	<?php 
 	$workmates = $project->get_workmates();
 	foreach($workmates as $workmate){
