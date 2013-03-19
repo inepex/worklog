@@ -103,7 +103,7 @@ class Project{
 		}
 	}
 	public static function new_project($name,$company_id,$description,$start,$deadline,$user_id){
-		$query = "INSERT INTO worklog_projects (worklog_company_id, worklog_user_id, project_name, project_description, start_date, end_date, project_status) VALUES ('".$company_id."','".$user_id."','".$name."','".$description."','".$start."','".$deadline."','2')";
+		$query = "INSERT INTO worklog_projects (worklog_company_id, worklog_user_id, project_name, project_description, start_date, end_date, project_status) VALUES ('".$company_id."','".$user_id."','".mysql_real_escape_string($name)."','".mysql_real_escape_string($description)."','".$start."','".$deadline."','2')";
 		$insert_result = mysql_query($query);
 		if(mysql_error() != ""){
 			Notification::error(mysql_error());
@@ -186,7 +186,7 @@ class Project{
 			return false;
 		}
 		else{
-			$query = "UPDATE worklog_projects SET worklog_company_id=".$company_id.",worklog_user_id='".$owner_id."', project_name='".$name."', project_description='".$description."', start_date='".$start."', end_date='".$deadline."', project_status=".$status." WHERE worklog_project_id = ".$this->id;
+			$query = "UPDATE worklog_projects SET worklog_company_id=".$company_id.",worklog_user_id='".$owner_id."', project_name='".mysql_real_escape_string($name)."', project_description='".mysql_real_escape_string($description)."', start_date='".$start."', end_date='".$deadline."', project_status=".$status." WHERE worklog_project_id = ".$this->id;
 			$update_result = mysql_query($query);
 			if(mysql_error() != ""){
 				Notification::error(mysql_error());
@@ -252,12 +252,12 @@ class Project{
 				if($category->get_assoc_id() == $category_assoc_id)	{
 					unset($this->categories[$key]);
 				}
-			}	
+			}
 		}
 		else{
 			Notification::warn("Already have log with this category!!!");
 		}
-		
+
 	}
 	public function is_associated_category_in_project($category_assoc_id){
 		foreach($this->categories as $category){
@@ -304,7 +304,7 @@ class Project{
 		else{
 			$query = 'SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(log_to)-TIME_TO_SEC(log_from))) sum_time FROM worklog_log WHERE worklog_project_id = '.$this->id." AND worklog_user_id = ".$user_id.' AND worklog_category_assoc_id = '.$category_assoc_id;
 		}
-		
+
 		$selected_result = mysql_query($query);
 		$row = mysql_fetch_assoc($selected_result);
 		if($row['sum_time'] == NULL){

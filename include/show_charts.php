@@ -2,7 +2,11 @@
 $user_worked_hours_in_categories = $selected_user->get_worked_hours_in_categories($selected_date->format('Y-m-d'));
 $user_worked_hours_in_projects = $selected_user->get_worked_hours_in_projects($selected_date->format('Y-m-d'));
 echo '
-<span id="category_chart"></span><span id="project_chart"></span>
+<div>
+<div id="category_chart" style="float:left;"></div>
+<div  id="project_chart" style="float:right;"></div>
+</div>
+<div style="clear:both;"></div>
 <script type="text/javascript">
 google.load("visualization", "1", {
 packages:["corechart"]});
@@ -23,8 +27,8 @@ echo ']
 );
 
 var options = {
-title: "Categories","width":600,
-"height":400,sliceVisibilityThreshold:0
+title: "Categories","width":500,
+"height":300,sliceVisibilityThreshold:0
 };
 
 var chart = new google.visualization.PieChart(document.getElementById("category_chart"));
@@ -46,8 +50,8 @@ echo ']
 );
 
 var options2 = {
-title: "Projects","width":600,
-"height":400,sliceVisibilityThreshold:0
+title: "Projects","width":500,
+"height":300,sliceVisibilityThreshold:0
 };
 
 var chart2 = new google.visualization.PieChart(document.getElementById("project_chart"));
