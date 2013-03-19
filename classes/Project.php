@@ -53,7 +53,8 @@ class Project{
 	}
 	public static function duplicate_project($project_id, $duplicate_name){
 		$project = new Project($project_id);//befejezni
-		$duplicated_project =  Project::new_project($duplicate_name, $project->get_company()->get_id(), $project->get_description(), $project->get_start_date(), $project->get_end_date(), $project->get_status()->get_code(), $project->get_user()->get_id());
+		debug("user_id :".$project->get_user()->get_id());
+		$duplicated_project =  Project::new_project($duplicate_name, $project->get_company()->get_id(), $project->get_description(), $project->get_start_date(), $project->get_end_date(), $project->get_user()->get_id());
 		$project_categories = $project->get_categories();
 		foreach($project_categories as $project_category){
 			/* @var $project_category AssociatedCategory */
