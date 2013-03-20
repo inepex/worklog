@@ -6,6 +6,8 @@ class Project{
 	private $user;
 	private $name;
 	private $description;
+	private $beginning;
+	private $destination;
 	private $start_date;
 	private $end_date;
 	private $status;
@@ -54,7 +56,7 @@ class Project{
 	public static function duplicate_project($project_id, $duplicate_name){
 		$project = new Project($project_id);//befejezni
 		debug("user_id :".$project->get_user()->get_id());
-		$duplicated_project =  Project::new_project($duplicate_name, $project->get_company()->get_id(), $project->get_description(), $project->get_start_date(), $project->get_end_date(), $project->get_user()->get_id());
+		$duplicated_project =  Project::new_project($duplicate_name, $project->get_company()->get_id(), $project->get_description(),$project->get_beginning(),$project->get_destination(), $project->get_start_date(), $project->get_end_date(), $project->get_user()->get_id());
 		$project_categories = $project->get_categories();
 		foreach($project_categories as $project_category){
 			/* @var $project_category AssociatedCategory */
@@ -103,8 +105,8 @@ class Project{
 			}
 		}
 	}
-	public static function new_project($name,$company_id,$description,$start,$deadline,$user_id){
-		$query = "INSERT INTO worklog_projects (worklog_company_id, worklog_user_id, project_name, project_description, start_date, end_date, project_status) VALUES ('".$company_id."','".$user_id."','".mysql_real_escape_string($name)."','".mysql_real_escape_string($description)."','".$start."','".$deadline."','2')";
+	public static function new_project($name,$company_id,$description,$beginning, $destination,$start,$deadline,$user_id){
+		$query = "INSERT INTO worklog_projects (worklog_company_id, worklog_user_id, project_name, project_description,beginning, destination, start_date, end_date, project_status) VALUES ('".$company_id."','".$user_id."','".mysql_real_escape_string($name)."','".mysql_real_escape_string($description)."','".mysql_real_escape_string($beginning)."','".mysql_real_escape_string($destination)."','".$start."','".$deadline."','2')";
 		$insert_result = mysql_query($query);
 		if(mysql_error() != ""){
 			Notification::error(mysql_error());
@@ -128,6 +130,8 @@ class Project{
 			$this->user         = new User($row['worklog_user_id']);
 			$this->name         = $row['project_name'];
 			$this->description  = $row['project_description'];
+			$this->beginning    = $row['beginning'];
+			$this->destination  = $row['destination'];
 			$this->start_date   = $row['start_date'];
 			$this->end_date     = $row['end_date'];
 			$this->status       = new ProjectStatus($row['project_status']);
@@ -162,6 +166,12 @@ class Project{
 	public function get_description(){
 		return $this->description;
 	}
+	public function get_beginning(){
+		return $this->beginning;
+	}
+	public function get_destination(){
+		return $this->destination;
+	}
 	public function get_start_date(){
 		return $this->start_date;
 	}
@@ -180,14 +190,14 @@ class Project{
 	public function get_project_plan(){
 		return $this->project_plan;
 	}
-	public function update($name,$company_id,$owner_id,$description,$start,$deadline,$status,$user_id){
+	public function update($name,$company_id,$owner_id,$description,$beginning,$destination,$start,$deadline,$status,$user_id){
 		$user = new User($user_id);
 		if($user_id != $this->get_user()->get_id() && !$user->is_admin()){
 			Notification::warn("You do not have permission to do this operation!");
 			return false;
 		}
 		else{
-			$query = "UPDATE worklog_projects SET worklog_company_id=".$company_id.",worklog_user_id='".$owner_id."', project_name='".mysql_real_escape_string($name)."', project_description='".mysql_real_escape_string($description)."', start_date='".$start."', end_date='".$deadline."', project_status=".$status." WHERE worklog_project_id = ".$this->id;
+			$query = "UPDATE worklog_projects SET worklog_company_id=".$company_id.",worklog_user_id='".$owner_id."', project_name='".mysql_real_escape_string($name)."', project_description='".mysql_real_escape_string($description)."', beginning='".mysql_real_escape_string($beginning)."', destination='".mysql_real_escape_string($destination)."', start_date='".$start."', end_date='".$deadline."', project_status=".$status." WHERE worklog_project_id = ".$this->id;
 			$update_result = mysql_query($query);
 			if(mysql_error() != ""){
 				Notification::error(mysql_error());
@@ -197,6 +207,8 @@ class Project{
 				$this->company      = new Company($company_id);
 				$this->name         = $name;
 				$this->description  = $description;
+				$this->beginning    = $beginning;
+				$this->destination  = $destination;
 				$this->start_date   = $start;
 				$this->end_date     = $deadline;
 				$this->status       = new ProjectStatus($status);

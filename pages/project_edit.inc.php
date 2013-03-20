@@ -51,8 +51,10 @@ if(isset($_GET['project_id']) && $_GET['project_id'] != "" && Project::is_projec
 			Notification::warn("Deadline is bigger then start date!");
 		}
 		if(!$error){
-			$project->update($_POST['project_name'], $_POST['company_id'],$_POST['owner_id'], $_POST['project_description'], $_POST['start'], $_POST['deadline'], $_POST['project_status'], $user->get_id());
-			Notification::notice("Updated successfully!");
+			if($project->update($_POST['project_name'], $_POST['company_id'],$_POST['owner_id'], $_POST['project_description'], $_POST['beginning'], $_POST['destination'], $_POST['start'], $_POST['deadline'], $_POST['project_status'], $user->get_id())){
+				Notification::notice("Updated successfully!");
+			}
+			
 		}
 	}
 	//
@@ -216,6 +218,20 @@ else{
 				<td>
 				<textarea style="width: 700px; height: 100px;"
 						name="project_description"><?php echo $project->get_description();?></textarea>
+						</td>
+			</tr>
+			<tr>
+				<td>Beginning:</td>
+				<td>
+				<textarea style="width: 700px; height: 100px;"
+						name="beginning"><?php echo $project->get_beginning();?></textarea>
+						</td>
+			</tr>
+			<tr>
+				<td>Destination:</td>
+				<td>
+				<textarea style="width: 700px; height: 100px;"
+						name="destination"><?php echo $project->get_destination();?></textarea>
 						</td>
 			</tr>
 			<tr>

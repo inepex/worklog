@@ -26,9 +26,12 @@ if(isset($_POST['new_project'])){
 		Notification::warn("Deadline is bigger then start date!");
 	}	
 	if(!$error){
-		if($project = Project::new_project($_POST['project_name'], $_POST['company_id'], $_POST['project_description'], $_POST['start'], $_POST['deadline'], $user->get_id())){
+		if($project = Project::new_project($_POST['project_name'], $_POST['company_id'], $_POST['project_description'], $_POST['beginning'], $_POST['destination'], $_POST['start'], $_POST['deadline'], $user->get_id())){
 			echo"<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=project_edit.php?project_id=".$project->get_id()."\">";
 			exit();
+		}
+		else{
+			Notification::warn("Something wrong with the new project  :/ !");
 		}
 	}
 }
@@ -72,6 +75,14 @@ if(isset($_POST['new_project'])){
 				<tr>
 					<td>Description:</td>
 					<td><textarea style="width: 700px; height: 100px;" name="project_description"><?php echo ((isset($_POST['project_description']))?$_POST['project_description']:'')?></textarea></td>
+				</tr>
+				<tr>
+					<td>Beginning:</td>
+					<td><textarea style="width: 700px; height: 100px;" name="beginning"><?php echo ((isset($_POST['beginning']))?$_POST['beginning']:'')?></textarea></td>
+				</tr>
+				<tr>
+					<td>Destination:</td>
+					<td><textarea style="width: 700px; height: 100px;" name="destination"><?php echo ((isset($_POST['destination']))?$_POST['destination']:'')?></textarea></td>
 				</tr>
 				<tr>
 					<td>Start:</td>

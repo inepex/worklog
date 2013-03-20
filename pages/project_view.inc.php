@@ -52,7 +52,14 @@ else{
 	</div>
 
 	<hr>
+	<h4>Description:</h4>
 	<?php echo $project->get_description();?>
+	<hr>
+	<h4>Beginning:</h4>
+	<?php echo $project->get_beginning();?>
+	<hr>
+	<h4>Destination:</h4>
+	<?php echo $project->get_destination();?>
 	<hr>
 	<h4>Start/Deadline:</h4> <?php echo $project->get_start_date().' - '.$project->get_start_date();?>
 	<hr>
