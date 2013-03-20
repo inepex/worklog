@@ -39,6 +39,15 @@ class AssociatedCategory extends Category{
 	public function get_assoc_id(){
 		return $this->assoc_id;
 	}
+	public function get_users_with_planned_hours(){
+		$users = array();
+		$query = "SELECT worklog_user_id FROM worklog_project_plan WHERE worklog_project_id=".$this->project_id." AND category_assoc_id=".$this->assoc_id." AND plan_value>0";
+		$result = mysql_query($query);
+		while($row = mysql_fetch_assoc($result)){
+			array_push($users, new User($row['worklog_user_id']));
+		}
+		return $users;
+	}
 	public function get_sum_of_worked_hours($user_id=""){
 		$query = "SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(log_to)-TIME_TO_SEC(log_from))) FROM worklog_log WHERE worklog_category_assoc_id = ".$this->assoc_id;
 		if($user_id != "" && User::is_exist($user_id)){

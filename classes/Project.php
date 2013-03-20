@@ -310,14 +310,16 @@ class Project{
 		}
 		return $logs;
 	}
-	public function get_sum_of_worked_hours($user_id, $category_assoc_id=""){
-		if($category_assoc_id == ""){
-			$query = 'SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(log_to)-TIME_TO_SEC(log_from))) sum_time FROM worklog_log WHERE worklog_project_id = '.$this->id." AND worklog_user_id = ".$user_id;
+	public function get_sum_of_worked_hours($user_id="", $category_assoc_id=""){
+		$user_condition = "";
+		$assoc_category_condition = "";
+		if($category_assoc_id != ""){
+			$assoc_category_condition =  ' AND worklog_category_assoc_id = '.$category_assoc_id;
 		}
-		else{
-			$query = 'SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(log_to)-TIME_TO_SEC(log_from))) sum_time FROM worklog_log WHERE worklog_project_id = '.$this->id." AND worklog_user_id = ".$user_id.' AND worklog_category_assoc_id = '.$category_assoc_id;
+		if($user_id != ""){
+			$user_condition =  ' AND worklog_user_id = '.$user_id;
 		}
-
+		$query = 'SELECT SEC_TO_TIME(SUM(TIME_TO_SEC(log_to)-TIME_TO_SEC(log_from))) sum_time FROM worklog_log WHERE worklog_project_id = '.$this->id.$user_condition.$assoc_category_condition;
 		$selected_result = mysql_query($query);
 		$row = mysql_fetch_assoc($selected_result);
 		if($row['sum_time'] == NULL){
@@ -325,7 +327,7 @@ class Project{
 		}
 		return substr($row['sum_time'],0,-3);
 	}
-	public function get_worked_per_planned_hour_in_percent($user_id){
+	public function get_worked_per_planned_hour_in_percent($user_id=""){
 		$sum_of_worked_hours_parts = explode(':',$this->get_sum_of_worked_hours($user_id));
 		$sum_percent = ($sum_of_worked_hours_parts[0]*60+$sum_of_worked_hours_parts[1])/($this->get_project_plan()->get_sum_of_entries($user_id)*60/100);
 		return round($sum_percent,2);

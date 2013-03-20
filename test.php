@@ -26,4 +26,6 @@ echo "az ido:".gmdate("H:i:s", $ret[1]['worked_hours']);
 echo "<br><br><br><br>";
 $ret = $user->get_worked_hours_in_categories('2013-02-01');
 var_dump($ret);
+$assoc_category = new AssociatedCategory(19);
+$assoc_category->get_users_with_planned_hours();
 ?>

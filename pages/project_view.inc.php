@@ -149,14 +149,27 @@ else{
 			<td>'.$category->get_name().' <img src="images/information.png"
 			title="'.$category->get_description().'">
 			</td>
-			<td>
-			<div class="progress progress-info progress-striped" style=" width: 700px;">
-			<div class="bar" style="width: '.$percent.'%"></div>
-			</div>
+			<td>';
+			$status_bar = new StatusBar($percent);
+			$status_bar->show_progress_bar();
+			$users_with_planned_hours = $category->get_users_with_planned_hours();
+			foreach ($users_with_planned_hours as $user_with_planned_hours){
+				/* @var $user_with_planned_hours AssociatedUser */
+				$worked_hours  = $user_with_planned_hours->get_worked_hours_in_associated_category($category);
+				$planned_hours = $user_with_planned_hours->get_planned_hours_in_associated_category($category);
+				echo '[<font'.((strtotime($worked_hours)>strtotime($planned_hours))?' color="red"':'').'>'.$user_with_planned_hours->get_name().'('.$worked_hours.'/'.$planned_hours.')</font>]&nbsp;&nbsp;&nbsp;';
+			}
+			echo '
 			</td>
-			<td>'.$category->get_sum_of_worked_hours().' / '.$project_plan->get_sum_for_category($category->get_assoc_id()).':00 ('.$percent.'%)</td>
+			<td><font '.(($percent>=100)?'color="red"':'').'>'.$category->get_sum_of_worked_hours().' / '.$project_plan->get_sum_for_category($category->get_assoc_id()).':00 ('.$percent.'%)<font></td>
 			</tr>';
-		}
+		} 
+		$progress_bar = new StatusBar($project->get_worked_per_planned_hour_in_percent(), 'success');
+		echo '<tr><td>SUM</td><td>';
+		$progress_bar->show_progress_bar();
+		echo '</td><td><font '.(($project->get_worked_per_planned_hour_in_percent()>=100)?'color="red"':'').'>'.$project->get_sum_of_worked_hours($user_id).' / '.$project->get_project_plan()->get_sum_of_entries().':00 ('.$project->get_worked_per_planned_hour_in_percent().'%)</font></td></tr>';
+		
+		
 		?>
 	</table>
 

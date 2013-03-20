@@ -212,6 +212,20 @@ class User{
 			return $row['log_date'];
 		}
 	}
+	public function get_worked_hours_in_associated_category($associated_category){
+		return $associated_category->get_sum_of_worked_hours($this->id);
+	}
+	public function get_planned_hours_in_associated_category($associated_category){
+		$query = "SELECT plan_value FROM worklog_project_plan WHERE category_assoc_id=".$associated_category->get_assoc_id()." AND worklog_user_id = ".$this->get_id();
+		$result = mysql_query($query);
+		if(mysql_affected_rows() == 0){
+			return 0;
+		}
+		else{
+			$row = mysql_fetch_assoc($result);
+			return $row['plan_value'].':00';
+		}
+	}
 	public function get_worked_hours_in_categories($date){
 		$worked_hours_in_categories = array();
 		$result_array = date_parse($date);
