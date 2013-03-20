@@ -2,16 +2,12 @@
  <div class="navbar navbar-inverse">
               <div class="navbar-inner">
                 <div class="container">
-                  <a class="btn btn-navbar" data-toggle="collapse" data-target=".navbar-responsive-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                  </a>
+                
                   <a class="brand" href="index.php" style="color: #ffffff !important;"><img src="images/logo.png" style="margin-right: 5px; margin-top: -6px;">Worklog</a>
                  
                  <?php  if ($_SESSION['loggedin_worklog']=="true") { ?>
                  
-                  <div class="nav-collapse collapse navbar-responsive-collapse">
+                 
                     <ul class="nav">
                       <li><a href="project_new.php">+New Project</a></li>
 
@@ -44,7 +40,7 @@
                       </li>
                        
                     </ul>
-                  </div><!-- /.nav-collapse -->
+                  <!-- /.nav-collapse -->
                   
                   <?php } ?>
                 </div>

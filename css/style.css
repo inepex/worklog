@@ -15,6 +15,10 @@ text-align: center;
 th, td {
 	vertical-align: middle;
 }
+
+.navbar .container {
+width: 1000px !important;
+}
 	
 .profile_photo {
 	float:left;
