@@ -22,6 +22,7 @@
                       <li <?php if (strpos($_SERVER['PHP_SELF'],'project_stat.php')) echo 'class="active"'; ?>><a href="project_stat.php">Status</a></li>
                       <li <?php if (strpos($_SERVER['PHP_SELF'],'summary.php')) echo 'class="active"'; ?>><a href="summary.php">Summary</a></li>
                       <li <?php if (strpos($_SERVER['PHP_SELF'],'projects_list.php')) echo 'class="active"'; ?>><a href="projects_list.php" >All Projects</a></li>
+                      <li <?php if (strpos($_SERVER['PHP_SELF'],'help.php')) echo 'class="active"'; ?>><a href="help.php" >Help</a></li>
                       
                       <li class="divider-vertical"></li>
                       <?php 
