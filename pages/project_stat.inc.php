@@ -37,14 +37,10 @@ if(isset($_GET['projects_status']) && $_GET['projects_status'] != "" && $_GET['p
 					?>
 				</select> <select name="projects_status">
 					<?php 
-					$all_status = ProjectStatus::get_all_status();
-					foreach($all_status as $status){
-						echo '<option value="'.$status->get_code().'" '.($projects_status == $status->get_code()?'selected="selected"':'').'>'.$status->get_name().'</option>';
-					}
+						echo '<option value="0" '.($projects_status == 0?'selected="selected"':'').'>Closed</option>';
+						echo '<option value="1" '.($projects_status == 1?'selected="selected"':'').'>Active</option>';
+						echo '<option value="3" '.($projects_status == 1?'selected="selected"':'').'>All projects</option>';
 					?>
-					<option value="3"
-					<?php echo ($projects_status == '3'?'selected="selected"':'');?>>All
-						projects</option>
 				</select> <input type="submit" value="OK" class="btn">
 			</form>
 		</div>
