@@ -3,7 +3,7 @@ class StatusBar{
 	private $progress;
 	private $width;
 	private $style; //info, success, warning,danger
-	public function __construct($progress,$style='info', $width = 700){
+	public function __construct($progress,$style='info', $width = 750){
 		$this->set_progress($progress);
 		$this->width = $width;
 		$this->style = $style;
@@ -26,7 +26,7 @@ class StatusBar{
 		if($this->progress >= 100){
 			$this->style = 'danger';
 		}
-			echo '<div class="progress progress-'.$this->style.' progress-striped" style=" width: '.$this->width.';">
+			echo '<div class="progress progress-'.$this->style.' progress-striped" style=" width: '.$this->width.'px;">
 			<div class="bar" style="width: '.$this->progress.'%"></div></div>';
 	}
 }

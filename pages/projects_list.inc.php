@@ -15,6 +15,9 @@ $projects = Project::get_projects();
 			<div style="float: left;">
 				<h4>Projects list</h4>
 			</div>
+			<div style="float: right;">
+				<h4>Keresés</h4>
+			</div>
 		</div>
 		<div style="clear: both;"></div>
 	</div>
