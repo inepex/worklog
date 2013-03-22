@@ -140,20 +140,14 @@ class User{
 	}
 	public function edit_profile_picture($picture_file){
 		$target_path = "photos/";
-		if(file_exists($target_path.$picture_file['name'])){
-			Notification::warn("The picture name is already exists");
-			return false;
-		}
-		else{
-			if(move_uploaded_file($picture_file['tmp_name'], $target_path . basename( $picture_file['name']))) {
-				unlink($target_path.$this->picture);
-				$this->picture = $picture_file['name'];
-				$query = "UPDATE worklog_users SET picture='".$this->picture."' WHERE worklog_user_id=".$this->id;
-				$update_result = mysql_query($query);
-				Notification::notice("The file ".basename($picture_file['name'])." has been uploaded");
-			} else{
-				Notification::warn("There was an error uploading the file, please try again!");
-			}
+		unlink($target_path.$this->picture);
+		if(move_uploaded_file($picture_file['tmp_name'], $target_path . basename( $picture_file['name']))) {
+			$this->picture = $picture_file['name'];
+			$query = "UPDATE worklog_users SET picture='".$this->picture."' WHERE worklog_user_id=".$this->id;
+			$update_result = mysql_query($query);
+			Notification::notice("The file ".basename($picture_file['name'])." has been uploaded");
+		} else{
+			Notification::warn("There was an error uploading the file, please try again!");
 		}
 	}
 	public function update_personal_note($note_text){
@@ -236,7 +230,7 @@ class User{
 			$to->modify("last day of this month");
 			$query = "select SUM(TIME_TO_SEC(log_to)-TIME_TO_SEC(log_from)) sum_time, s.worklog_category_id from (select worklog_log.worklog_user_id, log_from, log_to, worklog_projects_category_assoc.worklog_category_id from worklog_log, worklog_projects_category_assoc where worklog_projects_category_assoc.worklog_projects_category_assoc_id = worklog_log.worklog_category_assoc_id AND worklog_log.worklog_user_id = ".$this->id." AND worklog_log.log_date >= '".$from->format('Y-m-d')."'  AND worklog_log.log_date <= '".$to->format('Y-m-d')."') as s group by s.worklog_category_id";
 			$select_result = mysql_query($query);
-			
+				
 			while($row = mysql_fetch_assoc($select_result)){
 				$worked_hours_in_category = array();
 				$worked_hours_in_category['category_id'] = $row['worklog_category_id'];
@@ -257,7 +251,7 @@ class User{
 			$to->modify("last day of this month");
 			$query = 'select SUM(TIME_TO_SEC(log_to)-TIME_TO_SEC(log_from)) sum_time, worklog_project_id from (select * from worklog_log where worklog_user_id = '.$this->id.' AND log_date>="'.$from->format('Y-m-d').'" AND log_date<="'.$to->format('Y-m-d').'") as s group by worklog_project_id, worklog_user_id';
 			$select_result = mysql_query($query);
-				
+
 			while($row = mysql_fetch_assoc($select_result)){
 				$worked_hours_in_project = array();
 				$worked_hours_in_project['project_id'] = $row['worklog_project_id'];
