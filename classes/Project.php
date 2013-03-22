@@ -1,6 +1,7 @@
 <?php 
 error_reporting(E_ALL);
 class Project{
+	public static $number_of_projects_per_page = 5;
 	private $id;
 	private $company;
 	private $user;
@@ -44,9 +45,23 @@ class Project{
 			Notification::warn("There are logs in this project!");
 		}
 	}
-	public static function get_projects(){
+	public static function get_projects($keyword="",$order="", $order_by="",$page=""){
 		$projects = array();
-		$query = "SELECT worklog_project_id FROM worklog_projects";
+		$search_condition = "";
+		if($keyword != ""){
+			$search_condition = ' WHERE project_name like "%'.$keyword.'%" OR project_description like "%'.$keyword.'%" OR beginning like "%'.$keyword.'%" OR destination like "%'.$keyword.'%"';
+		}
+		$page_condition = "";
+		if($page !== ""){
+			$page_condition = ' limit '.($page*Project::$number_of_projects_per_page).', '.Project::$number_of_projects_per_page;
+		}
+		if($order_by != ""){
+			$order_condition = " order by ".$order_by."";
+			if($order == 'desc' || $order == 'asc'){
+				$order_condition .= " ".$order;
+			}
+		}
+		$query = "SELECT worklog_project_id FROM worklog_projects".$search_condition.$order_condition.$page_condition;
 		$select_result = mysql_query($query);
 		while($row = mysql_fetch_assoc($select_result)){
 			array_push($projects,new Project($row['worklog_project_id']));
@@ -55,7 +70,6 @@ class Project{
 	}
 	public static function duplicate_project($project_id, $duplicate_name){
 		$project = new Project($project_id);//befejezni
-		debug("user_id :".$project->get_user()->get_id());
 		$duplicated_project =  Project::new_project($duplicate_name, $project->get_company()->get_id(), $project->get_description(),$project->get_beginning(),$project->get_destination(), $project->get_start_date(), $project->get_end_date(), $project->get_user()->get_id());
 		$project_categories = $project->get_categories();
 		foreach($project_categories as $project_category){
@@ -67,12 +81,6 @@ class Project{
 			/* @var $project_workmate AssociatedUser */
 			$duplicated_project->add_workmate($project_workmate->get_id());
 		}
-		//		$project_plan = $project->get_project_plan();//folytatni
-		//		$entries = $project_plan->get_entries();
-		// 		foreach($entries as $entry){
-		// 			/* @var $entry ProjectPlanEntry */
-		// 			$duplicated_project->project_plan->add_entry($entry->get_user_id(),$entry-> $category_assoc_id, $entry->get_value());
-		// 		}
 		return $duplicated_project;
 	}
 	public static function get_projects_which_contain_category($user_id){
@@ -328,9 +336,14 @@ class Project{
 		return substr($row['sum_time'],0,-3);
 	}
 	public function get_worked_per_planned_hour_in_percent($user_id=""){
-		$sum_of_worked_hours_parts = explode(':',$this->get_sum_of_worked_hours($user_id));
-		$sum_percent = ($sum_of_worked_hours_parts[0]*60+$sum_of_worked_hours_parts[1])/($this->get_project_plan()->get_sum_of_entries($user_id)*60/100);
-		return round($sum_percent,2);
+		if($this->get_sum_of_worked_hours($user_id) == "00:00"){
+		return '0';		
+		}
+		else{
+			$sum_of_worked_hours_parts = explode(':',$this->get_sum_of_worked_hours($user_id));
+			$sum_percent = ($sum_of_worked_hours_parts[0]*60+$sum_of_worked_hours_parts[1])/($this->get_project_plan()->get_sum_of_entries($user_id)*60/100);
+			return round($sum_percent,2);
+		}
 	}
 }
 ?>
