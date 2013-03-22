@@ -2,7 +2,16 @@
 class ProjectStatus{
 	private $status_code;
 	private $status_name;
-	
+	public static function is_status_exist($status_code){
+		$query = 'SELECT worklog_project_status_id FROM worklog_project_status WHERE status_code='.$status_code;
+		$result = mysql_query($query);
+		if(mysql_affected_rows() == 1){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
 	public static function get_all_status(){
 		$all_status = array();
 		$query = 'SELECT * FROM worklog_project_status';

@@ -45,9 +45,13 @@ class Project{
 			Notification::warn("There are logs in this project!");
 		}
 	}
-	public static function get_projects($keyword="",$order="", $order_by="",$page=""){
+	public static function get_projects($keyword="",$order="", $order_by="", $project_status="",$page=""){
 		$projects = array();
-		$search_condition = "";
+		$project_status_condicion = "";
+		if($project_status != ""){
+			$project_status_condicion = " AND project_status=".$project_status;
+		}
+		$search_condition = " WHERE 1";
 		if($keyword != ""){
 			$search_condition = ' WHERE project_name like "%'.$keyword.'%" OR project_description like "%'.$keyword.'%" OR beginning like "%'.$keyword.'%" OR destination like "%'.$keyword.'%"';
 		}
@@ -61,7 +65,8 @@ class Project{
 				$order_condition .= " ".$order;
 			}
 		}
-		$query = "SELECT worklog_project_id FROM worklog_projects".$search_condition.$order_condition.$page_condition;
+		$query = "SELECT worklog_project_id FROM worklog_projects".$search_condition.$project_status_condicion.$order_condition.$page_condition;
+		debug($query);
 		$select_result = mysql_query($query);
 		while($row = mysql_fetch_assoc($select_result)){
 			array_push($projects,new Project($row['worklog_project_id']));
