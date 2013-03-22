@@ -71,8 +71,9 @@
 	 <hr>
 	 
 	<h5>Összesítés - Summary menüpont</h5>
-	<p>Ez az oldal hármas szerepet tölt be. A legördőlő menük segítségével az alábbi kimutatások végezhetőek el:<ul>
+	<p>Ez az oldal hármas szerepet tölt be. A legördőlő menük segítségével az alábbi kimutatások végezhetőek el:
 	<img src="images/help_summary.PNG">
+	<ul>
 	<li>Adott hónapban ki mennyit dolgozott-fizetésekhez (All-Actual Month-All)</li>
 	<li>Adott munkatárs mennyit dolgozott havonta (XY-Always-All)</li>
 	<li>Adott munkatárs adott hónapban cégre bontva mennyit dolgozott (XY-Actual Month-All)</li>
