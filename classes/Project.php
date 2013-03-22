@@ -1,7 +1,7 @@
 <?php 
 error_reporting(E_ALL);
 class Project{
-	public static $number_of_projects_per_page = 5;
+	public static $number_of_projects_per_page = 30;
 	private $id;
 	private $company;
 	private $user;
