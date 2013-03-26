@@ -157,17 +157,17 @@ else{
 				/* @var $user_with_planned_hours AssociatedUser */
 				$worked_hours  = $user_with_planned_hours->get_worked_hours_in_associated_category($category);
 				$planned_hours = $user_with_planned_hours->get_planned_hours_in_associated_category($category);
-				echo '[<font'.((strtotime($worked_hours)>strtotime($planned_hours))?' color="red"':'').'>'.$user_with_planned_hours->get_name().'('.$worked_hours.'/'.$planned_hours.')</font>]&nbsp;&nbsp;&nbsp;';
+				echo '[<font'.(((substr($worked_hours,0,2)*60+ substr($worked_hours,3,2))>(substr($planned_hours,0,2)*60+ substr($planned_hours,3,2)))?' color="red"':'').'>'.$user_with_planned_hours->get_name().'('.$worked_hours.'/'.$planned_hours.')</font>]&nbsp;&nbsp;&nbsp;';
 			}
 			echo '
 			</td>
-			<td><font '.(($percent>=100)?'color="red"':'').'>'.$category->get_sum_of_worked_hours().' / '.$project_plan->get_sum_for_category($category->get_assoc_id()).':00  <br><span style="font-size:16px;font-weight:bold;">'.$percent.'%</span><font></td>
+			<td><font '.(($percent>100)?'color="red"':'').'>'.$category->get_sum_of_worked_hours().' / '.$project_plan->get_sum_for_category($category->get_assoc_id()).':00  <br><span style="font-size:16px;font-weight:bold;">'.$percent.'%</span><font></td>
 			</tr>';
 		} 
 		$progress_bar = new StatusBar($project->get_worked_per_planned_hour_in_percent(), 'success');
 		echo '<tr><td>SUM</td><td>';
 		$progress_bar->show_progress_bar();
-		echo '</td><td><font '.(($project->get_worked_per_planned_hour_in_percent()>=100)?'color="red"':'').'>'.$project->get_sum_of_worked_hours().' / '.$project->get_project_plan()->get_sum_of_entries().':00 <br><span style="font-size:16px;font-weight:bold;">'.$project->get_worked_per_planned_hour_in_percent().'%</span></font></td></tr>';
+		echo '</td><td><font '.(($project->get_worked_per_planned_hour_in_percent()>100)?'color="red"':'').'>'.$project->get_sum_of_worked_hours().' / '.$project->get_project_plan()->get_sum_of_entries().':00 <br><span style="font-size:16px;font-weight:bold;">'.$project->get_worked_per_planned_hour_in_percent().'%</span></font></td></tr>';
 		
 		
 		?>

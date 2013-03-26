@@ -69,7 +69,7 @@ if(isset($_GET['projects_status']) && $_GET['projects_status'] != "" && $_GET['p
 				
 				$status_bar->show_progress_bar();
 				echo '</td>
-				<td><font '.(($total_hour_per_worked_hour>=100)?'color="red"':'').')>'.$category->get_sum_of_worked_hours($selected_user->get_id()).'/ '.$planned_hours.':00 ('.$total_hour_per_worked_hour.'%)</font></td>
+				<td><font '.(($total_hour_per_worked_hour>100)?'color="red"':'').')>'.$category->get_sum_of_worked_hours($selected_user->get_id()).'/ '.$planned_hours.':00 <br><span style="font-size:16px;font-weight:bold;">'.$total_hour_per_worked_hour.'%</span></font></td>
 				</tr>';
 				$user_worked_time_in_category = array();
 			}
@@ -80,7 +80,7 @@ if(isset($_GET['projects_status']) && $_GET['projects_status'] != "" && $_GET['p
 		
 		echo '<tr><td>SUM</td><td>';
 		$status_bar->show_progress_bar();
-		echo '</td><td><font '.(($project->get_worked_per_planned_hour_in_percent($selected_user->get_id())>=100)?'color="red"':'').'>'.$sum_of_worked_hours.'/ '.$sum_of_planed_hours.':00 ('.$project->get_worked_per_planned_hour_in_percent($selected_user->get_id()).'%)</font></td><tr>';
+		echo '</td><td><font '.(($project->get_worked_per_planned_hour_in_percent($selected_user->get_id())>100)?'color="red"':'').'>'.$sum_of_worked_hours.'/ '.$sum_of_planed_hours.':00 <br><span style="font-size:16px;font-weight:bold;">'.$project->get_worked_per_planned_hour_in_percent($selected_user->get_id()).'%</font></font></td><tr>';
 		echo '</table>';
 	}
 	?>

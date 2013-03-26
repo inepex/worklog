@@ -66,7 +66,6 @@ class Project{
 			}
 		}
 		$query = "SELECT worklog_project_id FROM worklog_projects".$search_condition.$project_status_condicion.$order_condition.$page_condition;
-		debug($query);
 		$select_result = mysql_query($query);
 		while($row = mysql_fetch_assoc($select_result)){
 			array_push($projects,new Project($row['worklog_project_id']));
