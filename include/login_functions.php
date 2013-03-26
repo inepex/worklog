@@ -1,9 +1,30 @@
 <?php
+
+
+if(isset($_COOKIE['cookie_loggedin_worklog']) ){ 
+
+	$_SESSION['loggedin_worklog']=$_COOKIE['cookie_loggedin_worklog'];
+	$_SESSION['enterstatus']=$_COOKIE['cookie_enterstatus'];
+	$_SESSION['enterid']=$_COOKIE['cookie_enterid'];
+	$_SESSION['entername']=$_COOKIE['cookie_entername'];
+	$enterdate = date("Y-m-d");
+	$entertime=date("G:i:s");
+	$login="UPDATE worklog_users SET enterdate='$enterdate $entertime'  WHERE worklog_user_id='$_SESSION[enterid]';";
+			
+}
+
+
+
 if ( isset($_GET['log']) && $_GET['log'] =="logout" ) {
 	// kilépés
 	$_SESSION['loggedin_worklog']="false";
+	setcookie("cookie_loggedin_worklog", $_SESSION['loggedin_worklog'], time()+60*60*24*100, "/");
 	$_SESSION['enterstatus']=0;
+	setcookie("cookie_enterstatus", $_SESSION['enterstatus'], time()+60*60*24*100, "/");
 	$_SESSION['enterid']=0;
+	setcookie("cookie_enterid", $_SESSION['enterid'], time()+60*60*24*100, "/");
+	$_SESSION['entername']=0;
+	setcookie("cookie_entername", $_SESSION['entername'], time()+60*60*24*100, "/");
 	echo"<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=index.php\">";
 	exit();
 }
@@ -38,6 +59,11 @@ if (!isset($_SESSION['loggedin_worklog']) || $_SESSION['loggedin_worklog'] !="tr
 				$_SESSION['enterid']=$lines[0];
 				$_SESSION['enterstatus']=$lines[1];
 				$_SESSION['entername']=$lines[2];
+				
+				setcookie("cookie_loggedin_worklog", $_SESSION['loggedin_worklog'], time()+60*60*24*100, "/");
+				setcookie("cookie_enterstatus", $_SESSION['enterstatus'], time()+60*60*24*100, "/");
+				setcookie("cookie_enterid", $_SESSION['enterid'], time()+60*60*24*100, "/");
+				setcookie("cookie_entername", $_SESSION['entername'], time()+60*60*24*100, "/");
 			}
 			$enterdate = date("Y-m-d");
 			$entertime=date("G:i:s");
