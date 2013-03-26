@@ -1,7 +1,7 @@
 <?php
 
 
-if(isset($_COOKIE['cookie_loggedin_worklog']) ){ 
+if(isset($_COOKIE['cookie_loggedin_worklog']) && $_COOKIE['cookie_loggedin_worklog'] == "true" ){ 
 
 	$_SESSION['loggedin_worklog']=$_COOKIE['cookie_loggedin_worklog'];
 	$_SESSION['enterstatus']=$_COOKIE['cookie_enterstatus'];
