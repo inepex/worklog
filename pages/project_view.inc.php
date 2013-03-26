@@ -167,7 +167,7 @@ else{
 		$progress_bar = new StatusBar($project->get_worked_per_planned_hour_in_percent(), 'success');
 		echo '<tr><td>SUM</td><td>';
 		$progress_bar->show_progress_bar();
-		echo '</td><td><font '.(($project->get_worked_per_planned_hour_in_percent()>=100)?'color="red"':'').'>'.$project->get_sum_of_worked_hours($user_id).' / '.$project->get_project_plan()->get_sum_of_entries().':00 <br><span style="font-size:16px;font-weight:bold;">'.$project->get_worked_per_planned_hour_in_percent().'%</span></font></td></tr>';
+		echo '</td><td><font '.(($project->get_worked_per_planned_hour_in_percent()>=100)?'color="red"':'').'>'.$project->get_sum_of_worked_hours().' / '.$project->get_project_plan()->get_sum_of_entries().':00 <br><span style="font-size:16px;font-weight:bold;">'.$project->get_worked_per_planned_hour_in_percent().'%</span></font></td></tr>';
 		
 		
 		?>
