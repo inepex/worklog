@@ -62,7 +62,7 @@ if(isset($_GET['delete_project']) && $_GET['delete_project'] != "" && Project::i
 							echo '<option value="'.$status->get_code().'" '.(($project_status == $status->get_code())?"selected":"").'>'.$status->get_name().'</option>';
 						}
 						?>
-					</select> <input type="submit" value="OK">
+					</select> <input type="submit" value="OK" class="btn">
 				</h4>
 			</div>
 			</form>
@@ -70,8 +70,8 @@ if(isset($_GET['delete_project']) && $_GET['delete_project'] != "" && Project::i
 			<div style="float: right;">
 				<h4>
 					<form method="get">
-						<input type="text" name="search"> <input type="submit"
-							value="Search">
+						<input type="text" name="search" value="<?php echo ((isset($_GET['search']) && $_GET['search'] !='')?$_GET['search']:'');?>"> <input type="submit"
+							value="Search" class="btn">
 					</form>
 				</h4>
 			</div>
@@ -84,23 +84,35 @@ if(isset($_GET['delete_project']) && $_GET['delete_project'] != "" && Project::i
 	<div id="projects_list">
 		<table class="table table-bordered">
 			<tr>
-				<th><a
-					href="projects_list.php?order=<?php echo order_change($order);?>&order_by=worklog_project_id">ID</a>
+				<th>
+					<?php 
+					echo '<a href="projects_list.php?search='.$keyword.'&order_by=worklog_project_id&order='.order_change($order).'&page='.$page.'&project_status='.$project_status.'">ID</a>';
+					?>
+					
 				</th>
-				<th><a
-					href="projects_list.php?order=<?php echo order_change($order);?>&order_by=project_name">Name</a>
+				<th><?php 
+					echo '<a href="projects_list.php?search='.$keyword.'&order_by=project_name&order='.order_change($order).'&page='.$page.'&project_status='.$project_status.'">Project name</a>';
+					?>
 				</th>
-				<th><a
-					href="projects_list.php?order=<?php echo order_change($order);?>&order_by=worklog_user_id">Owner</a>
+				<th>
+					<?php 
+					echo '<a href="projects_list.php?search='.$keyword.'&order_by=worklog_user_id&order='.order_change($order).'&page='.$page.'&project_status='.$project_status.'">Owner</a>';
+					?>
 				</th>
-				<th><a
-					href="projects_list.php?order=<?php echo order_change($order);?>&order_by=project_status">Status</a>
+				<th>
+					<?php 
+					echo '<a href="projects_list.php?search='.$keyword.'&order_by=project_status&order='.order_change($order).'&page='.$page.'&project_status='.$project_status.'">Status</a>';
+					?>
 				</th>
-				<th><a
-					href="projects_list.php?order=<?php echo order_change($order);?>&order_by=start_date">Start</a>
+				<th>
+					<?php 
+					echo '<a href="projects_list.php?search='.$keyword.'&order_by=start_date&order='.order_change($order).'&page='.$page.'&project_status='.$project_status.'">Start date</a>';
+					?>
 				</th>
-				<th><a
-					href="projects_list.php?order=<?php echo order_change($order);?>&order_by=end_date">End</a>
+				<th>
+					<?php 
+					echo '<a href="projects_list.php?search='.$keyword.'&order_by=end_date&order='.order_change($order).'&page='.$page.'&project_status='.$project_status.'">End date</a>';
+					?>
 				</th>
 				<th>Edit</th>
 				<th>Delete</th>
