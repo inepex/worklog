@@ -60,15 +60,15 @@ if(isset($_GET['projects_status']) && $_GET['projects_status'] != "" && $_GET['p
 			$planned_hours = $project->get_project_plan()->get_sum_for_category_and_user($selected_user->get_id(), $category->get_assoc_id());
 			if($planned_hours >0){
 				$total_hour_per_worked_hour = $category->get_category_status_in_percent($selected_user->get_id());
+				$status_bar = new StatusBar($total_hour_per_worked_hour, 'info');
 				echo '<tr>
 				<td width="140px">'.$category->get_name().' <img src="images/information.png"
 				title="'.$category->get_description().'">
 				</td>
-				<td>
-				<div class="progress progress-info progress-striped" style=" width: 700px;">
-				<div class="bar" style="width: '.$total_hour_per_worked_hour.'%"></div>
-				</div>
-				</td>
+				<td>';
+				
+				$status_bar->show_progress_bar();
+				echo '</td>
 				<td><font '.(($total_hour_per_worked_hour>=100)?'color="red"':'').')>'.$category->get_sum_of_worked_hours($selected_user->get_id()).'/ '.$planned_hours.':00 ('.$total_hour_per_worked_hour.'%)</font></td>
 				</tr>';
 				$user_worked_time_in_category = array();
