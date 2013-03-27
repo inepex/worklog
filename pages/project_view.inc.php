@@ -138,7 +138,7 @@ else{
 		foreach($categories as $category){
 			$percent = $category->get_category_status_in_percent();
 			echo '<tr>
-			<td width="130">'.$category->get_name().' <img src="images/information.png"
+			<td width="110">'.$category->get_name().' <img src="images/information.png"
 			title="'.$category->get_description().'">
 			</td>
 			<td width="770">';
