@@ -1,6 +1,6 @@
 <?php
 
-$title = "Edit Project";
+$title = "New Project";
  
 $include_list[ 'head' ]		= array('pages/header.inc.php');
 $include_list[ 'main' ]	    = array('pages/project_new.inc.php');

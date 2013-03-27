@@ -1,6 +1,6 @@
 <?php
 
-$title = "Projects";
+$title = "All Projects";
  
 $include_list[ 'head' ]		= array('pages/header.inc.php');
 $include_list[ 'main' ]	    = array('pages/projects_list.inc.php');
