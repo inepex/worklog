@@ -146,7 +146,7 @@ else{
 		foreach($categories as $category){
 			$percent = $category->get_category_status_in_percent();
 			echo '<tr>
-			<td width="140">'.$category->get_name().' <img src="images/information.png"
+			<td width="130">'.$category->get_name().' <img src="images/information.png"
 			title="'.$category->get_description().'">
 			</td>
 			<td width="770">';
@@ -161,7 +161,7 @@ else{
 			}
 			echo '
 			</td>
-			<td width="90"><font '.(($percent>100)?'color="red"':'').'>'.$category->get_sum_of_worked_hours().' / '.$project_plan->get_sum_for_category($category->get_assoc_id()).':00  <br><span style="font-size:16px;font-weight:bold;">'.$percent.'%</span><font></td>
+			<td width="100"><font '.(($percent>100)?'color="red"':'').'>'.$category->get_sum_of_worked_hours().' / '.$project_plan->get_sum_for_category($category->get_assoc_id()).':00  <br><span style="font-size:16px;font-weight:bold;">'.$percent.'%</span><font></td>
 			</tr>';
 		} 
 		$progress_bar = new StatusBar($project->get_worked_per_planned_hour_in_percent(), 'success');
