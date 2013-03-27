@@ -62,14 +62,14 @@ if(isset($_GET['projects_status']) && $_GET['projects_status'] != "" && $_GET['p
 				$total_hour_per_worked_hour = $category->get_category_status_in_percent($selected_user->get_id());
 				$status_bar = new StatusBar($total_hour_per_worked_hour, 'info');
 				echo '<tr>
-				<td width="140px">'.$category->get_name().' <img src="images/information.png"
+				<td width="140">'.$category->get_name().' <img src="images/information.png"
 				title="'.$category->get_description().'">
 				</td>
-				<td>';
+				<td width="770">';
 				
 				$status_bar->show_progress_bar();
 				echo '</td>
-				<td><font '.(($total_hour_per_worked_hour>100)?'color="red"':'').')>'.$category->get_sum_of_worked_hours($selected_user->get_id()).'/ '.$planned_hours.':00 <br><span style="font-size:16px;font-weight:bold;">'.$total_hour_per_worked_hour.'%</span></font></td>
+				<td width="90"><font '.(($total_hour_per_worked_hour>100)?'color="red"':'').')>'.$category->get_sum_of_worked_hours($selected_user->get_id()).'/ '.$planned_hours.':00 <br><span style="font-size:16px;font-weight:bold;">'.$total_hour_per_worked_hour.'%</span></font></td>
 				</tr>';
 				$user_worked_time_in_category = array();
 			}
