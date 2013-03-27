@@ -14,7 +14,14 @@
 
 	
 	<h5>Mi a projekt?</h5>
-	<p>Projekt alatt egy körülbelül egy hónapnyi, egy jól meghatározható cél elérése érdekében létrehozott tevékenységsorozatot értünk. <br/>Alapvetően kétféle projekt létezik:</p>
+	
+	<div class="help_box"><b>A projekt</b> kiindulási állapotból végállapotba vezető feladatok összessége. Egy projekt tipikusan 1 hónap hosszú.</div>
+	 
+	 
+	 <p>
+	 
+	
+	<br/>Alapvetően kétféle projekt létezik:</p>
 	<ul>
 	<li><b>Egyszeri projekt:</b> Meg nem ismételhető projekt: pl. Markerek bevezetése, OSM térkép bevezetése, Viszonteladói árak kidolgozása, Plakát készítése Cebit-re, Kötelező adatszolgáltatás megvalósítása...stb.</li>
 	<li><b>Megújuló projekt:</b> Adminisztratív dolgok, ismétlődő dolgok: pl. SEO (Adwords&Analytics), Tanulás, Trackerek inicializálása, Ügyelet ..stb</li>
