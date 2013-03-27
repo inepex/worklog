@@ -151,7 +151,7 @@ class User{
 		}
 	}
 	public function update_personal_note($note_text){
-		$query = "UPDATE worklog_users SET personal_note = '".$note_text."' WHERE worklog_user_id = ".$this->id;
+		$query = "UPDATE worklog_users SET personal_note = '".mysql_real_escape_string($note_text)."' WHERE worklog_user_id = ".$this->id;
 		$update_result = mysql_query($query);
 		if(mysql_error() == ""){
 			Notification::notice("Personal note has been updated successfully!");
