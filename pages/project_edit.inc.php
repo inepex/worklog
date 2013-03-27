@@ -293,7 +293,20 @@ else{
 					echo '<tr>
 					<td width="120"><img src="photos/'.$workmate->get_picture().'" width="20" height="20">
 					'.$workmate->get_name().'</td>
-					<td>'.(!$workmate->is_have_log_in_project()?'<a href="project_edit.php?project_id='.$project->get_id().'&delete_workmate='.$workmate->get_assoc_id().'"><img src="images/delete.png"></a>':'').'</td>
+					<td>'.(!$workmate->is_have_log_in_project()?'<span class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="images/delete.png"></a>
+					<ul class="dropdown-menu">
+					<table>
+					<tr>
+						<td colspan="2"><img src="images/warning.png"> Biztosan törölni szeretnéd?</td>
+					</tr>
+					<tr>
+						<td><a href="project_edit.php?project_id='.$project->get_id().'&delete_workmate='.$workmate->get_assoc_id().'" class="btn" id=""><font color="red">Igen</font></a></td>
+						<td><font class="btn">Nem</font></td>
+					</tr>
+					</table>
+					</ul></td>
+				</span>':'').'</td>
 					</tr>';
 				}
 				?>
@@ -330,7 +343,20 @@ else{
 					/* @var $associated_category AssociatedCategory */
 					echo   '<tr><td width="120">'.$associated_category->get_name().'</td>
 					<td width="120">'.$associated_category->get_description().'</td>
-					<td>'.((!$associated_category->is_associated_category_in_use())?'<a href="project_edit.php?project_id='.$project->get_id().'&delete_category='.$associated_category->get_assoc_id().'"><img src="images/delete.png"></a>':'').'</td></tr>';
+					<td>'.((!$associated_category->is_associated_category_in_use())?'<span class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="images/delete.png"></a>
+					<ul class="dropdown-menu">
+					<table>
+					<tr>
+						<td colspan="2"><img src="images/warning.png"> Biztosan törölni szeretnéd?</td>
+					</tr>
+					<tr>
+						<td><a href="project_edit.php?project_id='.$project->get_id().'&delete_category='.$associated_category->get_assoc_id().'" class="btn" id=""><font color="red">Igen</font></a></td>
+						<td><font class="btn">Nem</font></td>
+					</tr>
+					</table>
+					</ul></td>
+				</span>':'').'</td></tr>';
 				}
 				?>
 			</table>

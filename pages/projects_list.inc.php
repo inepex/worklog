@@ -130,7 +130,20 @@ if(isset($_GET['delete_project']) && $_GET['delete_project'] != "" && Project::i
 					<td>'.$project->get_start_date().'</td>
 					<td>'.$project->get_end_date().'</td>
 					<td><a href="project_edit.php?project_id='.$project->get_id().'"><img src="images/modify.png"</a></td>
-					<td> '.(!Project::is_project_used($project->get_id())?'<a href="projects_list.php?delete_project='.$project->get_id().'&search='.$keyword.'&order_by='.$order_by.'&order='.$order.'&page='.$page.'"><img src="images/delete.png"</a></td>':'');
+					<td> '.(!Project::is_project_used($project->get_id())?'<span class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="images/delete.png"></a>
+					<ul class="dropdown-menu">
+					<table>
+						<tr>
+							<td colspan="2"><img src="images/warning.png"> Biztosan törölni szeretnéd?</td>
+						</tr>
+						<tr>
+							<td><a href="projects_list.php?delete_project='.$project->get_id().'&search='.$keyword.'&order_by='.$order_by.'&order='.$order.'&page='.$page.'" class="btn" id=""><font color="red">Igen</font></a></td>
+							<td><font class="btn">Nem</font></td>
+						</tr>
+					</table>
+					</ul></td>
+					</span></td>':'');	
 					echo '</tr>';
 				}
 				?>
