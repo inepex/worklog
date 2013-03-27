@@ -88,3 +88,10 @@ th {
 .highlight{
 	background:rgba(255, 0, 0, 0.28)!important;
 }
+.statistic_member{
+	float: left;
+	padding: 2px;
+	border: 1px solid #d0d0d0;
+	margin-right: 10px;
+}
+}
