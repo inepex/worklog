@@ -97,4 +97,7 @@ th {
 	margin-right: 10px;
 	height: 24px;
 	margin-bottom: 10px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
 }
