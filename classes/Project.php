@@ -176,13 +176,13 @@ class Project{
 		return $this->name;
 	}
 	public function get_description(){
-		return $this->description;
+		return Tools::identify_link($this->description);
 	}
 	public function get_beginning(){
-		return $this->beginning;
+		return Tools::identify_link($this->beginning);
 	}
 	public function get_destination(){
-		return $this->destination;
+		return Tools::identify_link($this->destination);
 	}
 	public function get_start_date(){
 		return $this->start_date;

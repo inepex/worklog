@@ -182,7 +182,7 @@ class Log{
 		return $this->to;
 	}
 	public function get_entry(){
-		return $this->entry;
+		return Tools::identify_link($this->entry);
 	}
 	public function get_working_place_id(){
 		return $this->working_place_id;
