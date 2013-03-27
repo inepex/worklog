@@ -22,7 +22,5 @@ echo "first: ".Log::get_first_log_date();
 $time = "12:34";
 echo $time;
 echo "<br>";
-echo substr($time, 0,2);
-echo "<br>";
-echo substr($time, 3,2);
+var_dump(date_parse_from_format("H:i","24:00"));
 ?>

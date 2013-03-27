@@ -41,24 +41,35 @@ if(isset($_POST['log_id'])){
 			Notification::warn("TO cannot be empty!");
 			$error = true;
 		}
-		if(isset($_POST['to']) && $_POST['to'] != '' && isset($_POST['from']) && $_POST['from'] != ''){
-			$seconds_diff = strtotime($_POST['date']." ".date($_POST['to'])) - strtotime($_POST['date']." ".date($_POST['from']));
-			if($seconds_diff == 0){
-				Notification::warn("TO cannot be the same as FROM!");
-				$error = true;
-			}
-			else if($seconds_diff < 0){
-					
-				Notification::warn("TO is smaller then FROM!");
-				$error = true;
-			}
-			else{
-				if(Log::is_overlap($user->get_id(), $_POST['date'], $_POST['from'], $_POST['to'],$_POST['log_id'])){
-					Notification::warn("Time overlap!");
+		$parsed_from = date_parse_from_format("H:i",$_POST['from']);
+		if($parsed_from['warning_count']>0){
+			Notification::warn("FROM value is not valid!");
+			$error = true;
+		}
+		$parsed_to = date_parse_from_format("H:i",$_POST['to']);
+		if($parsed_to['warning_count']>0){
+			Notification::warn("To value is not valid!");
+			$error = true;
+		}
+		if($parsed_from['warning_count'] == 0 && $parsed_to['warning_count'] == 0){
+			if(isset($_POST['to']) && $_POST['to'] != '' && isset($_POST['from']) && $_POST['from'] != ''){
+				$seconds_diff = strtotime($_POST['date']." ".date($_POST['to'])) - strtotime($_POST['date']." ".date($_POST['from']));
+				if($seconds_diff == 0){
+					Notification::warn("TO cannot be the same as FROM!");
 					$error = true;
 				}
+				else if($seconds_diff < 0){
+						
+					Notification::warn("TO is smaller then FROM!");
+					$error = true;
+				}
+				else{
+					if(Log::is_overlap($user->get_id(), $_POST['date'], $_POST['from'], $_POST['to'],$_POST['log_id'])){
+						Notification::warn("Time overlap!");
+						$error = true;
+					}
+				}	
 			}
-
 		}
 	}
 	if(!isset($_POST['log_entry']) || $_POST['log_entry'] == ""){
@@ -118,24 +129,36 @@ if(isset($_POST['add_log'])){
 			Notification::warn("TO cannot be empty!");
 			$error = true;
 		}
-		if(isset($_POST['to']) && $_POST['to'] != '' && isset($_POST['from']) && $_POST['from'] != ''){
-			$seconds_diff = strtotime($_POST['date']." ".date($_POST['to'])) - strtotime($_POST['date']." ".date($_POST['from']));
-			if($seconds_diff == 0){
-				Notification::warn("TO cannot be the same as FROM!");
-				$error = true;
-			}
-			else if($seconds_diff < 0){
-					
-				Notification::warn("TO is smaller then FROM!");
-				$error = true;
-			}
-			else{
-				if(Log::is_overlap($user->get_id(), $_POST['date'], $_POST['from'], $_POST['to'])){
-					Notification::warn("Time overlap!");
+		$parsed_from = date_parse_from_format("H:i",$_POST['from']);
+		if($parsed_from['warning_count']>0){
+			Notification::warn("FROM value is not valid!");
+			$error = true;
+		}
+		$parsed_to = date_parse_from_format("H:i",$_POST['to']);
+		if($parsed_to['warning_count']>0){
+			Notification::warn("To value is not valid!");
+			$error = true;
+		}
+		if($parsed_from['warning_count'] == 0 && $parsed_to['warning_count'] == 0){
+			if(isset($_POST['to']) && $_POST['to'] != '' && isset($_POST['from']) && $_POST['from'] != ''){
+				$seconds_diff = strtotime($_POST['date']." ".date($_POST['to'])) - strtotime($_POST['date']." ".date($_POST['from']));
+				if($seconds_diff == 0){
+					Notification::warn("TO cannot be the same as FROM!");
 					$error = true;
 				}
-			}
-
+				else if($seconds_diff < 0){
+						
+					Notification::warn("TO is smaller then FROM!");
+					$error = true;
+				}
+				else{
+					if(Log::is_overlap($user->get_id(), $_POST['date'], $_POST['from'], $_POST['to'])){
+						Notification::warn("Time overlap!");
+						$error = true;
+					}
+				}
+			
+			}	
 		}
 	}
 	if(!isset($_POST['log_entry']) || $_POST['log_entry'] == ""){
