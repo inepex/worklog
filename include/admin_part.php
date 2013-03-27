@@ -31,7 +31,20 @@
 				/* @var $company Company */
 				echo '<tr>
 				<td width="120">'.$company->get_name().'</td>
-				<td><a href="?action=edit&company_id='.$company->get_id().'#companies"><img src="images/modify.png"></a>&nbsp;<a href="?action=delete&company_id='.$company->get_id().'">'.(($company->is_in_use())?'':'<img src="images/delete.png">').'</a></td>
+				<td><a href="?action=edit&company_id='.$company->get_id().'#companies"><img src="images/modify.png"></a>&nbsp;'.(($company->is_in_use())?'':'<span class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="images/delete.png"></a>
+					<ul class="dropdown-menu">
+					<table>
+					<tr>
+						<td colspan="2"><img src="images/warning.png"> Biztosan törölni szeretnéd?</td>
+					</tr>
+					<tr>
+						<td><a href="?action=delete&company_id='.$company->get_id().'" class="btn" id=""><font color="red">Igen</font></a></td>
+						<td><font class="btn">Nem</font></td>
+					</tr>
+					</table>
+					</ul></td>
+					</span>').'</td>
 				</tr>';
 			}
 			?>
@@ -75,7 +88,20 @@
 			foreach($places as $place){
 				echo '<tr>
 				<td width="120">'.$place->get_name().'</td>
-				<td><a href="?action=edit&place_id='.$place->get_id().'#places"><img src="images/modify.png"></a>&nbsp;<a href="?action=delete&place_id='.$place->get_id().'">'.(($place->is_in_use())?'':'<img src="images/delete.png">').'</a></td>
+				<td><a href="?action=edit&place_id='.$place->get_id().'#places"><img src="images/modify.png"></a>&nbsp;'.(($place->is_in_use())?'':'<span class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="images/delete.png"></a>
+					<ul class="dropdown-menu">
+					<table>
+					<tr>
+						<td colspan="2"><img src="images/warning.png"> Biztosan törölni szeretnéd?</td>
+					</tr>
+					<tr>
+						<td><a href="?action=delete&place_id='.$place->get_id().'" class="btn" id=""><font color="red">Igen</font></a></td>
+						<td><font class="btn">Nem</font></td>
+					</tr>
+					</table>
+					</ul></td>
+					</span>').'</td>
 				</tr>';
 			}
 			?>
@@ -118,7 +144,20 @@
 				/* @var $category Category */
 				echo '<tr>
 				<td width="120">'.$category->get_name().'</td>
-				<td><a href="?action=edit&category_id='.$category->get_id().'#categories"><img src="images/modify.png"></a>&nbsp;<a href="?action=delete&category_id='.$category->get_id().'">'.(($category->is_in_use())?'':'<img src="images/delete.png">').'</a></td>
+				<td><a href="?action=edit&category_id='.$category->get_id().'#categories"><img src="images/modify.png"></a>&nbsp;'.(($category->is_in_use())?'':'<span class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="images/delete.png"></a>
+					<ul class="dropdown-menu">
+					<table>
+					<tr>
+						<td colspan="2"><img src="images/warning.png"> Biztosan törölni szeretnéd?</td>
+					</tr>
+					<tr>
+						<td><a href="?action=delete&category_id='.$category->get_id().'" class="btn" id=""><font color="red">Igen</font></a></td>
+						<td><font class="btn">Nem</font></td>
+					</tr>
+					</table>
+					</ul></td>
+					</span>').'
 				</tr>';
 			}
 			?>
