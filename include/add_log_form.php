@@ -2,7 +2,7 @@
 <input type="hidden" id="selected_category_id" value="<?php echo (isset($_POST['category_assoc_id']) && $_POST['category_assoc_id'])?$_POST['category_assoc_id']:"";?>">
 <form method="post">
 	<tr>
-		<td><select style="width: 120px !important;" id="project_select"
+		<td><select style="width: 100px !important;" id="project_select"
 			name="project_id">
 				<?php 
 				$projects = Project::get_projects_which_contain_category($user_id);
@@ -21,7 +21,7 @@
 		<td><select style="width: 120px !important;" id="category_select"
 			name="category_assoc_id">
 		</select></td>
-		<td><select style="width: 120px;" id="date_select" name="date">
+		<td><select style="width: 100px; font-size:10px;" id="date_select" name="date">
 		</select></td>
 		<td><input type="text" style="width: 40px;" id="time_from" name="from" value="<?php echo (isset($_POST['from'])?$_POST['from']:''); ?>">
 		</td>

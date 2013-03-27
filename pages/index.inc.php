@@ -306,14 +306,14 @@ if(isset($_GET['delete_log']) && Log::is_log_exist($_GET['delete_log'])){
 		}
 		?>
 		<tr>
-			<th>Project</th>
-			<th>Category</th>
-			<th>Date</th>
-			<th>From</th>
-			<th>To</th>
-			<th>Log</th>
-			<th>Place</th>
-			<th></th>
+			<th width="150">Project</th>
+			<th width="150">Category</th>
+			<th width="150">Date</th>
+			<th width="80">From</th>
+			<th width="80">To</th>
+			<th width="300">Log</th>
+			<th width="100">Place</th>
+			<th width="85"></th>
 		</tr>
 		<?php 
 		$logs = $selected_user->get_logs($selected_date->format("Y-m-d"));
