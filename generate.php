@@ -22,7 +22,7 @@
 	require_once 'classes/PhpConsole.php';
 	include('include/login_functions.php');
 	
-	PhpConsole::start();
+	//PhpConsole::start();
 	error_reporting(E_ALL);
 	if(isset($_SESSION['enterid'])){
 		$user_id = $_SESSION['enterid'];
