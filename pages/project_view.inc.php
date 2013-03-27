@@ -76,7 +76,7 @@ else{
 	$workmates = $project->get_workmates();
 	foreach($workmates as $workmate){
 		/* @var $workmate AssociatedUser */
-		echo '<a href="index.php?user_id='.$workmate->get_id().'"><img src="photos/'.$workmate->get_picture().'" width="60" height="60" alt="'.$workmate->get_name().'" title="'.$workmate->get_name().'"> </a>';
+		echo '<a href="index.php?user_id='.$workmate->get_id().'"><img src="photos/'.$workmate->get_picture().'" width="60" height="60" alt="'.$workmate->get_name().'" title="'.$workmate->get_name().'"></a> ';
 	}
 	?>
 	<hr>
