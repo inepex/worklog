@@ -57,23 +57,23 @@ else{
 	</div>
 
 	<hr>
-	<h4>Description:</h4>
+	<h4><img src="images/description.png"> Description:</h4>
 	<?php echo $project->get_description();?>
 	<hr>
 	<div style="width: 50%; float:left;">
-	<h4>Beginning:</h4>
+	<h4><img src="images/beginning.png"> Beginning:</h4>
 	<?php echo $project->get_beginning();?>
 	</div>
 	<div style="width: 50%; float:right;">
-	<h4>Destination:</h4>
+	<h4><img src="images/destination.png"> Destination:</h4>
 	<?php echo $project->get_destination();?>
 	</div>
 	<div style="clear:both;"></div>
 	<hr>
-	<h4>Start/Deadline:</h4> <?php echo $project->get_start_date().' - '.$project->get_start_date();?>
+	<h4><img src="images/start.png"> Start/Deadline:</h4> <?php echo $project->get_start_date().' - '.$project->get_start_date();?>
 	<hr>
 	
-	<h4>Categories:</h4>
+	<h4><img src="images/categories.png"> Categories:</h4>
 	<?php
 	$categories = $project->get_categories();
 	?>
@@ -91,7 +91,7 @@ else{
 
 	<hr>
 	<div style="clear: both;"></div>
-	<h4>Project Plan</h4>
+	<h4><img src="images/plan.png"> Project Plan</h4>
  
 	<table class="table table-bordered" style="width: 0;">
 		<tr>
@@ -128,7 +128,7 @@ else{
 	</table>
 
 	<hr>
-	<h4 style="float: left;">Statistics</h4>
+	<h4 style="float: left;"><img src="images/statistics.png"> Statistics</h4>
 
 	<table class="table table-bordered">
 
@@ -168,7 +168,7 @@ else{
 	<hr>
 
 
-	<h4 style="float: left;">Latest logs</h4>
+	<h4 style="float: left;"><img src="images/logs.png"> Latest logs</h4>
 
 	<form method="GET" action="project_view.php">
 		<div style="float: right;">
