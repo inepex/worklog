@@ -9,6 +9,7 @@ $.datepicker.setDefaults({
 	dateFormat : 'yy-mm-dd'
 });
 $(function() {
+	$('#login_name').focus();
 	$(".datepicker").datepicker();
 	 $("#duplicate_name").click(function (e){
 	    	e.stopPropagation();
@@ -22,8 +23,6 @@ $(function() {
 	    		e.stopPropagation();
 	    		$("#duplicate_name").addClass("highlight");
 	    	}
-	    	
-	    	
 	    });
 });
 function duplicateProject(projectId,duplicateName){

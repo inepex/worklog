@@ -331,7 +331,21 @@ if(isset($_GET['delete_log']) && Log::is_log_exist($_GET['delete_log'])){
 			echo '<td>'.$log->get_entry().'</td>';
 			echo '<td>'.$work_place->get_name().'</td>';
 			if($user->get_id() == $selected_user->get_id() && $log->is_editable($user->get_id())){
-				echo '<td><a href="index.php?edit_log='.$log->get_id().'&date='.$selected_date->format('Y-m-d').'"><img src="images/modify.png"></a><a href="index.php?date='.$selected_date->format('Y-m-d').'&user_id='.$selected_user->get_id().'&delete_log='.$log->get_id().'"><img src="images/delete.png"></a></td>';
+				echo '<td><a href="index.php?edit_log='.$log->get_id().'&date='.$selected_date->format('Y-m-d').'"><img src="images/modify.png"></a><span class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="images/delete.png"></a>
+					<ul class="dropdown-menu">
+					<table>
+					<tr>
+						<td colspan="2"><img src="images/warning.png"> Biztosan törölni szeretnéd?</td>
+					</tr>
+					<tr>
+						<td><a href="index.php?delete_log='.$log->get_id().'" class="btn" id=""><font color="red">Igen</font></a></td>
+						<td><font class="btn">Nem</font></td>
+					</tr>
+					</table>
+					</ul></td>
+				</span>';
+				//echo '<td><a href="index.php?edit_log='.$log->get_id().'&date='.$selected_date->format('Y-m-d').'"><img src="images/modify.png"></a><a href="#" id="delete_log" value="'.$log->get_id().'"><img src="images/delete.png"></a></td>';
 			}
 			else{
 				echo '<td></td>';
