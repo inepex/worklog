@@ -3,7 +3,7 @@ class StatusBar{
 	private $progress;
 	private $width;
 	private $style; //info, success, warning,danger
-	public function __construct($progress,$style='info', $width = 750){
+	public function __construct($progress,$style='info', $width = 650){
 		$this->set_progress($progress);
 		$this->width = $width;
 		$this->style = $style;

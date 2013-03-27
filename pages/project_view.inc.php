@@ -138,10 +138,10 @@ else{
 		foreach($categories as $category){
 			$percent = $category->get_category_status_in_percent();
 			echo '<tr>
-			<td width="110">'.$category->get_name().' <img src="images/information.png"
+			<td width="180">'.$category->get_name().' <img src="images/information.png"
 			title="'.$category->get_description().'">
 			</td>
-			<td width="770">';
+			<td width="670">';
 			$status_bar = new StatusBar($percent);
 			$status_bar->show_progress_bar();
 			$users_with_planned_hours = $category->get_users_with_planned_hours();
