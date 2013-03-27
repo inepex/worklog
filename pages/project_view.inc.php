@@ -21,6 +21,11 @@ else{
 					 echo $project->get_name().' ('.$project->get_status()->get_name().')'?>
 				</h4>
 				<i><?php echo $project->get_company()->get_name()?> project</i>
+				<?php 
+				$owner = $project->get_user();
+				?>
+				- Owner: <a href="index.php?user_id=<?php echo $owner->get_id()?>">  <?php echo $owner->get_name();?> </a>
+		
 			</div>
 			<span style="float: right;">
 				<div class="dropdown">
@@ -55,31 +60,19 @@ else{
 	<h4>Description:</h4>
 	<?php echo $project->get_description();?>
 	<hr>
+	<div style="width: 50%; float:left;">
 	<h4>Beginning:</h4>
 	<?php echo $project->get_beginning();?>
-	<hr>
+	</div>
+	<div style="width: 50%; float:right;">
 	<h4>Destination:</h4>
 	<?php echo $project->get_destination();?>
+	</div>
+	<div style="clear:both;"></div>
 	<hr>
 	<h4>Start/Deadline:</h4> <?php echo $project->get_start_date().' - '.$project->get_start_date();?>
 	<hr>
-	<?php 
-	$owner = $project->get_user();
-	?>
-	<h4>Owner:</h4>
-	<a href="index.php?user_id=<?php echo $owner->get_id()?>"> <img src="photos/<?php echo $owner->get_picture();?>"
-		width="60" height="60" style="border: 4px solid #12ad2b;" alt="<?php echo $owner->get_name();?>" title="<?php echo $owner->get_name();?>">
-	</a> 
-	<hr>
-	<h4>Workmates:</h4>
-	<?php 
-	$workmates = $project->get_workmates();
-	foreach($workmates as $workmate){
-		/* @var $workmate AssociatedUser */
-		echo '<a href="index.php?user_id='.$workmate->get_id().'"><img src="photos/'.$workmate->get_picture().'" width="60" height="60" alt="'.$workmate->get_name().'" title="'.$workmate->get_name().'"></a> ';
-	}
-	?>
-	<hr>
+	
 	<h4>Categories:</h4>
 	<?php
 	$categories = $project->get_categories();
@@ -99,16 +92,15 @@ else{
 	<hr>
 	<div style="clear: both;"></div>
 	<h4>Project Plan</h4>
-
-
+ 
 	<table class="table table-bordered" style="width: 0;">
 		<tr>
 			<th></th>
 			<?php
-
+			$workmates = $project->get_workmates();
 			foreach($workmates as $workmate){
 				/* @var $u AssociatedUser */
-				echo '<th style="text-align:center!important;"><img src="photos/'.$workmate->get_picture().'" width="30" alt="'.$workmate->get_name().'" title="'.$workmate->get_name().'"><br><span style="font-size:10px;">'.$workmate->get_name().'</span></th>';
+				echo '<th style="text-align:center!important;"><a href="index.php?user_id='.$workmate->get_id().'"><img src="photos/'.$workmate->get_picture().'" width="30" alt="'.$workmate->get_name().'" title="'.$workmate->get_name().'"></a><br><span style="font-size:10px;">'.$workmate->get_name().'</span></th>';
 			}
 			?>
 			<th>SUM</th>
@@ -157,7 +149,7 @@ else{
 				/* @var $user_with_planned_hours AssociatedUser */
 				$worked_hours  = $user_with_planned_hours->get_worked_hours_in_associated_category($category);
 				$planned_hours = $user_with_planned_hours->get_planned_hours_in_associated_category($category);
-				echo '<div class="statistic_member"><font'.(((substr($worked_hours,0,2)*60+ substr($worked_hours,3,2))>(substr($planned_hours,0,2)*60+ substr($planned_hours,3,2)))?' color="red"':'').'><img src="photos/'.$user_with_planned_hours->get_picture().'" width="20" alt="'.$user_with_planned_hours->get_name().'" title="'.$user_with_planned_hours->get_name().'">&nbsp;'.$worked_hours.'/'.$planned_hours.'</font></div>';
+				echo '<div class="statistic_member"><font'.(((substr($worked_hours,0,2)*60+ substr($worked_hours,3,2))>(substr($planned_hours,0,2)*60+ substr($planned_hours,3,2)))?' color="red"':'').'><a href="index.php?user_id='.$workmate->get_id().'"><img src="photos/'.$user_with_planned_hours->get_picture().'" width="20" alt="'.$user_with_planned_hours->get_name().'" title="'.$user_with_planned_hours->get_name().'"></a>&nbsp;'.$worked_hours.'/'.$planned_hours.'</font></div>';
 			}
 			echo '
 			</td>
