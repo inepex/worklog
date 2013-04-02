@@ -51,7 +51,10 @@ class Company{
 		$query = "SELECT * FROM worklog_companies WHERE worklog_company_id=".$id;
 		$select_result = mysql_query($query);
 		if(mysql_affected_rows() != 1){
-			debug("Warning: the COMPANY id is not unique!");
+			debug_print_backtrace();
+			debug(debug_print_backtrace());
+			debug_backtrace();
+			debug("Warning: the COMPANY id is not unique! Called with:".$id);
 		}
 		else{
 			$row = mysql_fetch_assoc($select_result);

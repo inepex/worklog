@@ -71,6 +71,9 @@ class AssociatedCategory extends Category{
 			if($sum_for_category != 0){
 				$percent = round(($worked_hours*60+$worked_minutes)/(($sum_for_category*60)/100), 2);
 			}
+			elseif($sum_for_category == 0 && $worked_hours*60+$worked_minutes>0){
+				$percent =100;
+			}
 			return $percent;
 	}
 	public function is_associated_category_in_use(){
@@ -82,6 +85,14 @@ class AssociatedCategory extends Category{
 		else{
 			return false;
 		}
+	}
+	public function is_user_have_planned_hours($user){
+		foreach($this->get_users_with_planned_hours() as $u){
+			if($u->get_id() == $user->get_id()){
+				return true;
+			}
+		}
+		return false;
 	}
 }
 ?>

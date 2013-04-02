@@ -93,9 +93,11 @@ class Project{
 		$select_result = mysql_query($query);
 		while($row = mysql_fetch_assoc($select_result)){
 			$project = new Project($row['worklog_project_id']);
-			$user = $project->get_user();
-			$workmates = $project->get_workmates();
-			if(count($project->get_categories()) > 0 && ($user->get_id() == $user_id || $project->is_user_workmate($user_id))){
+			$owner = $project->get_user();
+			//$workmates = $project->get_workmates();
+			//debug(count($project->get_categories_of_user_with_planned_hours(new User($user_id))));
+			if(count($project->get_categories_of_user_with_planned_hours(new User($user_id))) > 0 && ($owner->get_id() == $user_id || $project->is_user_workmate($user_id))){
+				//debug("pushed");
 				array_push($projects,$project);
 			}
 		}
@@ -195,6 +197,16 @@ class Project{
 	}
 	public function get_categories(){
 		return $this->categories;
+	}
+	public function get_categories_of_user_with_planned_hours($user){
+		$categories = array();
+		foreach($this->categories as $category){
+			/* @var $category AssociatedCategory */
+			if($category->is_user_have_planned_hours($user)){
+				array_push($categories, $category);
+			}
+		}
+		return $categories;
 	}
 	public function get_status(){
 		return $this->status;
@@ -345,7 +357,12 @@ class Project{
 		}
 		else{
 			$sum_of_worked_hours_parts = explode(':',$this->get_sum_of_worked_hours($user_id));
-			$sum_percent = ($sum_of_worked_hours_parts[0]*60+$sum_of_worked_hours_parts[1])/($this->get_project_plan()->get_sum_of_entries($user_id)*60/100);
+			if($this->get_project_plan()->get_sum_of_entries($user_id) == 0){
+				$sum_percent = 100;
+			}
+			else{
+				$sum_percent = ($sum_of_worked_hours_parts[0]*60+$sum_of_worked_hours_parts[1])/($this->get_project_plan()->get_sum_of_entries($user_id)*60/100);
+			}
 			return round($sum_percent,2);
 		}
 	}

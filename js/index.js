@@ -77,23 +77,14 @@ function processCategoriesJson(categoriesJson) {
 }
 function fillCategoriesSelect(categories) {
 	$('#category_select').empty();
-	if (categories.length == 0) {
-		alert("A project nem tartalmaz kategoriákat. Válassz másik projectet!");// TODO:
-																				// megírni
-																				// a
-																				// Notification
-																				// ajax
-																				// osztályt
-	} else {
 		for (i = 0; i < categories.length; i++) {
 			if($("#selected_category_id").val() != undefined && categories[i]['assoc_id'] == $("#selected_category_id").val() ){
-				$('#category_select').append($("<option  selected='selected'></option>").attr("value",categories[i]['assoc_id']).text(categories[i]['name']));
+				$('#category_select').append($("<option  selected='selected'></option>").attr("value",categories[i]['assoc_id']).attr("title",categories[i]['description']).text(categories[i]['name']));
 			}
 			else{
-				$('#category_select').append($("<option></option>").attr("value",categories[i]['assoc_id']).text(categories[i]['name']));	
+				$('#category_select').append($("<option></option>").attr("value",categories[i]['assoc_id']).attr("title",categories[i]['description']).text(categories[i]['name']));	
 			}
 		}
-	}
 }
 //
 // date select fill

@@ -56,7 +56,12 @@ class User{
 			$this->email     = $row['email'];
 			$this->enter_date= $row['enterdate'];
 			$this->name      = $row['name'];
-			$this->picture   = $row['picture'];
+			if($row['picture'] == ""){
+				$this->picture = "nopic.png";
+			}
+			else{
+				$this->picture   = $row['picture'];
+			}
 			$this->default_place = new WorkPlace($row['default_place_id']);
 		}
 	}

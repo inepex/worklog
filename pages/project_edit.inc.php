@@ -291,7 +291,7 @@ else{
 				foreach ($workmates as $workmate){
 					/* @var $workmate AssociatedUser */
 					echo '<tr>
-					<td width="120"><img src="photos/'.$workmate->get_picture().'" width="20" height="20">
+					<td width="120"><img src="photos/'.$workmate->get_picture().'" width="20" height="20" alt="'.$workmate->get_name().'"  title="'.$workmate->get_name().'">
 					'.$workmate->get_name().'</td>
 					<td>'.(!$workmate->is_have_log_in_project()?'<span class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="images/delete.png"></a>

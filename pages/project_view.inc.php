@@ -157,9 +157,9 @@ else{
 			</tr>';
 		} 
 		$progress_bar = new StatusBar($project->get_worked_per_planned_hour_in_percent(), 'success');
-		echo '<tr><td>SUM</td><td>';
+		echo '<tr><td width="180">SUM</td><td width="670">';
 		$progress_bar->show_progress_bar();
-		echo '</td><td><font '.(($project->get_worked_per_planned_hour_in_percent()>100)?'color="red"':'').'>'.$project->get_sum_of_worked_hours().' / '.$project->get_project_plan()->get_sum_of_entries().':00 <br><span style="font-size:16px;font-weight:bold;">'.$project->get_worked_per_planned_hour_in_percent().'%</span></font></td></tr>';
+		echo '</td><td width="100"><font '.(($project->get_worked_per_planned_hour_in_percent()>100)?'color="red"':'').'>'.$project->get_sum_of_worked_hours().' / '.$project->get_project_plan()->get_sum_of_entries().':00 <br><span style="font-size:16px;font-weight:bold;">'.$project->get_worked_per_planned_hour_in_percent().'%</span></font></td></tr>';
 		
 		
 		?>
@@ -191,7 +191,7 @@ else{
 					if(isset($_GET['associated_category_id']) && $_GET['associated_category_id'] == $category->get_assoc_id()){
 						$selected = 'selected = "selected"';
 					}
-					echo '<option value="'.$category->get_assoc_id().'" '.$selected.' >'.$category->get_name().'</option>';
+					echo '<option value="'.$category->get_assoc_id().'" '.$selected.' title="'.$category->get_description().'">'.$category->get_name().'</option>';
 				}
 				?>
 			</select> <input type="text" style="width: 80px;" value="datefrom"
