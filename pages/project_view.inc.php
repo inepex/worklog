@@ -149,7 +149,7 @@ else{
 				/* @var $user_with_planned_hours AssociatedUser */
 				$worked_hours  = $user_with_planned_hours->get_worked_hours_in_associated_category($category);
 				$planned_hours = $user_with_planned_hours->get_planned_hours_in_associated_category($category);
-				echo '<div class="statistic_member"><font'.(((substr($worked_hours,0,2)*60+ substr($worked_hours,3,2))>(substr($planned_hours,0,2)*60+ substr($planned_hours,3,2)))?' color="red"':'').'><a href="index.php?user_id='.$workmate->get_id().'"><img src="photos/'.$user_with_planned_hours->get_picture().'" width="20" alt="'.$user_with_planned_hours->get_name().'" title="'.$user_with_planned_hours->get_name().'"></a>&nbsp;'.$worked_hours.'/'.$planned_hours.'</font></div>';
+				echo '<div class="statistic_member"><font'.(((substr($worked_hours,0,2)*60+ substr($worked_hours,3,2))>(substr($planned_hours,0,2)*60+ substr($planned_hours,3,2)))?' color="red"':'').'><a href="index.php?user_id='.$user_with_planned_hours->get_id().'"><img src="photos/'.$user_with_planned_hours->get_picture().'" width="20" alt="'.$user_with_planned_hours->get_name().'" title="'.$user_with_planned_hours->get_name().'"></a>&nbsp;'.$worked_hours.'/'.$planned_hours.'</font></div>';
 			}
 			echo '
 			</td>
