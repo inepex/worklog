@@ -30,12 +30,10 @@
 		$user_name = $user->get_user_name();
 		$user_picture = $user->get_picture();
 
-	// 	//error handler
+	//error handler
 	require_once 'include/mail/sendErrorMail.php';
 	set_error_handler('send_error_mail');
-	trigger_error("egy hiba keletkezett");
-	
-	// 	//
+	//
 ?>
 <!DOCTYPE html>
 <html>
