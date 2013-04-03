@@ -141,7 +141,7 @@ class Log{
 		$query = "SELECT * FROM worklog_log WHERE worklog_log_id=".$id;
 		$select_result = mysql_query($query);
 		if(mysql_affected_rows() != 1){
-			debug("Warning: the LOG id is not unique!");
+			trigger_error("Warning: the LOG id is not unique! Called with:".$id);
 		}
 		else{
 			$row = mysql_fetch_assoc($select_result);

@@ -94,10 +94,7 @@ class Project{
 		while($row = mysql_fetch_assoc($select_result)){
 			$project = new Project($row['worklog_project_id']);
 			$owner = $project->get_user();
-			//$workmates = $project->get_workmates();
-			//debug(count($project->get_categories_of_user_with_planned_hours(new User($user_id))));
 			if(count($project->get_categories_of_user_with_planned_hours(new User($user_id))) > 0 && ($owner->get_id() == $user_id || $project->is_user_workmate($user_id))){
-				//debug("pushed");
 				array_push($projects,$project);
 			}
 		}
@@ -135,7 +132,7 @@ class Project{
 		$query = "SELECT * FROM worklog_projects WHERE worklog_project_id=".$id;
 		$select_result = mysql_query($query);
 		if(mysql_affected_rows() != 1){
-			debug("Warning: the id is not unique! Called with project_id:".$id);
+			trigger_error("Warning: the id is not unique! Called with project_id:".$id);
 		}
 		else{
 			$row = mysql_fetch_assoc($select_result);

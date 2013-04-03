@@ -52,7 +52,7 @@ class Category{
 		$query = "SELECT * FROM worklog_categories WHERE worklog_category_id=".$id;
 		$select_result = mysql_query($query);
 		if(mysql_affected_rows() != 1){
-			debug("Warning: the CATEGORY id is not exist or not unique!");
+			trigger_error("Warning: the CATEGORY id is not exist or not unique! Called with:".$id);
 		}
 		else{
 			$row = mysql_fetch_assoc($select_result);
