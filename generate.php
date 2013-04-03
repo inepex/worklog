@@ -22,14 +22,6 @@
 	require_once 'classes/PhpConsole.php';
 	
 	include('include/login_functions.php');
-// 	//error handler
-	function err_handler($errno, $errstr, $errfile, $errline, $errcontext){
-		
-	}
-	set_error_handler('send_error_mail');
-	trigger_error("egy hiba keletkezett");
-	require_once 'include/mail/sendErrorMail.php';
-// 	//
 	//PhpConsole::start();
 	error_reporting(E_ALL);
 	if(isset($_SESSION['enterid'])){
@@ -37,7 +29,15 @@
 		$user = new User($user_id);
 		$user_name = $user->get_user_name();
 		$user_picture = $user->get_picture();
+
+	// 	//error handler
+	function err_handler($errno, $errstr, $errfile, $errline, $errcontext){
+	
 	}
+	set_error_handler('send_error_mail');
+	trigger_error("egy hiba keletkezett");
+	require_once 'include/mail/sendErrorMail.php';
+	// 	//
 ?>
 <!DOCTYPE html>
 <html>
@@ -74,3 +74,6 @@
 	<?php foreach( $include_list[ 'foot' ] as $inc_file ) include( $inc_file ) ?>
 	
 </body>
+<?php 
+}
+?>
