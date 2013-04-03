@@ -5,7 +5,6 @@ class AssociatedCategory extends Category{
 	private $assoc_id;
 	private $project_id;
 	private $description;
-	//private $estimate_time;
 	public static function new_associated_category($project_id, $category_id, $category_description){
 		$query = "INSERT INTO worklog_projects_category_assoc (worklog_project_id, worklog_category_id, category_description) VALUES ('".$project_id."','".$category_id."','".$category_description."')";
 		$select_result = mysql_query($query);

@@ -25,6 +25,5 @@ http://assdfasdfasdfdfís.ddd
 A brit kutatók úgy gyorsították fel a kábelben száguldó fény sebességét, hogy kivették az üveget az üvegszálból. Az így létrehozott, belül üreges, de a fény irányát továbbra is megtartó kábel belsejében azonban még mindig túl nagy a főleg hosszú távon bekövetkező jelveszteség ahhoz, hogy a távközlési vállalatok egymás lábára taposva rohanjanak lecserélni az óceánokban most használt megoldásokat. A 3,5 dB/km jelveszteséggel dolgozó új kábel amúgy 37 párhuzamos csatornán egyszerre adva éri el a másodpercenkénti 1,48 terabites adatátviteli sebességet, és ezzel főleg a rövid távú összeköttetés oldható meg. A sebesség például egy-egy több száz gépet alkalmazó adatközpontban jöhet jól az adatokat tároló és feldolgozó egységek összekötésére.
 http://asasdfasdfasdfasdfasdfdfís.adsf
 A kutatók most azon dolgoznak, hogy a hosszabb távú kapcsolatoknál szükség";
-
-echo Tools::identify_link($text);
+print_r(debug_backtrace());
 ?>

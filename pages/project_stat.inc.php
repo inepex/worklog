@@ -21,7 +21,7 @@ if(isset($_GET['projects_status']) && $_GET['projects_status'] != "" && $_GET['p
 		<div class="titlebar">
 			<h4>
 				<?php echo $selected_user->get_name();?>
-				's Worklog - ProjectStat View
+				's Worklog - Status
 			</h4>
 			<form method="get">
 				<select name="user_id">

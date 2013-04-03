@@ -229,7 +229,7 @@ if(isset($_GET['delete_log']) && Log::is_log_exist($_GET['delete_log'])){
 		<div class="titlebar" style="float: left;">
 			<h4>
 				<?php echo $selected_user->get_name();?>
-				's Worklog - LogView
+				's Worklog - Logs
 			</h4>
 			<form method="GET">
 				<select name="date">
