@@ -31,12 +31,10 @@
 		$user_picture = $user->get_picture();
 
 	// 	//error handler
-	function err_handler($errno, $errstr, $errfile, $errline, $errcontext){
-	
-	}
+	require_once 'include/mail/sendErrorMail.php';
 	set_error_handler('send_error_mail');
 	trigger_error("egy hiba keletkezett");
-	require_once 'include/mail/sendErrorMail.php';
+	
 	// 	//
 ?>
 <!DOCTYPE html>
