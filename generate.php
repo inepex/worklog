@@ -20,13 +20,14 @@
 	require_once 'classes/Tools.php';
 	require_once 'classes/Log.php';
 	require_once 'classes/PhpConsole.php';
+	require_once 'include/mail/sendErrorMail.php';
 	include('include/login_functions.php');
 // 	//error handler
-// 	function err_handler($errno, $errstr, $errfile, $errline, $errcontext){
+	function err_handler($errno, $errstr, $errfile, $errline, $errcontext){
 		
-// 	}
-// 	set_error_handler('send_error_mail');
-// 	trigger_error("egy hiba keletkezett");
+	}
+	set_error_handler('send_error_mail');
+	trigger_error("egy hiba keletkezett");
 // 	//
 	//PhpConsole::start();
 	error_reporting(E_ALL);
