@@ -1,10 +1,10 @@
 <?php
 require_once 'class.phpmailer.php';
 function send_error_mail($errno, $errstr, $errfile, $errline, $errcontext){
-	$mail_body = '<font color="red">Worklog error!</font>';
-	$mail_body .= '<font>File:'.$errfile.'</font>';
-	$mail_body .= '<font>Line:'.$errline.'</font>';
-	$mail_body .= '<font>Error:'.$errstr.'</font>';
+	$mail_body .= '<div>Felhasználó:'.$user->get_name().'</div>';
+	$mail_body .= '<div>File:'.$errfile.'</div>';
+	$mail_body .= '<div>Line:'.$errline.'</div>';
+	$mail_body .= '<div>Error:'.$errstr.'</div>';
 	
 	$mail = new PHPMailer();
 	$mail->Mailer = 'smtp';
