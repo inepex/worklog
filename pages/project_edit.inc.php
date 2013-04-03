@@ -113,7 +113,7 @@ if(isset($_GET['project_id']) && $_GET['project_id'] != "" && Project::is_projec
 	}
 	//
 	//update project plan
-	if(isset($_POST['update_project_plan'])){
+	if(isset($_POST['update_project_plan']) && isset($_POST['plan_entry_value'])){
 		for($i=0; $i<count($_POST['plan_entry_value']); $i++){
 			if(!preg_match('/[0-9]/', $_POST['plan_entry_value'][$i])){
 					Notification::warn($_POST['plan_entry_value'][$i]." is not a number!");
