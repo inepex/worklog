@@ -60,11 +60,11 @@ else{
 	<h4><img src="images/description.png"> Description:</h4>
 	<?php echo $project->get_description();?>
 	<hr>
-	<div style="width: 50%; float:left;">
+	<div style="width: 49%; float:left;">
 	<h4><img src="images/beginning.png"> Beginning:</h4>
 	<?php echo $project->get_beginning();?>
 	</div>
-	<div style="width: 50%; float:right;">
+	<div style="width: 49%; float:right;">
 	<h4><img src="images/destination.png"> Destination:</h4>
 	<?php echo $project->get_destination();?>
 	</div>
