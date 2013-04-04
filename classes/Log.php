@@ -49,6 +49,56 @@ class Log{
 		}
 		
 	}
+	
+	
+	public static function get_sum_time_of_logs_on_a_selected_day($date=""){
+
+		if($date != ""){
+			$date_condition = " AND worklog_log.log_date = '".$date."' ";
+		}
+		
+		$query ='select SEC_TO_TIME(SUM(TIME_TO_SEC(log_to)-TIME_TO_SEC(log_from))) sum_time, connected.log_date  from (SELECT worklog_log.log_from, worklog_log.log_to, worklog_log.log_date FROM `worklog_log`, worklog_projects WHERE worklog_log.worklog_project_id = worklog_projects.worklog_project_id'.$date_condition.' order by log_date ASC) as connected';
+		$select_result = mysql_query($query);
+		if(mysql_affected_rows() == 0){
+			return false;
+		}
+		else{
+			$summary = array();
+			while($row = mysql_fetch_assoc($select_result)){
+				array_push($summary, $row);
+			}
+			return $summary;
+		}
+	}
+	
+	public static function get_sum_time_of_logs_in_a_selected_month($date=""){
+
+		if($date != ""){
+			$date_array = date_parse($date);
+			if($date_array['year'] && $date_array['month'] && $date_array['day']){
+				$date = new DateTime($date_array['year'].'-'.$date_array['month'].'-'.$date_array['day']);
+				$date->modify("first day of this month");
+				$from_date = $date->format("Y-m-d");
+				$date->modify("last day of this month");
+				$to_date = $date->format("Y-m-d");
+				$date_condition = " AND worklog_log.log_date >= '".$from_date."' AND worklog_log.log_date <= '".$to_date."'";
+			}
+		}
+		$query ='select SEC_TO_TIME(SUM(TIME_TO_SEC(log_to)-TIME_TO_SEC(log_from))) sum_time, connected.log_date  from (SELECT worklog_log.log_from, worklog_log.log_to, worklog_log.log_date FROM `worklog_log`, worklog_projects WHERE worklog_log.worklog_project_id = worklog_projects.worklog_project_id'.$date_condition.' order by log_date ASC) as connected';
+		$select_result = mysql_query($query);
+		if(mysql_affected_rows() == 0){
+			return false;
+		}
+		else{
+			$summary = array();
+			while($row = mysql_fetch_assoc($select_result)){
+				array_push($summary, $row);
+			}
+			return $summary;
+		}
+	
+	}
+ 	
 	public static function add_log($project_id, $category_assoc_id, $user_id, $date, $from, $to, $entry, $working_place_id, $efficiency_id){
 		$query = "INSERT INTO worklog_log (worklog_project_id, worklog_category_assoc_id, worklog_user_id, log_date, log_from, log_to, log_entry, worklog_place_id, worklog_efficiency_id) VALUES ('".$project_id."','".$category_assoc_id."','".$user_id."','".$date."','".$from."','".$to."','".mysql_real_escape_string($entry)."','".$working_place_id."','".$efficiency_id."')";
 		$insert_result = mysql_query($query);

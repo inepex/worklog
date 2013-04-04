@@ -105,7 +105,7 @@ if(isset($_GET['company_id']) && $_GET['company_id'] != "" && Company::is_compan
 				</select>
 				</td>
 				<td><input type="submit" class="btn" value="OK">
-				</td>
+				</td> 
 			</tr>
 			<?php 
 			$summary = Log::get_sum_time_of_logs($selected_user_id, $selected_date,$selected_company);
@@ -126,6 +126,67 @@ if(isset($_GET['company_id']) && $_GET['company_id'] != "" && Company::is_compan
 			?>
 		</table>
 	</form>
+	
+	<?php 
+	if(isset($_GET['date']) && $_GET['date'] != ""){
+		
+		
+		
+		
+		$date_array = date_parse($_GET['date']);
+		$daysinmonth = cal_days_in_month(CAL_GREGORIAN, $date_array['month'] , $date_array['year']);
+		
+		$current = $date_array['year']."-".$date_array['month']."-1";
+		$total = Log::get_sum_time_of_logs_in_a_selected_month($current);
+		
+		$total = substr($total[0]['sum_time'],0,strpos($total[0]['sum_time'],':'));
+		
+		echo'<div class="subheader">
+		<div class="titlebar">
+		<h4>Daily sum in selected month (Total: '.$total.' hours)</h4>
+		
+		</div>
+		</div>
+		<hr>';
+		
+		 
+		echo"<table><tr>";
+		for ($i=1;$i<=$daysinmonth;$i++) {
+			echo "<td align=\"center\" width=\"30\">$i</td>";
+		}
+		
+		echo"</tr><tr>";
+		
+		for ($i=1;$i<=$daysinmonth;$i++) {
+			
+			$current = $date_array['year']."-".$date_array['month']."-".$i;
+			$summary = Log::get_sum_time_of_logs_on_a_selected_day($current);
+
+		 if ($summary[0]['sum_time']) {
+		 	
+		 	$thisday = (substr($summary[0]['sum_time'],0,strpos($summary[0]['sum_time'],':'))) / $total;
+		 	
+			echo '<td><div style="border:1px solid #d0d0d0; margin:3px; padding:0px;"><div title="'.$summary[0]['sum_time'].'" style="width:20px; height:20px; background:#005826; opacity:'.($thisday).';"></div></div></td>';
+			
+		 } else {
+		 	echo '<td><div style="border:1px solid #d0d0d0; margin:3px; padding:0px;"><div title="00:00:00" style="width:20px; height:20px; background:#005826; opacity:0;"></div></div></td>';
+		 }
+			
+		}
+		
+		
+		
+		
+		 
+		
+		echo"<tr></table>";
+		
+	}
+	
+	
+	
+	
+	?>
 
 </div>
 </div>
