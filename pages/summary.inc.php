@@ -159,7 +159,7 @@ if(isset($_GET['company_id']) && $_GET['company_id'] != "" && Company::is_compan
 		
 		for ($i=1;$i<=$daysinmonth;$i++) {
 			
-			$current = $date_array['year']."-".$date_array['month']."-04";
+			$current = $date_array['year']."-04-04";
 			
 			echo "AAAAAAAAA".$current;
 			
