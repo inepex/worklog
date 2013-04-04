@@ -51,7 +51,7 @@
 		<td><input type="submit" value="OK" name="add_log"
 			class="btn btn-primary"></td>
 	</tr>
-</form>
+
 <tr class="editline">
 			<td colspan="3"><img src="images/information.png"><span
 				id="category_description"></span></td>
@@ -77,4 +77,4 @@
 				?>
 		</select></td>
 			<td></td>
-		</tr>
+		</tr></form>

@@ -11,7 +11,7 @@ class Log{
 	private $to;
 	private $entry;
 	private $working_place_id;
-	private $working_efficiency_id;
+	private $efficiency_id;
 	
 	public static function get_sum_time_of_logs($user_id="", $date="",$company_id=""){
 		$user_condition    = "";
@@ -49,8 +49,8 @@ class Log{
 		}
 		
 	}
-	public static function add_log($project_id, $category_assoc_id, $user_id, $date, $from, $to, $entry, $working_place_id, $working_efficiency_id){
-		$query = "INSERT INTO worklog_log (worklog_project_id, worklog_category_assoc_id, worklog_user_id, log_date, log_from, log_to, log_entry, worklog_place_id, worklog_efficiency_id) VALUES ('".$project_id."','".$category_assoc_id."','".$user_id."','".$date."','".$from."','".$to."','".mysql_real_escape_string($entry)."','".$working_place_id."','".$working_efficiency_id."')";
+	public static function add_log($project_id, $category_assoc_id, $user_id, $date, $from, $to, $entry, $working_place_id, $efficiency_id){
+		$query = "INSERT INTO worklog_log (worklog_project_id, worklog_category_assoc_id, worklog_user_id, log_date, log_from, log_to, log_entry, worklog_place_id, worklog_efficiency_id) VALUES ('".$project_id."','".$category_assoc_id."','".$user_id."','".$date."','".$from."','".$to."','".mysql_real_escape_string($entry)."','".$working_place_id."','".$efficiency_id."')";
 		$insert_result = mysql_query($query);
 		$id = mysql_insert_id();
 		if(mysql_error() == ''){
@@ -156,7 +156,7 @@ class Log{
 			$this->to                = $row['log_to'];
 			$this->entry             = $row['log_entry'];
 			$this->working_place_id  = $row['worklog_place_id'];
-			$this->working_efficiency_id  = $row['worklog_efficiency_id'];
+			$this->efficiency_id  = $row['worklog_efficiency_id'];
 		}
 	}
 	public function get_project_id(){
@@ -189,8 +189,8 @@ class Log{
 	public function get_working_place_id(){
 		return $this->working_place_id;
 	}
-	public function get_working_efficiency_id(){
-		return $this->working_efficiency_id;
+	public function get_efficiency_id(){
+		return $this->efficiency_id;
 	}
 	public function is_editable($use_id){
 		$date = new DateTime($this->date);
@@ -204,7 +204,7 @@ class Log{
 			return false;
 		}
 	}
-	public function edit_log($project_id, $category_assoc_id, $date, $from, $to, $entry,$workplace_id){
+	public function edit_log($project_id, $category_assoc_id, $date, $from, $to, $entry,$workplace_id,$efficiency_id){
 		$query = "UPDATE worklog_log SET worklog_project_id = ".$project_id.",worklog_category_assoc_id = ".$category_assoc_id.", log_date = '".$date."', log_from = '".$from."', log_to = '".$to."', log_entry = '".mysql_real_escape_string($entry)."', worklog_place_id = ".$workplace_id." , worklog_efficiency_id = ".$efficiency_id." WHERE worklog_log_id = ".$this->id;
 		$update_result = mysql_query($query);
 	}

@@ -50,12 +50,25 @@
 		<td><input type="submit" value="SAVE" name="edit_log"
 			class="btn btn-primary"></td>
 	</tr>
-</form>
+
 <tr class="editline">
 	<td colspan="3"><img src="images/information.png"><span
 		id="category_description"></span></td>
 	<td><a href="" id="time_from_link">Now</a></td>
 	<td><a href="" id="time_to_link">Now</a></td>
+	<td><?php 
+		$efficiencies = Efficiency::get_efficiencies();
+		?> <select style="width: 80px;" name="efficiency_id">
+				<?php 
+				foreach($efficiencies as $efficiency){
+					/* @var $workplace Workplace */
+					$selected = "";
+					if($efficiency->get_id() ==  $log->get_efficiency_id()){
+						$selected = "selected";
+					}
+					echo '<option value="'.$efficiency->get_id().'" '.$selected.'>'.$efficiency->get_name().'</option>';
+				}
+				?>
+		</select></td>
 	<td></td>
-	<td></td>
-</tr>
+</tr></form>

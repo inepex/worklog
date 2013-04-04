@@ -174,6 +174,7 @@ if(isset($_POST['add_log'])){
 		$error = true;
 	}
 	if(!Efficiency::is_efficiency_exist($_POST['efficiency_id'])){
+		echo "1111111111111111111---".$_POST['efficiency_id'];
 		Notification::warn("Efficiency doesnt exist!");
 		$error = true;
 	}
@@ -330,7 +331,7 @@ if(isset($_GET['delete_log']) && Log::is_log_exist($_GET['delete_log'])){
 			$project  = new Project($log->get_project_id());
 			$category = new AssociatedCategory($log->get_category_assoc_id());
 			$work_place = new WorkPlace($log->get_working_place_id());
-			$efficiency = new Efficiency($log->get_working_efficiency_id());
+			$efficiency = new Efficiency($log->get_efficiency_id());
 			echo '<tr>';
 			echo '<td><a href="project_view.php?project_id='.$project->get_id().'">'.$project->get_name().'</a></td>';
 			echo '<td>'.$category->get_name().'</td>';
