@@ -350,7 +350,7 @@ if(isset($_GET['delete_log']) && Log::is_log_exist($_GET['delete_log'])){
 			echo '<td>'.date("H:i",strtotime($log->get_from())).'</td>';
 			echo '<td>'.date("H:i",strtotime($log->get_to())).'</td>';
 			echo '<td>'.$diff.'</td>';
-			echo '<td>'.$log->get_entry().'</td>';
+			echo '<td>'.nl2br(Tools::identify_link($log->get_entry())).'</td>';
 			echo '<td>'.$work_place->get_name().' <br><span class="hint">'.$efficiency->get_name().'</span></td>';
 			if($user->get_id() == $selected_user->get_id() && $log->is_editable($user->get_id())){
 				echo '<td><a href="index.php?edit_log='.$log->get_id().'&date='.$selected_date->format('Y-m-d').'"><img src="images/modify.png"></a><span class="dropdown">

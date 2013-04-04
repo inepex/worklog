@@ -22,7 +22,7 @@ class Efficiency{
 		return $efficiencies;
 	}
 	public static function new_efficiency($efficiency_name){
-		$query = "INSERT INTO worklog_efficiency (efficiency_name) VALUES ('".$efficiency_name."')";
+		$query = "INSERT INTO worklog_efficiency (efficiency_name) VALUES ('".strip_tags(mysql_real_escape_string($efficiency_name))."')";
 		$insert_result = mysql_query($query);
 		if(mysql_error() != ""){
 			Notification::error(mysql_error());
@@ -60,7 +60,7 @@ class Efficiency{
 		}
 	}
 	public function edit_name($new_name){
-		$query = "UPDATE worklog_efficiency SET efficiency_name='".$new_name."' WHERE worklog_efficiency_id=".$this->id;
+		$query = "UPDATE worklog_efficiency SET efficiency_name='".strip_tags(mysql_real_escape_string($new_name))."' WHERE worklog_efficiency_id=".$this->id;
 		$update_result = mysql_query($query);
 		$this->name = $new_name;
 		if(mysql_error()!=''){

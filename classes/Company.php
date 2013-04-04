@@ -22,7 +22,7 @@ class Company{
 		return $companies;
 	}
 	public static function new_company($company_name){
-		$query = "INSERT INTO worklog_companies (company_name) VALUES ('".$company_name."')";
+		$query = "INSERT INTO worklog_companies (company_name) VALUES ('".strip_tags(mysql_real_escape_string($company_name))."')";
 		$insert_result = mysql_query($query);
 		if(mysql_error() != ""){
 			Notification::error(mysql_error());
@@ -60,7 +60,7 @@ class Company{
 		}
 	}
 	public function edit_name($new_name){
-		$query = "UPDATE worklog_companies SET company_name='".$new_name."' WHERE worklog_company_id=".$this->id;
+		$query = "UPDATE worklog_companies SET company_name='".strip_tags(mysql_real_escape_string($new_name))."' WHERE worklog_company_id=".$this->id;
 		$update_result = mysql_query($query);
 		$this->name = $new_name;
 		if(mysql_error()!=''){

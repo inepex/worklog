@@ -115,7 +115,7 @@ class Log{
 	}
  	
 	public static function add_log($project_id, $category_assoc_id, $user_id, $date, $from, $to, $entry, $working_place_id, $efficiency_id){
-		$query = "INSERT INTO worklog_log (worklog_project_id, worklog_category_assoc_id, worklog_user_id, log_date, log_from, log_to, log_entry, worklog_place_id, worklog_efficiency_id) VALUES ('".$project_id."','".$category_assoc_id."','".$user_id."','".$date."','".$from."','".$to."','".mysql_real_escape_string($entry)."','".$working_place_id."','".$efficiency_id."')";
+		$query = "INSERT INTO worklog_log (worklog_project_id, worklog_category_assoc_id, worklog_user_id, log_date, log_from, log_to, log_entry, worklog_place_id, worklog_efficiency_id) VALUES ('".$project_id."','".$category_assoc_id."','".$user_id."','".$date."','".$from."','".$to."','".strip_tags(mysql_real_escape_string($entry))."','".$working_place_id."','".$efficiency_id."')";
 		$insert_result = mysql_query($query);
 		$id = mysql_insert_id();
 		if(mysql_error() == ''){
@@ -249,7 +249,7 @@ class Log{
 		return $this->to;
 	}
 	public function get_entry(){
-		return Tools::identify_link($this->entry);
+		return $this->entry;
 	}
 	public function get_working_place_id(){
 		return $this->working_place_id;
@@ -270,7 +270,7 @@ class Log{
 		}
 	}
 	public function edit_log($project_id, $category_assoc_id, $date, $from, $to, $entry,$workplace_id,$efficiency_id){
-		$query = "UPDATE worklog_log SET worklog_project_id = ".$project_id.",worklog_category_assoc_id = ".$category_assoc_id.", log_date = '".$date."', log_from = '".$from."', log_to = '".$to."', log_entry = '".mysql_real_escape_string($entry)."', worklog_place_id = ".$workplace_id." , worklog_efficiency_id = ".$efficiency_id." WHERE worklog_log_id = ".$this->id;
+		$query = "UPDATE worklog_log SET worklog_project_id = ".$project_id.",worklog_category_assoc_id = ".$category_assoc_id.", log_date = '".$date."', log_from = '".$from."', log_to = '".$to."', log_entry = '".strip_tags(mysql_real_escape_string($entry))."', worklog_place_id = ".$workplace_id." , worklog_efficiency_id = ".$efficiency_id." WHERE worklog_log_id = ".$this->id;
 		$update_result = mysql_query($query);
 	}
 }

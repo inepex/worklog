@@ -53,7 +53,7 @@ class Project{
 		}
 		$search_condition = " WHERE 1";
 		if($keyword != ""){
-			$search_condition = ' WHERE project_name like "%'.$keyword.'%" OR project_description like "%'.$keyword.'%" OR beginning like "%'.$keyword.'%" OR destination like "%'.$keyword.'%"';
+			$search_condition = ' WHERE project_name like "%'.strip_tags(mysql_real_escape_string($keyword)).'%" OR project_description like "%'.$keyword.'%" OR beginning like "%'.$keyword.'%" OR destination like "%'.$keyword.'%"';
 		}
 		$page_condition = "";
 		if($page !== ""){
@@ -117,7 +117,7 @@ class Project{
 		}
 	}
 	public static function new_project($name,$company_id,$description,$beginning, $destination,$start,$deadline,$user_id){
-		$query = "INSERT INTO worklog_projects (worklog_company_id, worklog_user_id, project_name, project_description,beginning, destination, start_date, end_date, project_status) VALUES ('".$company_id."','".$user_id."','".mysql_real_escape_string($name)."','".mysql_real_escape_string($description)."','".mysql_real_escape_string($beginning)."','".mysql_real_escape_string($destination)."','".$start."','".$deadline."','2')";
+		$query = "INSERT INTO worklog_projects (worklog_company_id, worklog_user_id, project_name, project_description,beginning, destination, start_date, end_date, project_status) VALUES ('".$company_id."','".$user_id."','".strip_tags(mysql_real_escape_string($name))."','".strip_tags(mysql_real_escape_string($description))."','".strip_tags(mysql_real_escape_string($beginning))."','".strip_tags(mysql_real_escape_string($destination))."','".$start."','".$deadline."','2')";
 		$insert_result = mysql_query($query);
 		if(mysql_error() != ""){
 			Notification::error(mysql_error());
@@ -175,13 +175,13 @@ class Project{
 		return $this->name;
 	}
 	public function get_description(){
-		return Tools::identify_link($this->description);
+		return $this->description;
 	}
 	public function get_beginning(){
-		return Tools::identify_link($this->beginning);
+		return $this->beginning;
 	}
 	public function get_destination(){
-		return Tools::identify_link($this->destination);
+		return $this->destination;
 	}
 	public function get_start_date(){
 		return $this->start_date;

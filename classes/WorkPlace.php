@@ -3,7 +3,7 @@ class WorkPlace{
 	private $id;
 	private $name;
 	public static function add_new_work_place($place_name){
-		$query = "INSERT INTO worklog_places (place_name) VALUES ('".$place_name."')";
+		$query = "INSERT INTO worklog_places (place_name) VALUES ('".strip_tags(mysql_real_escape_string($place_name))."')";
 		$insert_result = mysql_query($query);
 		return new WorkPlace(mysql_insert_id());
 	}
@@ -71,7 +71,7 @@ class WorkPlace{
 		}
 	}
 	public function edit_name($new_name){
-		$query = "UPDATE worklog_places SET place_name='".$new_name."' WHERE worklog_place_id=".$this->id;
+		$query = "UPDATE worklog_places SET place_name='".strip_tags(mysql_real_escape_string($new_name))."' WHERE worklog_place_id=".$this->id;
 		$update_result = mysql_query($query);
 		$this->name = $new_name;
 		if(mysql_error()!=''){

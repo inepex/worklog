@@ -58,15 +58,15 @@ else{
 
 	<hr>
 	<h4><img src="images/description.png"> Description:</h4>
-	<?php echo $project->get_description();?>
+	<?php echo nl2br(Tools::identify_link($project->get_description()));?>
 	<hr>
 	<div style="width: 49%; float:left;">
 	<h4><img src="images/beginning.png"> Beginning:</h4>
-	<?php echo $project->get_beginning();?>
+	<?php echo nl2br(Tools::identify_link($project->get_beginning()));?>
 	</div>
 	<div style="width: 49%; float:right;">
 	<h4><img src="images/destination.png"> Goal/Destination:</h4>
-	<?php echo $project->get_destination();?>
+	<?php echo nl2br(Tools::identify_link($project->get_destination()));?>
 	</div>
 	<div style="clear:both;"></div>
 	<hr>
@@ -250,7 +250,7 @@ else{
 			<td>'.$log->get_date().'</td>
 			<td>'.$log->get_from().'</td>
 			<td>'.$log->get_to().'</td>
-			<td>'.$log->get_entry().'</td>
+			<td>'.nl2br(Tools::identify_link($log->get_entry())).'</td>
 			<td>'.$working_place->get_name().'</td>
 			</tr>';
 		}
