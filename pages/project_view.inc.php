@@ -70,7 +70,7 @@ else{
 	</div>
 	<div style="clear:both;"></div>
 	<hr>
-	<h4><img src="images/start.png"> Start/Deadline:</h4> <?php echo $project->get_start_date().' - '.$project->get_start_date();?>
+	<h4><img src="images/start.png"> Start/Deadline:</h4> <?php echo $project->get_start_date().' - '.$project->get_end_date();?>
 	<hr>
 	
 	<h4><img src="images/categories.png"> Categories:</h4>
