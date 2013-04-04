@@ -2,7 +2,7 @@
 	<tr>
 		<input type="hidden" name="log_id"
 			value="<?php echo $_GET['edit_log'];?>">
-		<td><select style="width: 120px !important;" id="project_select"
+		<td><select style="width: 100px !important;" id="project_select"
 			name="project_id">
 				<?php 
 				$projects = Project::get_projects_which_contain_category($user_id);
@@ -24,15 +24,16 @@
 			name="category_assoc_id">
 		</select></td>
 		<td><input type="hidden" id="selected_date"
-			value="<?php echo $log->get_date();?>"> <select style="width: 120px;"
-			id="date_select" name="date">
+			value="<?php echo $log->get_date();?>"> <select style="width: 115px;"
+			id="date_select"  name="date">
 		</select></td>
 		<td><input type="text" style="width: 40px;" id="time_from" name="from"
 			value="<?php echo date("H:i",strtotime($log->get_from()));?>"></td>
 		<td><input type="text" style="width: 40px;" id="time_to" name="to"
 			value="<?php echo date("H:i",strtotime($log->get_to()));?>"></td>
+		<td></td>
 		<td rowspan="2" class="editline"><textarea
-				style="width: 250px; height: 60px;" name="log_entry"><?php echo $log->get_entry();?></textarea></td>
+				style="width: 210px; height: 60px;" name="log_entry"><?php echo $log->get_entry();?></textarea></td>
 		<td><?php 
 		$workplaces = WorkPlace::get_places();
 		?> <select style="width: 80px;" name="work_place_id">
@@ -56,6 +57,7 @@
 		id="category_description"></span></td>
 	<td><a href="" id="time_from_link">Now</a></td>
 	<td><a href="" id="time_to_link">Now</a></td>
+	<td></td>
 	<td><?php 
 		$efficiencies = Efficiency::get_efficiencies();
 		?> <select style="width: 80px;" name="efficiency_id">

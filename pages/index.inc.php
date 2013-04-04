@@ -320,11 +320,15 @@ if(isset($_GET['delete_log']) && Log::is_log_exist($_GET['delete_log'])){
 			<th width="150">Date</th>
 			<th width="80">From</th>
 			<th width="80">To</th>
-			<th width="300">Log</th>
+			<th width="60">Diff</th>
+			<th width="270">Log</th>
 			<th width="100">Place</th>
 			<th width="85"></th>
 		</tr>
 		<?php 
+		
+		 
+		
 		$logs = $selected_user->get_logs($selected_date->format("Y-m-d"));
 		foreach($logs as $log){
 			/* @var $log Log */
@@ -332,12 +336,21 @@ if(isset($_GET['delete_log']) && Log::is_log_exist($_GET['delete_log'])){
 			$category = new AssociatedCategory($log->get_category_assoc_id());
 			$work_place = new WorkPlace($log->get_working_place_id());
 			$efficiency = new Efficiency($log->get_efficiency_id());
+			
+			
+			$datetime1 = new DateTime($log->get_from());
+			$datetime2 = new DateTime($log->get_to());
+			$interval = $datetime1->diff($datetime2);
+			$diff = $interval->format('%H:%I');
+			
+ 
 			echo '<tr>';
 			echo '<td><a href="project_view.php?project_id='.$project->get_id().'">'.$project->get_name().'</a></td>';
 			echo '<td>'.$category->get_name().'</td>';
 			echo '<td>'.$log->get_date().'</td>';
 			echo '<td>'.date("H:i",strtotime($log->get_from())).'</td>';
 			echo '<td>'.date("H:i",strtotime($log->get_to())).'</td>';
+			echo '<td>'.$diff.'</td>';
 			echo '<td>'.$log->get_entry().'</td>';
 			echo '<td>'.$work_place->get_name().' <br><span class="hint">'.$efficiency->get_name().'</span></td>';
 			if($user->get_id() == $selected_user->get_id() && $log->is_editable($user->get_id())){

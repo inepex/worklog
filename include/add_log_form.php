@@ -27,8 +27,9 @@
 		</td>
 		<td><input type="text" style="width: 40px;" id="time_to" name="to" value="<?php echo (isset($_POST['to'])?$_POST['to']:''); ?>">
 		</td>
+		<td></td>
 		<td rowspan="2" class="editline"><textarea
-				style="width: 250px; height: 60px;" name="log_entry"><?php echo (isset($_POST['log_entry'])?$_POST['log_entry']:'')?></textarea></td>
+				style="width: 210px; height: 60px;" name="log_entry"><?php echo (isset($_POST['log_entry'])?$_POST['log_entry']:'')?></textarea></td>
 		<td><?php 
 		$workplaces = WorkPlace::get_places();
 		?> <select style="width: 80px;" name="work_place_id">
@@ -57,6 +58,7 @@
 				id="category_description"></span></td>
 			<td><a href="" id="time_from_link">Now</a></td>
 			<td><a href="" id="time_to_link">Now</a></td>
+			<td></td>
 			<td><?php 
 		$efficiencies = Efficiency::get_efficiencies();
 		?> <select style="width: 80px;" name="efficiency_id">

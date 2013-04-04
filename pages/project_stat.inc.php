@@ -68,7 +68,7 @@ if(isset($_GET['projects_status']) && $_GET['projects_status'] != "" && $_GET['p
 				<td width="670">';
 				
 				$status_bar->show_progress_bar();
-				echo '</td>
+				echo '</td> 
 				<td width="100"><font '.(($total_hour_per_worked_hour>100)?'color="red"':'').')>'.$category->get_sum_of_worked_hours($selected_user->get_id()).'/ '.$planned_hours.':00 <br><span style="font-size:16px;font-weight:bold;">'.$total_hour_per_worked_hour.'%</span></font></td>
 				</tr>';
 				$user_worked_time_in_category = array();
