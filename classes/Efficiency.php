@@ -14,7 +14,7 @@ class Efficiency{
 	}
 	public static function get_efficiencies(){
 		$efficiencies = array();
-		$query = "SELECT worklog_efficiency_id FROM worklog_efficiency order by efficiency_name";
+		$query = "SELECT worklog_efficiency_id FROM worklog_efficiency order by worklog_efficiency_id ";
 		$select_result = mysql_query($query);
 		while($row = mysql_fetch_assoc($select_result)){
 			array_push($efficiencies, new efficiency($row['worklog_efficiency_id']));

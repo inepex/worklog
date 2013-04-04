@@ -192,7 +192,7 @@
 				</td>
 				</tr>
 				<input type="hidden" name="action" value="add" />';
-			}
+			} 
 			$efficiencies = Efficiency::get_efficiencies();
 			foreach($efficiencies as $efficiency){
 				/* @var $efficiency Efficienxy */
