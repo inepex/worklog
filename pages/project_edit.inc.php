@@ -172,7 +172,7 @@ else{
 		<table class="table table-bordered">
 			<tr>
 				<td width="120">Project name:</td>
-				<td><input type="text" value="<?php echo htmlspecialchars($project->get_name());?>"
+				<td><input type="text" style="width:450px;" value="<?php echo htmlspecialchars($project->get_name());?>"
 					name="project_name"></td>
 			</tr>
 			<tr>

@@ -27,7 +27,7 @@
 		</td>
 		<td><input type="text" style="width: 40px;" id="time_to" name="to" value="<?php echo (isset($_POST['to'])?$_POST['to']:''); ?>">
 		</td>
-		<td></td>
+		<td><img src="images/emotes/<?php echo date('h');?>.png" title="Jó munkát! :)" style="margin:5px;"></td>
 		<td rowspan="2" class="editline"><textarea
 				style="width: 210px; height: 60px;" name="log_entry"><?php echo (isset($_POST['log_entry'])?$_POST['log_entry']:'')?></textarea></td>
 		<td><?php 

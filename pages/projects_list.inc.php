@@ -122,11 +122,11 @@ if(isset($_GET['delete_project']) && $_GET['delete_project'] != "" && Project::i
 				foreach($projects as $project){
 					/* @var $project Project */
 					//$status = new ProjectStatus($project->get_status());
-					echo '<tr>';
+					echo '<tr class="status_'.$project->get_status()->get_code().'">';
 					echo 	'<td>'.$project->get_id().'</td>
 					<td><a href="project_view.php?project_id='.$project->get_id().'">'.$project->get_name().'</a></td>
 					<td>'.$project->get_user()->get_name().'</td>
-					<td>'.$project->get_status()->get_name().'</td>
+					<td >'.$project->get_status()->get_name().'</td>
 					<td>'.$project->get_start_date().'</td>
 					<td>'.$project->get_end_date().'</td>
 					<td><a href="project_edit.php?project_id='.$project->get_id().'"><img src="images/modify.png"</a></td>

@@ -107,13 +107,15 @@ else{
 		</tr>
 		<?php 
 		foreach ($categories as $associated_category){
+		 
 			echo '<tr class="project-plan">';
 			echo '<th width="150">'.$associated_category->get_name().'<br><span class="hint">
 			 '.$associated_category->get_description().'</span></th>';
 			foreach ($workmates as $workmate){
 				//$entry['user_id'] = $workmate->get_id();
-				//$entry['category_assoc_id'];         =
-				echo '<td>'.$project->get_project_plan()->get_sum_for_category_and_user($workmate->get_id(), $associated_category->get_assoc_id()).'</td>';
+				//$entry['category_assoc_id'];     
+				  if ($workmate->get_id()==$_SESSION['enterid']) {$class='class="status_1"';} else {$class='';}
+				echo '<td '.$class.'>'.$project->get_project_plan()->get_sum_for_category_and_user($workmate->get_id(), $associated_category->get_assoc_id()).'</td>';
 			}
 			echo '<td>'.$project->get_project_plan()->get_sum_for_category($associated_category->get_assoc_id()).'</td>';
 			echo '</tr>';

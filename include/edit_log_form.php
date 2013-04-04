@@ -31,7 +31,7 @@
 			value="<?php echo date("H:i",strtotime($log->get_from()));?>"></td>
 		<td><input type="text" style="width: 40px;" id="time_to" name="to"
 			value="<?php echo date("H:i",strtotime($log->get_to()));?>"></td>
-		<td></td>
+		<td><img src="images/emotes/<?php echo date('h');?>.png" title="Jó munkát! :)" style="margin:5px;"></td>
 		<td rowspan="2" class="editline"><textarea
 				style="width: 210px; height: 60px;" name="log_entry"><?php echo $log->get_entry();?></textarea></td>
 		<td><?php 

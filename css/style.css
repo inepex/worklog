@@ -22,6 +22,15 @@ th, td {
 	font-style:italic;
 	font-weight: normal;
 }
+.status_1 {
+	background: #d7ffd1;
+}
+.status_2 {
+	background: #ffdbdb;
+}
+.status_0 {
+	background: #fbfec4;
+}
 
 .navbar .container {
 width: 1000px !important;
