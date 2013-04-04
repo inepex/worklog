@@ -137,7 +137,7 @@ if(isset($_GET['company_id']) && $_GET['company_id'] != "" && Company::is_compan
 		$daysinmonth = cal_days_in_month(CAL_GREGORIAN, $date_array['month'] , $date_array['year']);
 		
 		$current = $date_array['year']."-".$date_array['month']."-1";
-		$total = Log::get_sum_time_of_logs_in_a_selected_month($current);
+		$total = Log::get_sum_time_of_logs_in_a_selected_month($selected_user_id,$current);
 		
 		$total = substr($total[0]['sum_time'],0,strpos($total[0]['sum_time'],':'));
 		
@@ -160,7 +160,7 @@ if(isset($_GET['company_id']) && $_GET['company_id'] != "" && Company::is_compan
 		for ($i=1;$i<=$daysinmonth;$i++) {
 			
 			$current = $date_array['year']."-".str_pad($date_array['month'], 2, "0", STR_PAD_LEFT)."-".str_pad($i, 2, "0", STR_PAD_LEFT);
-			$summary = Log::get_sum_time_of_logs_on_a_selected_day($current);
+			$summary = Log::get_sum_time_of_logs_on_a_selected_day($selected_user_id,$current);
 
 		 if ($summary[0]['sum_time']) {
 		 	
