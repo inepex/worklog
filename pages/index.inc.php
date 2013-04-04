@@ -174,7 +174,6 @@ if(isset($_POST['add_log'])){
 		$error = true;
 	}
 	if(!Efficiency::is_efficiency_exist($_POST['efficiency_id'])){
-		echo "1111111111111111111---".$_POST['efficiency_id'];
 		Notification::warn("Efficiency doesnt exist!");
 		$error = true;
 	}
