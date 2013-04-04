@@ -159,17 +159,14 @@ if(isset($_GET['company_id']) && $_GET['company_id'] != "" && Company::is_compan
 		
 		for ($i=1;$i<=$daysinmonth;$i++) {
 			
-			$current = $date_array['year']."-04-04";
-			
-			echo "AAAAAAAAA".$current;
-			
+			$current = $date_array['year']."-".str_pad($date_array['month'], 2, "0", STR_PAD_LEFT)."-".str_pad($i, 2, "0", STR_PAD_LEFT);
 			$summary = Log::get_sum_time_of_logs_on_a_selected_day($current);
 
 		 if ($summary[0]['sum_time']) {
 		 	
 		 	$thisday = (substr($summary[0]['sum_time'],0,strpos($summary[0]['sum_time'],':'))) / $total;
 		 	
-			echo '<td><div style="border:1px solid #d0d0d0; margin:3px; padding:0px;">'.$current.'<div title="'.$summary[0]['sum_time'].'" style="width:20px; height:20px; background:#005826; opacity:'.($thisday).';"></div></div></td>';
+			echo '<td><div style="border:1px solid #d0d0d0; margin:3px; padding:0px;"><div title="'.$summary[0]['sum_time'].'" style="width:20px; height:20px; background:#005826; opacity:'.($thisday).';"></div></div></td>';
 			
 		 } else {
 		 	echo '<td><div style="border:1px solid #d0d0d0; margin:3px; padding:0px;"><div title="00:00:00" style="width:20px; height:20px; background:#005826; opacity:0;"></div></div></td>';
