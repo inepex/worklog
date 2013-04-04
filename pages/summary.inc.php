@@ -166,10 +166,10 @@ if(isset($_GET['company_id']) && $_GET['company_id'] != "" && Company::is_compan
 		 	
 		 	$thisday = (substr($summary[0]['sum_time'],0,strpos($summary[0]['sum_time'],':'))) / $total;
 		 	
-			echo '<td><div style="border:1px solid #d0d0d0; margin:3px; padding:0px;"><div title="'.$summary[0]['sum_time'].'" style="width:20px; height:20px; background:#005826; opacity:'.($thisday).';"></div></div></td>';
+			echo '<td><div style="border:1px solid #d0d0d0; margin:3px; padding:0px;"><div title="'.$summary[0]['sum_time'].'" style="width:22px; height:20px; background:#005826; opacity:'.($thisday).';"></div></div></td>';
 			
 		 } else {
-		 	echo '<td><div style="border:1px solid #d0d0d0; margin:3px; padding:0px;"><div title="00:00:00" style="width:20px; height:20px; background:#005826; opacity:0;"></div></div></td>';
+		 	echo '<td><div style="border:1px solid #d0d0d0; margin:3px; padding:0px;"><div title="00:00:00" style="width:22px; height:20px; background:#005826; opacity:0;"></div></div></td>';
 		 }
 			
 		}
