@@ -80,10 +80,14 @@ if(isset($_POST['log_id'])){
 		Notification::warn("Workplace doesnt exist!");
 		$error = true;
 	}
+	if(!Efficiency::is_efficiency_exist($_POST['work_efficiency_id'])){
+		Notification::warn("Efficiency doesnt exist!");
+		$error = true;
+	}
 	if(!$error){
 		Notification::notice("Log was updated successfully!");
 		$log_to_edit = new Log($_POST['log_id']);
-		$log_to_edit->edit_log($_POST['project_id'], $_POST['category_assoc_id'], $_POST['date'], $_POST['from'], $_POST['to'], $_POST['log_entry'], $_POST['work_place_id']);
+		$log_to_edit->edit_log($_POST['project_id'], $_POST['category_assoc_id'], $_POST['date'], $_POST['from'], $_POST['to'], $_POST['log_entry'], $_POST['work_place_id'], $_POST['work_efficiency_id']);
 		//TODO: edit
 		echo"<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=index.php\">";
 		exit();
@@ -169,8 +173,12 @@ if(isset($_POST['add_log'])){
 		Notification::warn("Workplace doesnt exist!");
 		$error = true;
 	}
+	if(!Efficiency::is_efficiency_exist($_POST['work_efficiency_id'])){
+		Notification::warn("Efficiency doesnt exist!");
+		$error = true;
+	}
 	if(!$error){
-		Log::add_log($_POST['project_id'], $_POST['category_assoc_id'], $user->get_id(), $_POST['date'], date("H:i",strtotime($_POST['from'])),date("H:i",strtotime($_POST['to'])), $_POST['log_entry'], $_POST['work_place_id']);
+		Log::add_log($_POST['project_id'], $_POST['category_assoc_id'], $user->get_id(), $_POST['date'], date("H:i",strtotime($_POST['from'])),date("H:i",strtotime($_POST['to'])), $_POST['log_entry'], $_POST['work_place_id'], $_POST['work_efficiency_id']);
 		echo"<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=index.php\">";
 		exit();
 	}
