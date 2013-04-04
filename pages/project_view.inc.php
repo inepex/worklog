@@ -65,7 +65,7 @@ else{
 	<?php echo $project->get_beginning();?>
 	</div>
 	<div style="width: 49%; float:right;">
-	<h4><img src="images/destination.png"> Destination:</h4>
+	<h4><img src="images/destination.png"> Goal/Destination:</h4>
 	<?php echo $project->get_destination();?>
 	</div>
 	<div style="clear:both;"></div>
@@ -108,7 +108,8 @@ else{
 		<?php 
 		foreach ($categories as $associated_category){
 			echo '<tr class="project-plan">';
-			echo '<th>'.$associated_category->get_name().'</th>';
+			echo '<th>'.$associated_category->get_name().'<br><span class="hint">
+			 '.$associated_category->get_description().'</span></th>';
 			foreach ($workmates as $workmate){
 				//$entry['user_id'] = $workmate->get_id();
 				//$entry['category_assoc_id'];         =
@@ -138,8 +139,8 @@ else{
 		foreach($categories as $category){
 			$percent = $category->get_category_status_in_percent();
 			echo '<tr>
-			<td width="180">'.$category->get_name().' <img src="images/information.png"
-			title="'.$category->get_description().'">
+			<td width="180">'.$category->get_name().' <br><span class="hint">
+			 '.$category->get_description().'</span>
 			</td>
 			<td width="670">';
 			$status_bar = new StatusBar($percent);

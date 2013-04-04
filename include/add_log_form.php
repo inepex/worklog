@@ -57,6 +57,24 @@
 				id="category_description"></span></td>
 			<td><a href="" id="time_from_link">Now</a></td>
 			<td><a href="" id="time_to_link">Now</a></td>
-			<td></td>
+			<td><?php 
+		$efficiencies = Efficiency::get_efficiencies();
+		?> <select style="width: 80px;" name="efficiency_id">
+				<?php 
+				foreach($efficiencies as $efficiency){
+					/* @var $workplace Workplace */
+					$selected = "";
+					if(isset($_POST['efficiency_id'])){
+						if($efficiency->get_id() == $_POST['efficiency_id']){
+							$selected = "selected";
+						}
+					}
+					else if($efficiency->get_id() ==  $user->get_default_efficiency()->get_id()){
+						$selected = "selected";
+					}
+					echo '<option value="'.$efficiency->get_id().'" '.$selected.'>'.$efficiency->get_name().'</option>';
+				}
+				?>
+		</select></td>
 			<td></td>
 		</tr>

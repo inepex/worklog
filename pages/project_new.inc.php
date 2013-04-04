@@ -81,7 +81,7 @@ if(isset($_POST['new_project'])){
 					<td><textarea style="width: 700px; height: 100px;" name="beginning"><?php echo ((isset($_POST['beginning']))?$_POST['beginning']:'')?></textarea></td>
 				</tr>
 				<tr>
-					<td>Destination:</td>
+					<td>Goal/Destination:</td>
 					<td><textarea style="width: 700px; height: 100px;" name="destination"><?php echo ((isset($_POST['destination']))?$_POST['destination']:'')?></textarea></td>
 				</tr>
 				<tr>

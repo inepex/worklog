@@ -322,6 +322,7 @@ if(isset($_GET['delete_log']) && Log::is_log_exist($_GET['delete_log'])){
 			$project  = new Project($log->get_project_id());
 			$category = new AssociatedCategory($log->get_category_assoc_id());
 			$work_place = new WorkPlace($log->get_working_place_id());
+			$efficiency = new Efficiency($log->get_working_efficiency_id());
 			echo '<tr>';
 			echo '<td><a href="project_view.php?project_id='.$project->get_id().'">'.$project->get_name().'</a></td>';
 			echo '<td>'.$category->get_name().'</td>';
@@ -329,7 +330,7 @@ if(isset($_GET['delete_log']) && Log::is_log_exist($_GET['delete_log'])){
 			echo '<td>'.date("H:i",strtotime($log->get_from())).'</td>';
 			echo '<td>'.date("H:i",strtotime($log->get_to())).'</td>';
 			echo '<td>'.$log->get_entry().'</td>';
-			echo '<td>'.$work_place->get_name().'</td>';
+			echo '<td>'.$work_place->get_name().' <br><span class="hint">'.$efficiency->get_name().'</span></td>';
 			if($user->get_id() == $selected_user->get_id() && $log->is_editable($user->get_id())){
 				echo '<td><a href="index.php?edit_log='.$log->get_id().'&date='.$selected_date->format('Y-m-d').'"><img src="images/modify.png"></a><span class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="images/delete.png"></a>

@@ -17,6 +17,11 @@ th, td {
 	vertical-align: middle;
 	line-height: 1.2 !important;
 }
+.hint {
+	font-size:10px; 
+	font-style:italic;
+	font-weight: normal;
+}
 
 .navbar .container {
 width: 1000px !important;

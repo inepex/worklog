@@ -9,6 +9,7 @@
 	require_once 'classes/WorkPlace.php';
 	require_once 'classes/Notification.php';
 	require_once 'classes/Company.php';
+	require_once 'classes/Efficiency.php';
 	require_once 'classes/Category.php';
 	require_once 'classes/AssociatedUser.php';
 	require_once 'classes/AssociatedCategory.php';
@@ -22,7 +23,7 @@
 	require_once 'classes/PhpConsole.php';
 	
 	include('include/login_functions.php');
-	//PhpConsole::start();
+	PhpConsole::start();
 	error_reporting(E_ALL);
 	if(isset($_SESSION['enterid'])){
 		$user_id = $_SESSION['enterid'];

@@ -12,6 +12,9 @@ if(isset($_POST['save-profile-button'])){
 	if(isset($_POST['default-workplace']) && $_POST['default-workplace'] != ""){
 		$user->edit_default_workplace($_POST['default-workplace']);
 	}
+	if(isset($_POST['default-efficiency']) && $_POST['default-efficiency'] != ""){
+		$user->edit_default_efficiency($_POST['default-efficiency']);
+	}
 	if((isset($_POST['password']) || isset($_POST['re-password'])) && $_POST['password'] != $_POST['re-password']){
 		$error=1;
 		Notification::warn("The passwords are not the same!");
@@ -39,6 +42,11 @@ if($user->get_status() == "2"){
 			echo"<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=user_edit.php\">";
 			exit();
 		}
+		if(isset($_GET['efficiency_id']) && $_GET['efficiency_id'] !=''){
+			Efficiency::delete_efficiency($_GET['efficiency_id']);
+			echo"<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=user_edit.php\">";
+			exit();
+		}
 		if(isset($_GET['place_id']) && $_GET['place_id'] !=''){
 			WorkPlace::delete_work_place($_GET['place_id']);
 			echo"<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=user_edit.php\">";
@@ -54,6 +62,9 @@ if($user->get_status() == "2"){
 		if(isset($_POST['company_name']) && $_POST['company_name'] !=''){
 			Company::new_company($_POST['company_name']);
 		}
+		if(isset($_POST['efficiency_name']) && $_POST['efficiency_name'] !=''){
+			Efficiency::new_efficiency($_POST['efficiency_name']);
+		}
 		if(isset($_POST['place_name']) && $_POST['place_name'] !=''){
 			WorkPlace::new_place($_POST['place_name']);
 		}
@@ -65,6 +76,10 @@ if($user->get_status() == "2"){
 		if(isset($_POST['company_id']) && $_POST['company_id'] !='' && isset($_POST['company_name']) && $_POST['company_name'] !=''){
 			$company = new Company($_POST['company_id']);
 			$company->edit_name($_POST['company_name']);
+		}
+		if(isset($_POST['efficiency_id']) && $_POST['efficiency_id'] !='' && isset($_POST['efficiency_name']) && $_POST['efficiency_name'] !=''){
+			$efficiency = new Efficiency($_POST['efficiency_id']);
+			$efficiency->edit_name($_POST['efficiency_name']);
 		}
 		if(isset($_POST['place_id']) && $_POST['place_id'] !='' && isset($_POST['place_name']) && $_POST['place_name'] !=''){
 			$place = new WorkPlace($_POST['place_id']);
@@ -147,7 +162,23 @@ if($user->get_status() == "2"){
 				</select>
 				</td>
 			</tr>
-
+			<tr>
+				<td>Default efficiency</td>
+				<td><select style="width: 80px;" name="default-efficiency">
+						<?php 
+						$efficiencies = Efficiency::get_efficiencies();
+						foreach($efficiencies as $efficiency){
+							/* @var $workPlace WorkPlace */
+							$selected = "";
+							if($user->get_default_efficiency()->get_id() == $efficiency->get_id()){
+								$selected = "selected";
+							}
+							echo '<option value="'.$efficiency->get_id().'" '.$selected.' >'.$efficiency->get_name().'</option>';
+						}
+						?>
+				</select>
+				</td>
+			</tr>
 			<tr>
 				<td></td>
 				<td><input type="submit" value="Save" name="save-profile-button"

@@ -383,7 +383,8 @@ else{
 			<?php 
 			foreach ($associated_categories as $associated_category){
 				echo '<tr class="project-plan">';
-				echo '<th>'.$associated_category->get_name().'</th>';
+				echo '<th>'.$associated_category->get_name().'<br><span class="hint">
+			 '.$associated_category->get_description().'</span></th>';
 				foreach ($workmates as $workmate){
 					//$entry['user_id'] = $workmate->get_id();
 					//$entry['category_assoc_id'];         = 

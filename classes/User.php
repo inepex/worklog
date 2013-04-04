@@ -9,6 +9,7 @@ class User{
 	protected $name;
 	protected $picture;
 	protected $default_place;
+	protected $default_efficiency;
 	public static function authenticate_user($user_name, $md5password){
 		$query = "SELECT * FROM worklog_users WHERE username ='".$user_name."'";
 		$select_result = mysql_query($query);
@@ -63,6 +64,7 @@ class User{
 				$this->picture   = $row['picture'];
 			}
 			$this->default_place = new WorkPlace($row['default_place_id']);
+			$this->default_efficiency = new Efficiency($row['default_efficiency_id']);
 		}
 	}
 	public function get_id(){
@@ -91,6 +93,9 @@ class User{
 	}
 	public function get_default_place(){
 		return $this->default_place;
+	}
+	public function get_default_efficiency(){
+		return $this->default_efficiency;
 	}
 	public function edit_user_name($user_name){
 		if($user_name == ''){
@@ -126,6 +131,25 @@ class User{
 			}
 		}
 	}
+	
+	public function edit_default_efficiency($default_efficiency_id){
+		if($default_efficiency_id == ''){
+			return false;
+		}
+		else{
+			$query = "UPDATE worklog_users SET default_efficiency_id='".$default_efficiency_id."' WHERE worklog_user_id=".$this->id;
+			$update_result = mysql_query($query);
+			if(mysql_error() == ""){
+				$this->default_efficiency = new Efficiency($default_efficiency_id);
+				return true;
+			}
+			else{
+				Notification::error(mysql_error());
+				return false;
+			}
+		}
+	}
+	
 	public function edit_password($password){//folytatni
 		if($password == ''){
 			return false;
