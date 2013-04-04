@@ -53,19 +53,19 @@ class Notification{
 		}
 	}
 	private function get_error(){
-		return '<div class="alert alert-error" style="position:fixex; top: 10px; width: 890px;"><img src="images/error.png"/>
+		return '<div class="alert alert-error"><img src="images/error.png"/>
 		<button type="button" class="close" data-dismiss="alert">&times;</button>
 		<strong>Error! </strong> '.$this->message.'
 		</div>';
 	}
 	private function get_warn(){
-		return '<div class="alert" style="position:fixed; top: 10px; width: 890px;"><img src="images/warning.png"/>
+		return '<div class="alert"><img src="images/warning.png"/>
 					<button type="button" class="close" data-dismiss="alert">&times;</button>
 					<strong> Warning!</strong> '.$this->message.'
 				</div>';
 	}
 	private function get_notice(){
-		return '<div class="alert alert-success" style="position:fixed; top: 10px; width: 890px;"><img src="images/notice.png"/>
+		return '<div class="alert alert-success"><img src="images/notice.png"/>
 					<button type="button" class="close" data-dismiss="alert">&times;</button>
 					<strong>Notice! </strong> '.$this->message.'
 				</div>';
