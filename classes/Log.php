@@ -51,8 +51,8 @@ class Log{
 	}
 	
 	
-	public static function get_sum_time_of_logs_on_a_selected_day($user_id="",$date=""){
-
+	public static function get_sum_time_of_logs_on_a_selected_day($user_id="",$date="",$company_id=""){
+		$company_condition = "";
 		$user_condition    = "";
 		if($user_id != "" && User::is_exist($user_id)){
 			$user_condition = " AND worklog_log.worklog_user_id = ".$user_id;
@@ -61,8 +61,10 @@ class Log{
 		if($date != ""){
 			$date_condition = " AND worklog_log.log_date = '".$date."' ";
 		}
-		
-		$query ='select SEC_TO_TIME(SUM(TIME_TO_SEC(log_to)-TIME_TO_SEC(log_from))) sum_time, connected.log_date  from (SELECT worklog_log.log_from, worklog_log.log_to, worklog_log.log_date FROM `worklog_log`, worklog_projects WHERE worklog_log.worklog_project_id = worklog_projects.worklog_project_id'.$date_condition.$user_condition.' order by log_date ASC) as connected';
+		if($company_id != "" && Company::is_company_exist($company_id)){
+			$company_condition = " AND worklog_projects.worklog_company_id = ".$company_id;
+		}
+		$query ='select SEC_TO_TIME(SUM(TIME_TO_SEC(log_to)-TIME_TO_SEC(log_from))) sum_time, connected.log_date  from (SELECT worklog_log.log_from, worklog_log.log_to, worklog_log.log_date FROM `worklog_log`, worklog_projects WHERE worklog_log.worklog_project_id = worklog_projects.worklog_project_id'.$date_condition.$user_condition.$company_condition.' order by log_date ASC) as connected';
 		$select_result = mysql_query($query);
 		if(mysql_affected_rows() == 0){
 			return false;
@@ -76,13 +78,15 @@ class Log{
 		}
 	}
 	
-	public static function get_sum_time_of_logs_in_a_selected_month($user_id="",$date=""){
-
+	public static function get_sum_time_of_logs_in_a_selected_month($user_id="",$date="",$company_id=""){
+		$company_condition = "";
 		$user_condition    = "";
 		if($user_id != "" && User::is_exist($user_id)){
 			$user_condition = " AND worklog_log.worklog_user_id = ".$user_id;
 		}
-		
+		if($company_id != "" && Company::is_company_exist($company_id)){
+			$company_condition = " AND worklog_projects.worklog_company_id = ".$company_id;
+		}
 		
 		if($date != ""){
 			$date_array = date_parse($date);
@@ -95,7 +99,7 @@ class Log{
 				$date_condition = " AND worklog_log.log_date >= '".$from_date."' AND worklog_log.log_date <= '".$to_date."'";
 			}
 		}
-		$query ='select SEC_TO_TIME(SUM(TIME_TO_SEC(log_to)-TIME_TO_SEC(log_from))) sum_time, connected.log_date  from (SELECT worklog_log.log_from, worklog_log.log_to, worklog_log.log_date FROM `worklog_log`, worklog_projects WHERE worklog_log.worklog_project_id = worklog_projects.worklog_project_id'.$date_condition.$user_condition.' order by log_date ASC) as connected';
+		$query ='select SEC_TO_TIME(SUM(TIME_TO_SEC(log_to)-TIME_TO_SEC(log_from))) sum_time, connected.log_date  from (SELECT worklog_log.log_from, worklog_log.log_to, worklog_log.log_date FROM `worklog_log`, worklog_projects WHERE worklog_log.worklog_project_id = worklog_projects.worklog_project_id'.$date_condition.$user_condition.$company_condition.' order by log_date ASC) as connected';
 		$select_result = mysql_query($query);
 		if(mysql_affected_rows() == 0){
 			return false;
