@@ -160,6 +160,9 @@ if(isset($_GET['company_id']) && $_GET['company_id'] != "" && Company::is_compan
 		for ($i=1;$i<=$daysinmonth;$i++) {
 			
 			$current = $date_array['year']."-".$date_array['month']."-04";
+			
+			echo "AAAAAAAAA".$current;
+			
 			$summary = Log::get_sum_time_of_logs_on_a_selected_day($current);
 
 		 if ($summary[0]['sum_time']) {
