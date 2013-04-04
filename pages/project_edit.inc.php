@@ -375,7 +375,9 @@ else{
 
 				foreach($workmates as $workmate){
 					/* @var $u AssociatedUser */
-					echo '<th>'.$workmate->get_name().'</th>';
+
+					
+					echo '<th style="text-align:center!important;"><a href="index.php?user_id='.$workmate->get_id().'"><img src="photos/'.$workmate->get_picture().'" width="30" alt="'.$workmate->get_name().'" title="'.$workmate->get_name().'"></a><br><span style="font-size:10px;">'.$workmate->get_name().'</span></th>';
 				}
 				?>
 				<th>SUM</th>
@@ -383,7 +385,7 @@ else{
 			<?php 
 			foreach ($associated_categories as $associated_category){
 				echo '<tr class="project-plan">';
-				echo '<th>'.$associated_category->get_name().'<br><span class="hint">
+				echo '<th width="150">'.$associated_category->get_name().'<br><span class="hint">
 			 '.$associated_category->get_description().'</span></th>';
 				foreach ($workmates as $workmate){
 					//$entry['user_id'] = $workmate->get_id();

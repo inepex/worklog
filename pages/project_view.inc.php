@@ -77,12 +77,12 @@ else{
 	<?php
 	$categories = $project->get_categories();
 	?>
-	<table class="table table-bordered" style="width: 0;">
+	<table class="table table-bordered" style="width: 100%;">
 		<?php 
 		foreach($categories as $category){
 			/* @var $category AssociatedCategory */
 			echo '<tr>
-			<th>'.$category->get_name().'</th>
+			<th width="150">'.$category->get_name().'</th>
 			<td>'.$category->get_description().'</td>
 			</tr>';
 		}
@@ -108,7 +108,7 @@ else{
 		<?php 
 		foreach ($categories as $associated_category){
 			echo '<tr class="project-plan">';
-			echo '<th>'.$associated_category->get_name().'<br><span class="hint">
+			echo '<th width="150">'.$associated_category->get_name().'<br><span class="hint">
 			 '.$associated_category->get_description().'</span></th>';
 			foreach ($workmates as $workmate){
 				//$entry['user_id'] = $workmate->get_id();
