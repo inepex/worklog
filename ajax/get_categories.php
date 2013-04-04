@@ -6,6 +6,7 @@ require_once '../classes/WorkPlace.php';
 require_once '../classes/Notification.php';
 require_once '../classes/Company.php';
 require_once '../classes/Category.php';
+require_once '../classes/Efficiency.php';
 require_once '../classes/AssociatedUser.php';
 require_once '../classes/AssociatedCategory.php';
 require_once '../classes/ProjectStatus.php';
