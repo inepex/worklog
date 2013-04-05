@@ -77,7 +77,7 @@ class Efficiency{
 		return $this->name;
 	}
 	public function is_in_use(){
-		$query = "SELECT worklog_project_id FROM worklog_projects WHERE worklog_efficiency_id = ".$this->id;
+		$query = "SELECT worklog_project_id FROM worklog_log WHERE worklog_efficiency_id = ".$this->id;
 		$select_result = mysql_query($query);
 		if(mysql_error()!=''){
 			trigger_error(mysql_error());

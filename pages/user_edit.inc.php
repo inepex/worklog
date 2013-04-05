@@ -29,7 +29,9 @@ if(isset($_POST['save-profile-button'])){
 		$user->edit_password($_POST['password']);
 	}
 	if(isset($_FILES['profile-photo']['name']) && $_FILES['profile-photo']['name'] != ""){
-		$user->edit_profile_picture($_FILES['profile-photo']);
+		if(!$user->edit_profile_picture($_FILES['profile-photo'])){
+			$error = 1;
+		}
 	}
 	if($error==0){
 		Notification::notice("Saved successfully");

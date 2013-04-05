@@ -177,14 +177,32 @@ class User{
 	}
 	public function edit_profile_picture($picture_file){
 		$target_path = "photos/";
-		unlink($target_path.$this->picture);
-		if(move_uploaded_file($picture_file['tmp_name'], $target_path . basename( $picture_file['name']."-".$this->id))) {
-			$this->picture = $picture_file['name']."-".$this->id;
-			$query = "UPDATE worklog_users SET picture='".$this->picture."' WHERE worklog_user_id=".$this->id;
-			$update_result = mysql_query($query);
-			Notification::notice("The file ".basename($picture_file['name'])." has been uploaded");
-		} else{
-			Notification::warn("There was an error uploading the file, please try again!");
+		$new_path_parts = pathinfo($picture_file["name"]);
+		$new_extension = $new_path_parts['extension'];
+		$new_filename = $new_path_parts['filename'];
+		if($new_extension != "jpg" && $new_extension != "jpeg" && $new_extension != "png" && $new_extension != "gif"){
+			Notification::warn("Wrong picture format!");
+			return false;
+		}
+		else{
+			$old_path_parts = pathinfo($target_path.$this->picture);
+			$old_extension = $old_path_parts['extension'];
+			$old_filename = $old_path_parts['filename'];
+			debug( $old_filename);
+			debug($old_extension);
+			rename($target_path.$this->picture, $target_path.$old_filename."temp");
+			if(move_uploaded_file($picture_file['tmp_name'], $target_path . basename( $new_filename."-".$this->id.".".$new_extension))) {
+				unlink($target_path.$old_filename."temp");
+				$this->picture = $new_filename."-".$this->id.".".$new_extension;
+				$query = "UPDATE worklog_users SET picture='".$this->picture."' WHERE worklog_user_id=".$this->id;
+				$update_result = mysql_query($query);
+				Notification::notice("The file ".basename($picture_file['name'])." has been uploaded");
+				return true;
+			} else{
+				rename($target_path.$old_filename."temp",$target_path.$this->picture);
+				Notification::warn("There was an error uploading the file, please try again!");
+				return false;
+			}	
 		}
 	}
 	public function update_personal_note($note_text){
