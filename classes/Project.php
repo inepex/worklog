@@ -53,7 +53,7 @@ class Project{
 		}
 		$search_condition = " WHERE 1";
 		if($keyword != ""){
-			$search_condition = ' WHERE project_name like "%'.strip_tags(mysql_real_escape_string($keyword)).'%" OR project_description like "%'.$keyword.'%" OR beginning like "%'.$keyword.'%" OR destination like "%'.$keyword.'%"';
+			$search_condition = ' WHERE project_name like "%'.strip_tags(mysql_real_escape_string($keyword)).'%" OR project_description like "%'.strip_tags(mysql_real_escape_string($keyword)).'%" OR beginning like "%'.strip_tags(mysql_real_escape_string($keyword)).'%" OR destination like "%'.strip_tags(mysql_real_escape_string($keyword)).'%"';
 		}
 		$page_condition = "";
 		if($page !== ""){

@@ -11,7 +11,7 @@ class User{
 	protected $default_place;
 	protected $default_efficiency;
 	public static function authenticate_user($user_name, $md5password){
-		$query = "SELECT * FROM worklog_users WHERE username ='".$user_name."'";
+		$query = "SELECT * FROM worklog_users WHERE username ='".strip_tags(mysql_real_escape_string($user_name))."'";
 		$select_result = mysql_query($query);
 		if(mysql_affected_rows() == 0){
 			return false;
