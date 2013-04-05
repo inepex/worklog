@@ -5,6 +5,16 @@ class AssociatedCategory extends Category{
 	private $assoc_id;
 	private $project_id;
 	private $description;
+	public static function is_associated_category_exist($associated_category_id){
+		$query = 'SELECT worklog_projects_category_assoc_id from worklog_projects_category_assoc WHERE worklog_projects_category_assoc_id = '.$associated_category_id;
+		$result = mysql_query($query);
+		if(mysql_affected_rows() == 1){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
 	public static function new_associated_category($project_id, $category_id, $category_description){
 		$query = "INSERT INTO worklog_projects_category_assoc (worklog_project_id, worklog_category_id, category_description) VALUES ('".$project_id."','".$category_id."','".$category_description."')";
 		$select_result = mysql_query($query);
@@ -31,6 +41,11 @@ class AssociatedCategory extends Category{
 	}
 	public function get_description(){
 		return $this->description;
+	}
+	public function update_description($new_description){
+		$this->description = $new_description;
+		$query = 'UPDATE worklog_projects_category_assoc SET category_description="'.strip_tags(mysql_real_escape_string($new_description)).'" WHERE worklog_projects_category_assoc_id = '.$this->assoc_id;
+		$result = mysql_query($query);
 	}
 	public function get_project_id(){
 		return $this->project_id;

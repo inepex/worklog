@@ -26,13 +26,10 @@ $(function() {
 	});
 });
 function fillCategoryDescription(categoryId){
-	console.log(categoryId);
 	var categoryDescription = "";
 	for (i = 0; i < categories.length; i++) {
 		if(categories[i]['assoc_id'] == categoryId){
-			console.log("megvan");
 			categoryDescription = categories[i]['description'];
-			console.log(categoryDescription);
 		}
 	}
 	$('#category_description').text(" "+categoryDescription);
@@ -63,6 +60,7 @@ function getCategories(projectId) {
 	$.ajax({
 		url : "ajax/get_categories.php",
 		type : "POST",
+		async: false,
 		data : {
 			project_id : projectId
 		},

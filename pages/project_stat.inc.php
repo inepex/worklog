@@ -62,8 +62,8 @@ if(isset($_GET['projects_status']) && $_GET['projects_status'] != "" && $_GET['p
 				$total_hour_per_worked_hour = $category->get_category_status_in_percent($selected_user->get_id());
 				$status_bar = new StatusBar($total_hour_per_worked_hour, 'info');
 				echo '<tr>
-				<td width="180">'.$category->get_name().' <img src="images/information.png"
-				title="'.$category->get_description().'">
+				<td width="180">'.$category->get_name().'  <br><span class="hint">
+			 	'.$category->get_description().'</span>
 				</td>
 				<td width="670">';
 				

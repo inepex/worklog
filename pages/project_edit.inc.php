@@ -86,6 +86,15 @@ if(isset($_GET['project_id']) && $_GET['project_id'] != "" && Project::is_projec
 			Notification::warn("Category does not exist!");
 		}
 	}
+	//
+	//edit associated category description
+	if(isset($_POST['associated_category_new_description']) && isset($_POST['associated_category_id']) && AssociatedCategory::is_associated_category_exist($_POST['associated_category_id'])){
+		$associated_category_to_edit = new AssociatedCategory($_POST['associated_category_id']);
+		$project->update_category_description($_POST['associated_category_id'], $_POST['associated_category_new_description']);
+		unset($associated_category_to_edit);
+		echo"<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=project_edit.php?project_id=".$project->get_id()."#categories\">";		
+	}
+	//
 	//delete workmate
 	if(isset($_GET['delete_workmate'])){
 		$workmate = new AssociatedUser($_GET['delete_workmate']);
@@ -319,16 +328,29 @@ else{
 		<h4>Categories</h4>
 		<form method="post" action = "project_edit.php?project_id=<?php echo $project->get_id();?>#categories">
 			<table class="table table-bordered">
-				<tr>
-					<td><select style="width: 120px;" name="category_id">
-							<?php
+				<?php 
+				if(isset($_GET['edit_category']) && AssociatedCategory::is_associated_category_exist($_GET['edit_category'])){
+					$associated_category_to_edit =  new AssociatedCategory($_GET['edit_category']);
+					echo '
+						<tr>
+							<form method="post" action="project_edit.php?project_id='.$project->get_id().'">
+							<input type="hidden" name="associated_category_id" value="'.$associated_category_to_edit->get_assoc_id().'">
+							<td  style="width: 120px;" >'.$associated_category_to_edit->get_name().'</td><td  ><input type="text" style="width: 450px;" name="associated_category_new_description" value="'.$associated_category_to_edit->get_description().'"></td><td><input type="submit" value="Save" class="btn"></td>
+							</form>
+						</tr>
+					';
+				}
+				else{
+					echo '
+						<tr>
+						<td><select style="width: 120px;" name="category_id">';
 							$categories = Category::get_categories();
 							foreach($categories as $category){
 								/* @var $category Category */
 								echo '<option value="'.$category->get_id().'">'.$category->get_name().'</option>';
 							}
-							?>
-					</select>
+				
+					echo '</select>
 					</td>
 					<td><input type="text" style="width: 450px;"
 						name="category_description">
@@ -337,13 +359,17 @@ else{
 						name="add_category">
 					</td>
 				</tr>
+					';
+				}
+				?>
+				
 				<?php 
 				$associated_categories = $project->get_categories();
 				foreach($associated_categories as $associated_category){
 					/* @var $associated_category AssociatedCategory */
 					echo   '<tr><td width="120">'.$associated_category->get_name().'</td>
 					<td width="120">'.$associated_category->get_description().'</td>
-					<td>'.((!$associated_category->is_associated_category_in_use())?'<span class="dropdown">
+					<td><a href="project_edit.php?project_id='.$project->get_id().'&edit_category='.$associated_category->get_assoc_id().'#categories" ><img src="images/modify.png" title="Edit" alt="Edit"></a>'.((!$associated_category->is_associated_category_in_use())?'<span class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="images/delete.png"></a>
 					<ul class="dropdown-menu">
 					<table>
@@ -388,8 +414,6 @@ else{
 				echo '<th width="150">'.$associated_category->get_name().'<br><span class="hint">
 			 '.$associated_category->get_description().'</span></th>';
 				foreach ($workmates as $workmate){
-					//$entry['user_id'] = $workmate->get_id();
-					//$entry['category_assoc_id'];         = 
 					echo '<td><input type="text" class="project-plan-input" name="plan_entry_value[]" value="'.$project->get_project_plan()->get_sum_for_category_and_user($workmate->get_id(), $associated_category->get_assoc_id()).'"/></td>';
 					echo '<input type="hidden" name="plan_entry_user_id[]" value="'.$workmate->get_id().'">';
 					echo '<input type="hidden" name="plan_entry_category_assoc_id[]" value="'.$associated_category->get_assoc_id().'">';

@@ -195,6 +195,15 @@ class Project{
 	public function get_categories(){
 		return $this->categories;
 	}
+	public function update_category_description($category_assoc_id, $new_description){
+		
+		foreach($this->get_categories() as $category){
+			/* @var  $category AssociatedCategory */
+			if($category->get_assoc_id() == $category_assoc_id){
+				$category->update_description($new_description);
+			}
+		}
+	}
 	public function get_categories_of_user_with_planned_hours($user){
 		$categories = array();
 		foreach($this->categories as $category){
