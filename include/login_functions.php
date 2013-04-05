@@ -1,11 +1,8 @@
 <?php
-echo session_id()."<br>";
 function update_session_paramaters() {
 	$enterdate = date("Y-m-d");
 	$entertime=date("G:i:s");
-	
 	$login="UPDATE worklog_users SET enterdate='$enterdate $entertime', session_id='".session_id()."'  WHERE worklog_user_id='$_SESSION[enterid]';";
-	echo $login;
 	setcookie("worklog_session_id", session_id(), time()+60*60*24*100, "/");
 	mysql_query($login);
 }
@@ -19,9 +16,7 @@ function get_session_parameters ($session_id){
 			$_SESSION['enterstatus']=$line['user_status'];
 			$_SESSION['enterid']=$line['worklog_user_id'];
 			$_SESSION['entername']=$line['name'];
-
 			update_session_paramaters();
-
 		}
 	} else {
 		$_SESSION['loggedin_worklog']="false";
