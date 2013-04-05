@@ -47,6 +47,7 @@ if ( isset($_GET['log']) && $_GET['log'] =="logout" ) {
 	$_SESSION['entername']=0;
 	
 	$login="UPDATE worklog_users SET session_id=''  WHERE worklog_user_id='$_SESSION[enterid]';";
+	debug(mysql_error());
 	mysql_query($login);
 	
 	
