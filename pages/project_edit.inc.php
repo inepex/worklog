@@ -74,7 +74,7 @@ if(isset($_GET['project_id']) && $_GET['project_id'] != "" && Project::is_projec
 	//add category
 	if(isset($_POST['add_category']) && isset($_POST['category_id'])){
 		if(Category::is_exist($_POST['category_id'])){
-			if(isset($_POST['category_description']) && $_POST['category_description']){
+			if(isset($_POST['category_description']) && $_POST['category_description'] !=""){
 				$project->add_category($_POST['category_id'], $_POST['category_description']);
 				Notification::notice("Category added successfully!");
 			}
@@ -352,7 +352,7 @@ else{
 				
 					echo '</select>
 					</td>
-					<td><input type="text" style="width: 450px;"
+					<td><input type="text" style="width: 450px; '.((isset($_POST['add_category'])  && (!isset($_POST['category_description']) || $_POST['category_description'] ==""))?'background-color:rgb(255, 232, 232);!important;':'').'"
 						name="category_description">
 					</td>
 					<td><input type="submit" value="Add" class="btn"
