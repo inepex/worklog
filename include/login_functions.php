@@ -45,6 +45,11 @@ if ( isset($_GET['log']) && $_GET['log'] =="logout" ) {
 	$_SESSION['enterstatus']=0;
 	$_SESSION['enterid']=0;
 	$_SESSION['entername']=0;
+	
+	$login="UPDATE worklog_users SET enterdate='$enterdate $entertime', session_id=''  WHERE worklog_user_id='$_SESSION[enterid]';";
+	mysql_query($login);
+	
+	
 	echo"<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=index.php\">";
 	exit();
 }
