@@ -134,7 +134,7 @@ class User{
 				return true;
 			}
 			else{
-				Notification::error(mysql_error());
+				trigger_error(mysql_error());
 				return false;
 			}
 		}
@@ -152,7 +152,7 @@ class User{
 				return true;
 			}
 			else{
-				Notification::error(mysql_error());
+				trigger_error(mysql_error());
 				return false;
 			}
 		}
@@ -170,7 +170,7 @@ class User{
 				return true;
 			}
 			else{
-				Notification::warn(mysql_error());
+				trigger_error(mysql_error());
 				return false;
 			}
 		}
@@ -194,7 +194,7 @@ class User{
 			Notification::notice("Personal note has been updated successfully!");
 		}
 		else{
-			Notification::error(mysql_error());
+			trigger_error(mysql_error());
 		}
 	}
 	public function get_personal_note(){

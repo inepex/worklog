@@ -91,7 +91,7 @@ class WorkPlace{
 		$query = "SELECT worklog_log_id FROM worklog_log WHERE worklog_place_id = ".$this->id;
 		$select_result = mysql_query($query);
 		if(mysql_error()!=''){
-			Notification::error(mysql_error());
+			trigger_error(mysql_error());
 		}
 		else{
 			if(mysql_affected_rows() == 0){

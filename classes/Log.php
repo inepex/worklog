@@ -123,7 +123,7 @@ class Log{
 			return new Log($id);
 		}
 		else{
-			Notification::error(mysql_error());
+			trigger_error(mysql_error());
 		}
 	}
 	public static function is_log_exist($log_id){
@@ -168,7 +168,7 @@ class Log{
 			return true;
 		}
 		else{
-			Notification::error(mysql_error());
+			trigger_error(mysql_error());
 		}
 	}
 	public static function get_first_log_date(){

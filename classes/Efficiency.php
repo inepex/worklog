@@ -25,7 +25,7 @@ class Efficiency{
 		$query = "INSERT INTO worklog_efficiency (efficiency_name) VALUES ('".strip_tags(mysql_real_escape_string($efficiency_name))."')";
 		$insert_result = mysql_query($query);
 		if(mysql_error() != ""){
-			Notification::error(mysql_error());
+			trigger_error(mysql_error());
 		}
 		else{
 			Notification::notice("Added successfully!");
@@ -37,7 +37,7 @@ class Efficiency{
 			$query = "DELETE FROM worklog_efficiency WHERE worklog_efficiency_id=".$efficiency_id;
 			$delete_result = mysql_query($query);
 			if(mysql_error() != ""){
-				Notification::error(mysql_error());
+				trigger_error(mysql_error());
 			}
 			else{
 				Notification::notice("efficiency deleted successfully!");
@@ -64,7 +64,7 @@ class Efficiency{
 		$update_result = mysql_query($query);
 		$this->name = $new_name;
 		if(mysql_error()!=''){
-			Notification::error(mysql_error());
+			trigger_error(mysql_error());
 		}
 		else{
 			Notification::notice("Updated successfully!");
@@ -80,7 +80,7 @@ class Efficiency{
 		$query = "SELECT worklog_project_id FROM worklog_projects WHERE worklog_efficiency_id = ".$this->id;
 		$select_result = mysql_query($query);
 		if(mysql_error()!=''){
-			Notification::error(mysql_error());
+			trigger_error(mysql_error());
 		}
 		else{
 			if(mysql_affected_rows() == 0){

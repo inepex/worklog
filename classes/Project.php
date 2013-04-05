@@ -104,7 +104,7 @@ class Project{
 		$query = "SELECT worklog_project_id FROM worklog_projects WHERE worklog_project_id = ".$project_id;
 		$select_result = mysql_query($query);
 		if(mysql_error() != ""){
-			Notification::error(mysql_error());
+			trigger_error(mysql_error());
 			return false;
 		}
 		else{
@@ -120,7 +120,7 @@ class Project{
 		$query = "INSERT INTO worklog_projects (worklog_company_id, worklog_user_id, project_name, project_description,beginning, destination, start_date, end_date, project_status) VALUES ('".$company_id."','".$user_id."','".strip_tags(mysql_real_escape_string($name))."','".strip_tags(mysql_real_escape_string($description))."','".strip_tags(mysql_real_escape_string($beginning))."','".strip_tags(mysql_real_escape_string($destination))."','".$start."','".$deadline."','2')";
 		$insert_result = mysql_query($query);
 		if(mysql_error() != ""){
-			Notification::error(mysql_error());
+			trigger_error(mysql_error());
 			return false;
 		}
 		else{
@@ -230,7 +230,7 @@ class Project{
 			$query = "UPDATE worklog_projects SET worklog_company_id=".$company_id.",worklog_user_id='".$owner_id."', project_name='".strip_tags(mysql_real_escape_string($name))."', project_description='".strip_tags(mysql_real_escape_string($description))."', beginning='".strip_tags(mysql_real_escape_string($beginning))."', destination='".strip_tags(mysql_real_escape_string($destination))."', start_date='".$start."', end_date='".$deadline."', project_status=".$status." WHERE worklog_project_id = ".$this->id;
 			$update_result = mysql_query($query);
 			if(mysql_error() != ""){
-				Notification::error(mysql_error());
+				trigger_error(mysql_error());
 				return false;
 			}
 			else{

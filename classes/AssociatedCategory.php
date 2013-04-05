@@ -19,7 +19,7 @@ class AssociatedCategory extends Category{
 		$query = "INSERT INTO worklog_projects_category_assoc (worklog_project_id, worklog_category_id, category_description) VALUES ('".$project_id."','".$category_id."','".$category_description."')";
 		$select_result = mysql_query($query);
 		if(mysql_error() != ""){
-			Notification::error(mysql_error());
+			trigger_error(mysql_error());
 		}
 		else{
 			return new AssociatedCategory(mysql_insert_id());
@@ -29,7 +29,7 @@ class AssociatedCategory extends Category{
 		$query = "SELECT * FROM worklog_projects_category_assoc WHERE worklog_projects_category_assoc_id = ".$id;
 		$select_result = mysql_query($query);
 		if(mysql_error() != ""){
-			Notification::error(mysql_error());
+			trigger_error(mysql_error());
 		}
 		else{
 			$row = mysql_fetch_assoc($select_result);
