@@ -102,15 +102,23 @@ class User{
 			return false;
 		}
 		else{
-			$query = "UPDATE worklog_users SET username='".$user_name."' WHERE worklog_user_id=".$this->id;
-			$update_result = mysql_query($query);
-			if(mysql_error() == ""){
-				$this->user_name = $user_name;
-				return true;
+			$query = "SELECT worklog_user_id FROM worklog_users WHERE username = '".strip_tags(mysql_real_escape_string($user_name))."'";
+			$result = mysql_query($query);
+			if(mysql_affected_rows() != 0 && $user_name != $this->user_name){
+				Notification::error('User name already exists');
+				return false;
 			}
 			else{
-				Notification::error(mysql_error());
-				return false;
+				$query = "UPDATE worklog_users SET username='".strip_tags(mysql_real_escape_string($user_name))."' WHERE worklog_user_id=".$this->id;
+				$update_result = mysql_query($query);
+				if(mysql_error() == ""){
+					$this->user_name = $user_name;
+					return true;
+				}
+				else{
+					trigger_error(mysql_error());
+					return false;
+				}	
 			}
 		}
 	}
@@ -170,8 +178,8 @@ class User{
 	public function edit_profile_picture($picture_file){
 		$target_path = "photos/";
 		unlink($target_path.$this->picture);
-		if(move_uploaded_file($picture_file['tmp_name'], $target_path . basename( $picture_file['name']))) {
-			$this->picture = $picture_file['name'];
+		if(move_uploaded_file($picture_file['tmp_name'], $target_path . basename( $picture_file['name']."-".$this->id))) {
+			$this->picture = $picture_file['name']."-".$this->id;
 			$query = "UPDATE worklog_users SET picture='".$this->picture."' WHERE worklog_user_id=".$this->id;
 			$update_result = mysql_query($query);
 			Notification::notice("The file ".basename($picture_file['name'])." has been uploaded");

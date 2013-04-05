@@ -7,7 +7,9 @@ if(isset($_POST['save-profile-button'])){
 		Notification::warn("The user name cant be empty!");
 	}
 	if(isset($_POST['user-name']) && $_POST['user-name'] != ""){
-		$user->edit_user_name($_POST['user-name']);
+		if(!$user->edit_user_name($_POST['user-name'])){
+			$error = 1;
+		}
 	}
 	if(isset($_POST['default-workplace']) && $_POST['default-workplace'] != ""){
 		$user->edit_default_workplace($_POST['default-workplace']);
