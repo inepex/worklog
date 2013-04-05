@@ -40,17 +40,16 @@ if (isset($_COOKIE['worklog_session_id'])) {
 
 if ( isset($_GET['log']) && $_GET['log'] =="logout" ) {
 	// kilépés
+	
+	$login="UPDATE worklog_users SET session_id=''  WHERE worklog_user_id='$_SESSION[enterid]';";
+	mysql_query($login);
+	
 	setcookie("worklog_session_id", '', time()+60*60*24*100, "/");
 	$_SESSION['loggedin_worklog']="false";
 	$_SESSION['enterstatus']=0;
 	$_SESSION['enterid']=0;
 	$_SESSION['entername']=0;
-	
-	$login="UPDATE worklog_users SET session_id=''  WHERE worklog_user_id='$_SESSION[enterid]';";
-	debug(mysql_error());
-	mysql_query($login);
-	
-	
+   
 	echo"<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=index.php\">";
 	exit();
 }
