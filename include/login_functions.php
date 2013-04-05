@@ -1,78 +1,78 @@
 <?php
-
-
-if(isset($_COOKIE['cookie_loggedin_worklog']) && $_COOKIE['cookie_loggedin_worklog'] == "true" ){ 
-
-	$_SESSION['loggedin_worklog']=$_COOKIE['cookie_loggedin_worklog'];
-	$_SESSION['enterstatus']=$_COOKIE['cookie_enterstatus'];
-	$_SESSION['enterid']=$_COOKIE['cookie_enterid'];
-	$_SESSION['entername']=$_COOKIE['cookie_entername'];
+echo session_id()."<br>";
+function update_session_paramaters() {
 	$enterdate = date("Y-m-d");
 	$entertime=date("G:i:s");
-	$login="UPDATE worklog_users SET enterdate='$enterdate $entertime'  WHERE worklog_user_id='$_SESSION[enterid]';";
-			
+	
+	$login="UPDATE worklog_users SET enterdate='$enterdate $entertime', session_id='".session_id()."'  WHERE worklog_user_id='$_SESSION[enterid]';";
+	echo $login;
+	setcookie("worklog_session_id", session_id(), time()+60*60*24*100, "/");
+	mysql_query($login);
+}
+
+function get_session_parameters ($session_id){
+	$a="SELECT worklog_user_id,username,password,user_status,session_id,name FROM worklog_users WHERE session_id='".$session_id."';";
+	$eredmeny=mysql_query($a);
+	if (mysql_numrows($eredmeny)) {
+		while ($line = mysql_fetch_assoc($eredmeny)) {
+			$_SESSION['loggedin_worklog']="true";
+			$_SESSION['enterstatus']=$line['user_status'];
+			$_SESSION['enterid']=$line['worklog_user_id'];
+			$_SESSION['entername']=$line['name'];
+
+			update_session_paramaters();
+
+		}
+	} else {
+		$_SESSION['loggedin_worklog']="false";
+		$_SESSION['enterstatus']=0;
+		$_SESSION['enterid']=0;
+		$_SESSION['entername']=0;
+	}	
+}
+
+
+if (isset($_COOKIE['worklog_session_id'])) { 
+	get_session_parameters($_COOKIE['worklog_session_id']);	
+} else {
+	$_SESSION['loggedin_worklog']="false";
+	$_SESSION['enterstatus']=0;
+	$_SESSION['enterid']=0;
+	$_SESSION['entername']=0;	
 }
 
 
 
 if ( isset($_GET['log']) && $_GET['log'] =="logout" ) {
 	// kilépés
+	setcookie("worklog_session_id", '', time()+60*60*24*100, "/");
 	$_SESSION['loggedin_worklog']="false";
-	setcookie("cookie_loggedin_worklog", $_SESSION['loggedin_worklog'], time()+60*60*24*100, "/");
 	$_SESSION['enterstatus']=0;
-	setcookie("cookie_enterstatus", $_SESSION['enterstatus'], time()+60*60*24*100, "/");
 	$_SESSION['enterid']=0;
-	setcookie("cookie_enterid", $_SESSION['enterid'], time()+60*60*24*100, "/");
 	$_SESSION['entername']=0;
-	setcookie("cookie_entername", $_SESSION['entername'], time()+60*60*24*100, "/");
 	echo"<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=index.php\">";
 	exit();
 }
 
-if (!isset($_SESSION['loggedin_worklog']) || $_SESSION['loggedin_worklog'] !="true" ) {
-
-	// ha épp nincs belépve
-	$_SESSION['loggedin_worklog']="false";
-
-	if(isset($_POST['entername'])) {
-
+if(isset($_POST['entername'])) {
+	login();
+}
+	
+function login() {
 		// épp most jön a bejelentkezés
-
-		$a='SELECT username,password,user_status FROM worklog_users';
+		$a='SELECT username,password,user_status,worklog_user_id FROM worklog_users';
 		$eredmeny=mysql_query($a);
 		while ($line = mysql_fetch_row($eredmeny)) {
 			$pwd=md5($_POST['enterpassword']);
 			if ($_POST['entername']=="$line[0]" && $pwd == "$line[1]") {
-
-				$_SESSION['loggedin_worklog']="true";
-				$_SESSION['enterusername']=$_POST['entername'];
-
-			}
-		}
-
-		if ($_SESSION['loggedin_worklog']=="true") {
-			// ha be van lépve
-			$nev=$_SESSION['enterusername'];
-			$b="SELECT worklog_user_id,user_status,name FROM worklog_users where worklog_users.username='$nev'";
-			$eredmeny=mysql_query($b);
-			while ($lines = mysql_fetch_row($eredmeny)) {
-				$_SESSION['enterid']=$lines[0];
-				$_SESSION['enterstatus']=$lines[1];
-				$_SESSION['entername']=$lines[2];
+				$_SESSION['enterid'] = $line[3];
+				update_session_paramaters();
 				
-				setcookie("cookie_loggedin_worklog", $_SESSION['loggedin_worklog'], time()+60*60*24*100, "/");
-				setcookie("cookie_enterstatus", $_SESSION['enterstatus'], time()+60*60*24*100, "/");
-				setcookie("cookie_enterid", $_SESSION['enterid'], time()+60*60*24*100, "/");
-				setcookie("cookie_entername", $_SESSION['entername'], time()+60*60*24*100, "/");
+				get_session_parameters (session_id());
+
 			}
-			$enterdate = date("Y-m-d");
-			$entertime=date("G:i:s");
-			$login="UPDATE worklog_users SET enterdate='$enterdate $entertime'  WHERE worklog_user_id='$_SESSION[enterid]';";
-			mysql_query($login);
 		}
 
-	}
-}
-
+} 
  
 ?>
