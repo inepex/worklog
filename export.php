@@ -110,7 +110,7 @@
 	$data.='</table></body>';
 	
 	// filename for download
-	$filename = "website_data_" . date('Y-m-d H-i') . ".xls";
+	$filename = "worklog_export_" . date('Y-m-d H-i') . ".xls";
 	
 	header("Content-Disposition: attachment; filename=\"$filename\"");
 	header("Content-Type: application/vnd.ms-excel; charset=utf-8");
