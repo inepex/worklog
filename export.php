@@ -46,7 +46,7 @@
 			
 			
 	<?php 
-	$data = '<html xmlns:x="urn:schemas-microsoft-com:office:excel"> <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+	$data = '<html xmlns:x="urn:schemas-microsoft-com:office:excel"> <meta http-equiv="Content-type" content="application/vnd.ms-excel; charset=utf-8" />
 	<head>
 	    <!--[if gte mso 9]>
 	    <xml>
