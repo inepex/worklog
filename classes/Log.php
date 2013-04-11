@@ -183,6 +183,8 @@ class Log{
 		}
 	}
 	public static function get_logs($user_id, $date){
+		
+		if ($user_id!=0) {}
 		$logs = array();
 		$result_array = date_parse($date);
 		if($result_array['year'] && $result_array['month'] && $result_array['day']){
@@ -199,10 +201,34 @@ class Log{
 		while($row = mysql_fetch_assoc($select_result)){
 			array_push($logs, new Log($row['worklog_log_id']));
 		}
+		
+		
 		return $logs;
 		
 		
 	}
+	
+	public static function export_logs($user_id, $date_from, $date_to){
+
+		if ($user_id!=0) { $user_condition = "worklog_user_id = ".$user_id." AND"; } else { $user_condition='';}
+		
+		$logs = array();
+	 
+		$query = "SELECT worklog_log_id FROM worklog_log WHERE ".$user_condition." log_date >= '".$date_from."' AND log_date <= '".$date_to."' order by log_date DESC, log_from DESC";
+			 
+		debug($query);
+		 
+		$select_result = mysql_query($query);
+		while($row = mysql_fetch_assoc($select_result)){
+			array_push($logs, new Log($row['worklog_log_id']));
+		}
+	
+			
+		return $logs;
+	
+	}
+	
+	
 	public function __construct($id){
 		$query = "SELECT * FROM worklog_log WHERE worklog_log_id=".$id;
 		$select_result = mysql_query($query);

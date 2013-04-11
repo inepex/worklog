@@ -128,6 +128,9 @@ if(isset($_GET['company_id']) && $_GET['company_id'] != "" && Company::is_compan
 	</form>
 	
 	<?php 
+	
+	// Heat map section
+	
 	if(isset($_GET['date']) && $_GET['date'] != ""){
 		
 		
@@ -188,5 +191,38 @@ if(isset($_GET['company_id']) && $_GET['company_id'] != "" && Company::is_compan
 	
 	?>
 
+	
+		<div class="subheader">
+		<div class="titlebar">
+			<h4>Export</h4>
+
+		</div>
+		
+	</div>
+	<hr>
+	
+	<form method="GET" action="export.php">
+	 
+			<select name="user_id">
+				<option value="0">All</option>
+				<?php 
+				$users = User::get_users();
+				foreach($users as $u){
+					/* @var $u User */
+					$selected = "";
+					if($selected_user_id == $u->get_id()){
+						$selected = 'selected = "selected"';
+					}
+					echo '<option value="'.$u->get_id().'" '.$selected.'>'.$u->get_name().'</option>';
+				}
+				?>
+				</select> <input type="text" style="width: 80px;" value="datefrom"
+				class="datepicker" name="date_from"> <input type="text"
+				style="width: 80px;" value="dateto" class="datepicker"
+				name="date_to"> <input type="submit" class="btn btn-primary" value="Export" >
+		 
+	</form>
+		
 </div>
+
 </div>
