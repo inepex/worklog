@@ -184,7 +184,6 @@ class Log{
 	}
 	public static function get_logs($user_id, $date){
 		
-		if ($user_id!=0) {}
 		$logs = array();
 		$result_array = date_parse($date);
 		if($result_array['year'] && $result_array['month'] && $result_array['day']){
@@ -215,8 +214,7 @@ class Log{
 		$logs = array();
 	 
 		$query = "SELECT worklog_log_id FROM worklog_log WHERE ".$user_condition." log_date >= '".$date_from."' AND log_date <= '".$date_to."' order by log_date DESC, log_from DESC";
-			 
-		debug($query);
+			
 		 
 		$select_result = mysql_query($query);
 		while($row = mysql_fetch_assoc($select_result)){

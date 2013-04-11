@@ -83,8 +83,8 @@
 	</tr>';
 	
 	
-	$logs = new Log();
-	$logs = $logs->export_logs($_GET['user_id'],$_GET['date_from'],$_GET['date_to']);
+	
+	$logs = Log::export_logs($_GET['user_id'],$_GET['date_from'],$_GET['date_to']);
  
 	foreach($logs as $log){
 		/* @var $log Log */
