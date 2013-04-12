@@ -17,9 +17,9 @@
                       <li <?php if (strpos($_SERVER['PHP_SELF'],'index.php')) echo 'class="active"'; ?>><a href="index.php" >Logs</a></li>
                       <li <?php if (strpos($_SERVER['PHP_SELF'],'project_stat.php')) echo 'class="active"'; ?>><a href="project_stat.php">Status</a></li>
                       <li <?php if (strpos($_SERVER['PHP_SELF'],'summary.php')) echo 'class="active"'; ?>><a href="summary.php">Summary</a></li>
-                      <li <?php if (strpos($_SERVER['PHP_SELF'],'projects_list.php')) echo 'class="active"'; ?>><a href="projects_list.php?search=&order_by=worklog_user_id&order=desc&page=0&project_status=1" >All Projects</a></li>
+                      <li <?php if (strpos($_SERVER['PHP_SELF'],'projects_list.php')) echo 'class="active"'; ?>><a href="projects_list.php?search=&order_by=worklog_project_id&order=asc&page=0&project_status=1" >All Projects</a></li>
                       <li <?php if (strpos($_SERVER['PHP_SELF'],'help.php')) echo 'class="active"'; ?>><a href="help.php" >Help</a></li>
-                      
+                     
                       <li class="divider-vertical"></li>
                       <?php 
 						if ($_SESSION['loggedin_worklog']=="true") {
