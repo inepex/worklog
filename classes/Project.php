@@ -175,13 +175,13 @@ class Project{
 		return $this->name;
 	}
 	public function get_description(){
-		return $this->description;
+		return stripcslashes($this->description);
 	}
 	public function get_beginning(){
-		return $this->beginning;
+		return stripcslashes($this->beginning);
 	}
 	public function get_destination(){
-		return $this->destination;
+		return stripcslashes($this->destination);
 	}
 	public function get_start_date(){
 		return $this->start_date;
