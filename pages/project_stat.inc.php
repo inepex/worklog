@@ -39,7 +39,7 @@ if(isset($_GET['projects_status']) && $_GET['projects_status'] != "" && $_GET['p
 					<?php 
 						echo '<option value="0" '.($projects_status == 0?'selected="selected"':'').'>Closed</option>';
 						echo '<option value="1" '.($projects_status == 1?'selected="selected"':'').'>Active</option>';
-						echo '<option value="3" '.($projects_status == 1?'selected="selected"':'').'>All projects</option>';
+						echo '<option value="3" '.($projects_status == 3?'selected="selected"':'').'>All projects</option>';
 					?>
 				</select> <input type="submit" value="OK" class="btn">
 			</form>

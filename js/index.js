@@ -70,7 +70,13 @@ function getCategories(projectId) {
 	});
 }
 function processCategoriesJson(categoriesJson) {
-	categories = JSON.parse(categoriesJson);
+	try{
+		categories = JSON.parse(categoriesJson);
+		console.log(categoriesJson);
+	}
+	catch(error){
+		console.log(categoriesJson);
+	}
 	return categories;
 }
 function fillCategoriesSelect(categories) {
