@@ -15,6 +15,7 @@ require_once '../classes/ProjectPlanEntry.php';
 require_once '../classes/Project.php';
 require_once '../classes/Log.php';
 require_once '../classes/PhpConsole.php';
+require_once '../include/login_functions.php';
 	$user = new User($_SESSION['enterid']);
 	if(isset($_POST['project_id']) && $_POST['project_id'] != ""){
 		if(Project::is_project_exist($_POST['project_id'])){
