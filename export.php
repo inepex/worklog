@@ -66,6 +66,7 @@
 	<th width="150">User</th>
 	<th width="150">Project</th>
 	<th width="150">Category</th>
+	<th width="150">CategoryDescription</th>
 	<th width="150">Date</th>
 	<th width="80">From</th>
 	<th width="80">To</th>
@@ -97,6 +98,7 @@
 		$data.= '<td>'.$user->get_name().'</td>';
 		$data.= '<td>'.$project->get_name().'</td>';
 		$data.= '<td>'.$category->get_name().'</td>';
+		$data.= '<td>'.$category->get_description().'</td>';
 		$data.= '<td>'.$log->get_date().'</td>';
 		$data.= '<td>'.date("H:i",strtotime($log->get_from())).'</td>';
 		$data.= '<td>'.date("H:i",strtotime($log->get_to())).'</td>';
