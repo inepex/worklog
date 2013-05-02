@@ -73,19 +73,21 @@ class Project{
 		return $projects;
 	}
 	public static function duplicate_project($project_id, $duplicate_name){
+		
 		$project = new Project($project_id);//befejezni
+		
 		$duplicated_project =  Project::new_project($duplicate_name, $project->get_company()->get_id(), $project->get_description(),$project->get_beginning(),$project->get_destination(), $project->get_start_date(), $project->get_end_date(), $project->get_user()->get_id());
 		$project_categories = $project->get_categories();
 		foreach($project_categories as $project_category){
-			/* @var $project_category AssociatedCategory */
+			 
 			$duplicated_project->add_category($project_category->get_id(), $project_category->get_description());
 		}
 		$project_workmates = $project->get_workmates();
-		foreach($project_workmates as $project_workmate){
-			/* @var $project_workmate AssociatedUser */
+		foreach($project_workmates as $project_workmate){  
 			$duplicated_project->add_workmate($project_workmate->get_id());
 		}
 		return $duplicated_project;
+		 
 	}
 	public static function get_projects_which_contain_category($user_id){
 		$projects = array();
@@ -101,14 +103,17 @@ class Project{
 		return $projects;
 	}
 	public static function is_project_exist($project_id){
+	
 		$query = "SELECT worklog_project_id FROM worklog_projects WHERE worklog_project_id = ".$project_id;
+		
 		$select_result = mysql_query($query);
+ 
 		if(mysql_error() != ""){
 			trigger_error(mysql_error());
 			return false;
 		}
 		else{
-			if(mysql_affected_rows() > 0){
+			if(mysql_num_rows($select_result) > 0){
 				return true;
 			}
 			else{

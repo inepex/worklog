@@ -22,8 +22,8 @@
 	require_once 'classes/Log.php';
 	include('include/login_functions.php');
 	//help for debug
-	//require_once 'classes/PhpConsole.php';
-	//PhpConsole::start();
+	require_once 'classes/PhpConsole.php';
+	PhpConsole::start();
 	error_reporting(E_ALL);
 	if(isset($_SESSION['enterid'])){
 		$user_id = $_SESSION['enterid'];

@@ -34,6 +34,7 @@ function duplicateProject(projectId,duplicateName){
 			duplicate_name : duplicateName
 		},
 	}).done(function(data) {
+		 
 		if(parseInt(data) != NaN || parseInt(data) != 0){
 			window.location = "project_edit.php?project_id="+parseInt(data);
 		}
