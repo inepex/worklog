@@ -35,11 +35,16 @@ $project_status = '';
 if(isset($_GET['project_status']) && ProjectStatus::is_status_exist((int)$_GET['project_status'])){
 	$project_status = $_GET['project_status'];
 }
+
+$company_id = '';
+if(isset($_GET['company_id'])){
+	$company_id = $_GET['company_id'];
+}
 //delete project
 if(isset($_GET['delete_project']) && $_GET['delete_project'] != "" && Project::is_project_exist($_GET['delete_project'])){
 	Project::delete_project($_GET['delete_project']);
 	//Notification::notice("Deleted successfully!");
-	echo"<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=projects_list.php?search=".$keyword."&order_by=".$order_by."&order=".$order."&page=".$page."\">";
+	echo"<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=projects_list.php?search=".$keyword."&order_by=".$order_by."&order=".$order."&page=".$page."&company_id=".$company_id."\">";
 	exit();
 }
 //
@@ -47,7 +52,7 @@ if(isset($_GET['delete_project']) && $_GET['delete_project'] != "" && Project::i
 <div class="worklog-container">
 	<div class="subheader">
 		<div class="titlebar">
-			<?php echo '<form method="get" action="projects_list.php?search='.$keyword.'&order_by='.$order_by.'&order='.$order.'&page='.$page.'" >'; ?>
+			<?php echo '<form method="get" action="projects_list.php?search='.$keyword.'&order_by='.$order_by.'&order='.$order.'&page='.$page.'&company_id='.$company_id.' >'; ?>
 			<input type="hidden" name="search" value="<?php echo $keyword;?>" /> 
 			<input type="hidden" name="order_by" value="<?php echo $order_by;?>" />
 			<input type="hidden" name="order" value="<?php echo $order;?>" />
@@ -62,7 +67,19 @@ if(isset($_GET['delete_project']) && $_GET['delete_project'] != "" && Project::i
 							echo '<option value="'.$status->get_code().'" '.(($project_status == $status->get_code())?"selected":"").'>'.$status->get_name().'</option>';
 						}
 						?>
-					</select> <input type="submit" value="OK" class="btn">
+					</select> 
+					<select name="company_id">
+						<option value="">All</option>
+						<?php 
+						$companies = Company::get_companies();
+						foreach($companies as $company){
+							echo '<option value="'.$company->get_id().'" '.(($company_id == $company->get_id())?"selected":"").'>'.$company->get_name().'</option>';
+						}
+						?>
+				</select>
+					
+					
+					<input type="submit" value="OK" class="btn">
 				</h4>
 			</div>
 			</form>
@@ -86,38 +103,39 @@ if(isset($_GET['delete_project']) && $_GET['delete_project'] != "" && Project::i
 			<tr>
 				<th>
 					<?php 
-					echo '<a href="projects_list.php?search='.$keyword.'&order_by=worklog_project_id&order='.order_change($order).'&page='.$page.'&project_status='.$project_status.'">ID</a>';
+					echo '<a href="projects_list.php?search='.$keyword.'&order_by=worklog_project_id&order='.order_change($order).'&page='.$page.'&project_status='.$project_status.'&company_id='.$company_id.'">ID</a>';
 					?>
 					
 				</th>
 				<th><?php 
-					echo '<a href="projects_list.php?search='.$keyword.'&order_by=project_name&order='.order_change($order).'&page='.$page.'&project_status='.$project_status.'">Project name</a>';
+					echo '<a href="projects_list.php?search='.$keyword.'&order_by=project_name&order='.order_change($order).'&page='.$page.'&project_status='.$project_status.'&company_id='.$company_id.'">Project name</a>';
+					?>
+				</th>
+				 
+				<th>
+					<?php 
+					echo '<a href="projects_list.php?search='.$keyword.'&order_by=worklog_user_id&order='.order_change($order).'&page='.$page.'&project_status='.$project_status.'&company_id='.$company_id.'">Owner</a>';
 					?>
 				</th>
 				<th>
 					<?php 
-					echo '<a href="projects_list.php?search='.$keyword.'&order_by=worklog_user_id&order='.order_change($order).'&page='.$page.'&project_status='.$project_status.'">Owner</a>';
+					echo '<a href="projects_list.php?search='.$keyword.'&order_by=project_status&order='.order_change($order).'&page='.$page.'&project_status='.$project_status.'&company_id='.$company_id.'">Status</a>';
 					?>
 				</th>
 				<th>
 					<?php 
-					echo '<a href="projects_list.php?search='.$keyword.'&order_by=project_status&order='.order_change($order).'&page='.$page.'&project_status='.$project_status.'">Status</a>';
+					echo '<a href="projects_list.php?search='.$keyword.'&order_by=start_date&order='.order_change($order).'&page='.$page.'&project_status='.$project_status.'&company_id='.$company_id.'">Start date</a>';
 					?>
 				</th>
 				<th>
 					<?php 
-					echo '<a href="projects_list.php?search='.$keyword.'&order_by=start_date&order='.order_change($order).'&page='.$page.'&project_status='.$project_status.'">Start date</a>';
-					?>
-				</th>
-				<th>
-					<?php 
-					echo '<a href="projects_list.php?search='.$keyword.'&order_by=end_date&order='.order_change($order).'&page='.$page.'&project_status='.$project_status.'">End date</a>';
+					echo '<a href="projects_list.php?search='.$keyword.'&order_by=end_date&order='.order_change($order).'&page='.$page.'&project_status='.$project_status.'&company_id='.$company_id.'">End date</a>';
 					?>
 				</th>
 				<th>Edit</th>
 				<th>Delete</th>
 				<?php 
-				$projects = Project::get_projects($keyword, $order, $order_by,$project_status,$page);
+				$projects = Project::get_projects($keyword, $order, $order_by,$project_status,$page,$company_id);
 				$number_of_projects = count(Project::get_projects($keyword, $order, $order_by,$project_status));
 				foreach($projects as $project){
 					/* @var $project Project */

@@ -45,12 +45,18 @@ class Project{
 			Notification::warn("There are logs in this project!");
 		}
 	}
-	public static function get_projects($keyword="",$order="", $order_by="", $project_status="",$page=""){
+	public static function get_projects($keyword="",$order="", $order_by="", $project_status="",$page="",$company_id=""){
 		$projects = array();
 		$project_status_condicion = "";
 		if($project_status != ""){
 			$project_status_condicion = " AND project_status=".$project_status;
 		}
+		
+		$project_company_condicion = "";
+		if($company_id != ""){
+			$project_company_condicion = " AND worklog_company_id=".$company_id;
+		}
+		
 		$search_condition = " WHERE 1";
 		if($keyword != ""){
 			$search_condition = ' WHERE project_name like "%'.strip_tags(mysql_real_escape_string($keyword)).'%" OR project_description like "%'.strip_tags(mysql_real_escape_string($keyword)).'%" OR beginning like "%'.strip_tags(mysql_real_escape_string($keyword)).'%" OR destination like "%'.strip_tags(mysql_real_escape_string($keyword)).'%"';
@@ -65,7 +71,7 @@ class Project{
 				$order_condition .= " ".$order;
 			}
 		}
-		$query = "SELECT worklog_project_id FROM worklog_projects".$search_condition.$project_status_condicion.$order_condition.$page_condition;
+		$query = "SELECT worklog_project_id FROM worklog_projects".$search_condition.$project_status_condicion.$project_company_condicion.$order_condition.$page_condition;
 		$select_result = mysql_query($query);
 		while($row = mysql_fetch_assoc($select_result)){
 			array_push($projects,new Project($row['worklog_project_id']));
