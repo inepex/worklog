@@ -12,7 +12,7 @@ class Log{
 	private $entry;
 	private $working_place_id;
 	private $efficiency_id;
-	
+
 	public static function get_sum_time_of_logs($user_id="", $date="",$company_id=""){
 		$user_condition    = "";
 		$date_condition    = "";
@@ -47,17 +47,17 @@ class Log{
 			}
 			return $summary;
 		}
-		
+
 	}
-	
-	
+
+
 	public static function get_sum_time_of_logs_on_a_selected_day($user_id="",$date="",$company_id=""){
 		$company_condition = "";
 		$user_condition    = "";
 		if($user_id != "" && User::is_exist($user_id)){
 			$user_condition = " AND worklog_log.worklog_user_id = ".$user_id;
 		}
-		
+
 		if($date != ""){
 			$date_condition = " AND worklog_log.log_date = '".$date."' ";
 		}
@@ -70,14 +70,15 @@ class Log{
 			return false;
 		}
 		else{
-			$summary = array();
-			while($row = mysql_fetch_assoc($select_result)){
-				array_push($summary, $row);
+			$summary = mysql_fetch_assoc($select_result);
+			if($summary['sum_time'] == null){
+				return '00:00:00';
+			}else{
+				return $summary['sum_time'];
 			}
-			return $summary;
 		}
 	}
-	
+
 	public static function get_sum_time_of_logs_in_a_selected_month($user_id="",$date="",$company_id=""){
 		$company_condition = "";
 		$user_condition    = "";
@@ -87,7 +88,7 @@ class Log{
 		if($company_id != "" && Company::is_company_exist($company_id)){
 			$company_condition = " AND worklog_projects.worklog_company_id = ".$company_id;
 		}
-		
+
 		if($date != ""){
 			$date_array = date_parse($date);
 			if($date_array['year'] && $date_array['month'] && $date_array['day']){
@@ -113,9 +114,9 @@ class Log{
 				return $summary['sum_time'];
 			}
 		}
-	
+
 	}
- 	
+
 	public static function add_log($project_id, $category_assoc_id, $user_id, $date, $from, $to, $entry, $working_place_id, $efficiency_id){
 		$query = "INSERT INTO worklog_log (worklog_project_id, worklog_category_assoc_id, worklog_user_id, log_date, log_from, log_to, log_entry, worklog_place_id, worklog_efficiency_id) VALUES ('".$project_id."','".$category_assoc_id."','".$user_id."','".$date."','".$from."','".$to."','".strip_tags(mysql_real_escape_string($entry))."','".$working_place_id."','".$efficiency_id."')";
 		$insert_result = mysql_query($query);
@@ -143,8 +144,8 @@ class Log{
 		if($log_id != "" && Log::is_log_exist($log_id)){
 			$condition = " AND worklog_log_id != ".$log_id;
 		}
-		$number_of_rows = 0;	
-		$query = "SELECT worklog_log_id FROM worklog_log WHERE worklog_user_id = ".$user_id." AND log_date = '".$date."' AND log_from < '".date("H:i:s", strtotime($from))."' AND log_to > '".date("H:i:s", strtotime($from))."'".$condition;//inside 
+		$number_of_rows = 0;
+		$query = "SELECT worklog_log_id FROM worklog_log WHERE worklog_user_id = ".$user_id." AND log_date = '".$date."' AND log_from < '".date("H:i:s", strtotime($from))."' AND log_to > '".date("H:i:s", strtotime($from))."'".$condition;//inside
 		$select_result = mysql_query($query);
 		$number_of_rows += mysql_num_rows($select_result);
 		$query = "SELECT worklog_log_id FROM worklog_log WHERE worklog_user_id = ".$user_id." AND log_date = '".$date."' AND log_from > '".date("H:i:s", strtotime($from))."' AND log_to < '".date("H:i:s", strtotime($to))."'".$condition;//outside
@@ -185,7 +186,7 @@ class Log{
 		}
 	}
 	public static function get_logs($user_id, $date){
-		
+
 		$logs = array();
 		$result_array = date_parse($date);
 		if($result_array['year'] && $result_array['month'] && $result_array['day']){
@@ -202,33 +203,36 @@ class Log{
 		while($row = mysql_fetch_assoc($select_result)){
 			array_push($logs, new Log($row['worklog_log_id']));
 		}
-		
-		
+
+
 		return $logs;
-		
-		
+
+
 	}
-	
+
 	public static function export_logs($user_id, $date_from, $date_to){
 
-		if ($user_id!=0) { $user_condition = "worklog_user_id = ".$user_id." AND"; } else { $user_condition='';}
-		
+		if ($user_id!=0) {
+			$user_condition = "worklog_user_id = ".$user_id." AND";
+		} else { $user_condition='';
+		}
+
 		$logs = array();
-	 
+
 		$query = "SELECT worklog_log_id FROM worklog_log WHERE ".$user_condition." log_date >= '".$date_from."' AND log_date <= '".$date_to."' order by log_date DESC, log_from DESC";
 			
-		 
+			
 		$select_result = mysql_query($query);
 		while($row = mysql_fetch_assoc($select_result)){
 			array_push($logs, new Log($row['worklog_log_id']));
 		}
-	
+
 			
 		return $logs;
-	
+
 	}
-	
-	
+
+
 	public function __construct($id){
 		$query = "SELECT * FROM worklog_log WHERE worklog_log_id=".$id;
 		$select_result = mysql_query($query);
@@ -290,7 +294,7 @@ class Log{
 		$difference = $interval->format('%R%a');
 		if($this->user_id == $use_id && $difference <= 0 && $difference >= -4){
 			return true;
-		}		
+		}
 		else{
 			return false;
 		}

@@ -138,7 +138,6 @@ if(isset($_GET['company_id']) && $_GET['company_id'] != "" && Company::is_compan
 $daysinmonth = cal_days_in_month(CAL_GREGORIAN, $date_array['month'] , $date_array['year']);
 $current = $date_array['year']."-".$date_array['month']."-1";
 $total = Log::get_sum_time_of_logs_in_a_selected_month($selected_user_id,$current,$selected_company);
-debug($total);
 $total_hour = substr($total,0,strpos($total,':'));
 $total_parts = explode(':', $total);
 $total_minutes = $total_parts[0]*60+$total_parts[1];
@@ -158,12 +157,11 @@ for ($i=1;$i<=$daysinmonth;$i++) {
 
 			$current = $date_array['year']."-".str_pad($date_array['month'], 2, "0", STR_PAD_LEFT)."-".str_pad($i, 2, "0", STR_PAD_LEFT);
 			$summary = Log::get_sum_time_of_logs_on_a_selected_day($selected_user_id,$current,$selected_company);
-
-		 if ($summary[0]['sum_time']) {
-			$summary_parts = explode(":", $summary[0]['sum_time']);
+		 if ($summary != '00:00:00') {
+			$summary_parts = explode(":", $summary);
 			$summary_minutes = $summary_parts[0]*60+$summary_parts[1];
 			$thisday = $summary_minutes / $total_minutes;
-			echo '<td><div style="border:1px solid #d0d0d0; margin:3px; padding:0px;"><div title="'.$summary[0]['sum_time'].'" style="width:22px; height:20px; background:#005826; opacity:'.($thisday).';"></div></div></td>';
+			echo '<td><div style="border:1px solid #d0d0d0; margin:3px; padding:0px;"><div title="'.$summary.'" style="width:22px; height:20px; background:#005826; opacity:'.($thisday).';"></div></div></td>';
 		 }else{
 		 	echo '<td><div style="border:1px solid #d0d0d0; margin:3px; padding:0px;"><div title="00:00:00" style="width:22px; height:20px; background:#005826; opacity:0;"></div></div></td>';
 		 }
