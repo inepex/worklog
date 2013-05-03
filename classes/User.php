@@ -188,8 +188,6 @@ class User{
 			$old_path_parts = pathinfo($target_path.$this->picture);
 			$old_extension = $old_path_parts['extension'];
 			$old_filename = $old_path_parts['filename'];
-			debug( $old_filename);
-			debug($old_extension);
 			rename($target_path.$this->picture, $target_path.$old_filename."temp");
 			if(move_uploaded_file($picture_file['tmp_name'], $target_path . basename( $new_filename."-".$this->id.".".$new_extension))) {
 				unlink($target_path.$old_filename."temp");
