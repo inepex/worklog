@@ -138,8 +138,9 @@ if(isset($_GET['company_id']) && $_GET['company_id'] != "" && Company::is_compan
 $daysinmonth = cal_days_in_month(CAL_GREGORIAN, $date_array['month'] , $date_array['year']);
 $current = $date_array['year']."-".$date_array['month']."-1";
 $total = Log::get_sum_time_of_logs_in_a_selected_month($selected_user_id,$current,$selected_company);
-$total_hour = substr($total[0]['sum_time'],0,strpos($total[0]['sum_time'],':'));
-$total_parts = explode(':', $total[0]['sum_time']);
+debug($total);
+$total_hour = substr($total,0,strpos($total,':'));
+$total_parts = explode(':', $total);
 $total_minutes = $total_parts[0]*60+$total_parts[1];
 echo'<div class="subheader">
 			<div class="titlebar">
