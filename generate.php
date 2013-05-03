@@ -35,7 +35,7 @@ if(isset($_SESSION['enterid'])){
 	require_once 'include/mail/sendErrorMail.php';
 	global $site_version;
 	if ($site_version!='local') {
-		set_error_handler('send_error_mail');
+		//set_error_handler('send_error_mail');
 	}
 }
 //
