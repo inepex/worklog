@@ -57,7 +57,7 @@ class Log{
 		if($user_id != "" && User::is_exist($user_id)){
 			$user_condition = " AND worklog_log.worklog_user_id = ".$user_id;
 		}
-
+		$date_condition = "";
 		if($date != ""){
 			$date_condition = " AND worklog_log.log_date = '".$date."' ";
 		}
