@@ -332,7 +332,7 @@ class Project{
 			$category_condition = " AND worklog_category_assoc_id = ".$category_assoc_id;
 		}
 		$limit_condition = "";
-		if($logs_from != 0){
+		if($logs_from !== ""){
 			$limit_condition = " limit ".$logs_from.", ".($logs_from+Log::$LISTING_LIMIT);
 		}
 		$date_from_condition = "";
@@ -343,7 +343,7 @@ class Project{
 		if($date_to != 0 && date_parse($date_to)){
 			$date_to_condition = " AND log_date<='".$date_to."'";
 		}
-		$query  = "SELECT worklog_log_id FROM worklog_log WHERE worklog_project_id = ".$this->id.$category_condition.$user_condition.$limit_condition.$date_from_condition.$date_to_condition;
+		$query  = "SELECT worklog_log_id FROM worklog_log WHERE worklog_project_id = ".$this->id.$category_condition.$user_condition.$date_from_condition.$date_to_condition." order by worklog_log_id desc ".$limit_condition;
 		$select_result = mysql_query($query);
 		$logs = array();
 		while($row = mysql_fetch_assoc($select_result)){

@@ -213,6 +213,7 @@ else{
 			<th>Date</th>
 			<th>From</th>
 			<th>To</th>
+			<th>Diff</th>
 			<th>Log</th>
 			<th>Place</th>
 		</tr>
@@ -238,18 +239,23 @@ else{
 			$date_to = $_GET['date_to'];
 		}
 		$logs = $project->get_logs_of_project($user_id, $associated_category_id,$date_from, $date_to, $logs_from);
-		$number_of_logs = count($project->get_logs_of_project($user_id, $associated_category_id,$date_from, $date_to));
+		$number_of_logs = count($project->get_logs_of_project($user_id, $associated_category_id,$date_from, $date_to, ""));
 		foreach($logs as $log){
 			/* @var $log Log */
 			$user = new User($log->get_user_id());
 			$associated_category = new AssociatedCategory($log->get_category_assoc_id());
 			$working_place = new WorkPlace($log->get_working_place_id());
+			$datetime1 = new DateTime($log->get_from());
+			$datetime2 = new DateTime($log->get_to());
+			$interval = $datetime1->diff($datetime2);
+			$diff = $interval->format('%H:%I');
 			echo '<tr>
 			<td>'.$user->get_name().'</td>
 			<td>'.$associated_category->get_name().'</td>
 			<td>'.$log->get_date().'</td>
 			<td>'.$log->get_from().'</td>
 			<td>'.$log->get_to().'</td>
+			<td>'.$diff.'</td>
 			<td>'.nl2br(Tools::identify_link($log->get_entry())).'</td>
 			<td>'.$working_place->get_name().'</td>
 			</tr>';
