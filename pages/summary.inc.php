@@ -147,27 +147,56 @@ echo'<div class="subheader">
 		</div>
 		</div>
 		<hr>';
-echo"<table><tr>";
-for ($i=1;$i<=$daysinmonth;$i++) {
-			echo "<td align=\"center\" width=\"30\">$i</td>";
-		}
-		echo"</tr><tr>";
 
+		
+		?>
+		
+		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+		<script type="text/javascript">
+		google.load("visualization", "1", {
+			packages:["corechart"]});
+			
+			google.setOnLoadCallback(drawChart);
+			function drawChart() {
+				var data = google.visualization.arrayToDataTable([
+						['Day', 'Number of workhours'],
+
+						
+		
+		<?php 
+			
+		$temp = array();
 		for ($i=1;$i<=$daysinmonth;$i++) {
-
+		
 			$current = $date_array['year']."-".str_pad($date_array['month'], 2, "0", STR_PAD_LEFT)."-".str_pad($i, 2, "0", STR_PAD_LEFT);
 			$summary = Log::get_sum_time_of_logs_on_a_selected_day($selected_user_id,$current,$selected_company);
-		 if ($summary != '00:00:00') {
-			$summary_parts = explode(":", $summary);
-			$summary_minutes = $summary_parts[0]*60+$summary_parts[1];
-			$thisday = $summary_minutes / $total_minutes;
-			echo '<td><div style="border:1px solid #d0d0d0; margin:3px; padding:0px;"><div title="'.$summary.'" style="width:22px; height:20px; background:#005826; opacity:'.($thisday).';"></div></div></td>';
-		 }else{
-		 	echo '<td><div style="border:1px solid #d0d0d0; margin:3px; padding:0px;"><div title="00:00:00" style="width:22px; height:20px; background:#005826; opacity:0;"></div></div></td>';
-		 }
+			
+			list($h,$m,$s) = explode(':',$summary);
+			$total = $h + ($m / 60) + ($s / 3600); 
+			$temp[] = "['".$i."',".$total."]";
+					
+				
 		}
-		echo"<tr></table>";
+		echo implode(',',$temp);
+		
 		?>
+
+		
+		]);
+		var options = {
+				legend:{position:'none'},
+				chartArea:{left:0,top:0,width:"100%",height:"90%"},
+				title: 'Company Performance',
+				colors:['green','#12ad2b']
+			};
+	
+			var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+			chart.draw(data, options);
+		}
+		</script>
+		 <div id="chart_div" style="width: 990px; height: 300px;"></div>
+		 
+		 
 	<div class="subheader">
 		<div class="titlebar">
 			<h4>Export</h4>
