@@ -185,7 +185,7 @@ echo'<div class="subheader">
 		]);
 		var options = {
 				legend:{position:'none'},
-				chartArea:{left:0,top:0,width:"90%",height:"90%"},
+				chartArea:{left:25,top:0,width:"100%",height:"90%"},
 				title: 'Company Performance',
 				colors:['green','#12ad2b']
 			};
