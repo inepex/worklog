@@ -173,7 +173,7 @@ echo'<div class="subheader">
 			
 			list($h,$m,$s) = explode(':',$summary);
 			$total = $h + ($m / 60) + ($s / 3600); 
-			$temp[] = "['".$i."',".$total."]";
+			$temp[] = "['".$i."',". round($total,2) ."]";
 					
 				
 		}
