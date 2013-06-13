@@ -326,6 +326,25 @@ if(isset($_GET['delete_log']) && Log::is_log_exist($_GET['delete_log'])){
 		</tr>
 		<?php 
 		
+		function hoursToMinutes($hours)
+		{
+			if (strstr($hours, ':'))
+			{
+				# Split hours and minutes.
+				$separatedData = explode(':', $hours);
+		
+				$minutesInHours    = $separatedData[0] * 60;
+				$minutesInDecimals = $separatedData[1];
+		
+				$totalMinutes = $minutesInHours + $minutesInDecimals;
+			}
+			else
+			{
+				$totalMinutes = $hours * 60;
+			}
+		
+			return $totalMinutes;
+		}
 		 
 		
 		$logs = $selected_user->get_logs($selected_date->format("Y-m-d"));
@@ -340,7 +359,14 @@ if(isset($_GET['delete_log']) && Log::is_log_exist($_GET['delete_log'])){
 			$datetime1 = new DateTime($log->get_from());
 			$datetime2 = new DateTime($log->get_to());
 			$interval = $datetime1->diff($datetime2);
+			
 			$diff = $interval->format('%H:%I');
+			
+			
+			
+			if ((hoursToMinutes($diff)<=4) ) { $this_is_too_small = 'style="color: #ff0000"';} else {$this_is_too_small='';}
+			
+			
 			
  
 			echo '<tr>';
@@ -349,7 +375,7 @@ if(isset($_GET['delete_log']) && Log::is_log_exist($_GET['delete_log'])){
 			echo '<td>'.$log->get_date().'</td>';
 			echo '<td>'.date("H:i",strtotime($log->get_from())).'</td>';
 			echo '<td>'.date("H:i",strtotime($log->get_to())).'</td>';
-			echo '<td>'.$diff.'</td>';
+			echo '<td '.$this_is_too_small.'>'.$diff.'</td>';
 			echo '<td>'.nl2br(Tools::identify_link($log->get_entry())).'</td>';
 			echo '<td>'.$work_place->get_name().' <br><span class="hint">'.$efficiency->get_name().'</span></td>';
 			if($user->get_id() == $selected_user->get_id() && $log->is_editable($user->get_id())){
