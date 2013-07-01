@@ -84,7 +84,6 @@ function getCategories(projectId) {
 function processCategoriesJson(categoriesJson) {
 	try{
 		categories = JSON.parse(categoriesJson);
-		console.log(categoriesJson);
 	}
 	catch(error){
 		console.log(categoriesJson);
