@@ -17,6 +17,18 @@ $(function() {
 
 });
 //
+// Last button handler
+$(function() {
+	$('#last_time_link').click(function(event) {
+		event.preventDefault();
+		$.ajax({
+			url : "ajax/get_last_log_to_time.php",
+		}).done(function(data) {
+			$('#time_from').val(data);
+		});
+	});
+
+});
 var categories;
 //category select handler
 $(function() {

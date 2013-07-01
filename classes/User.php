@@ -315,5 +315,16 @@ class User{
 		}
 		return false;
 	}
+	public function get_last_log_to_time(){
+		$query = "SELECT log_to FROM worklog_log order by worklog_log_id desc limit 1";
+		$result = mysql_query($query);
+		if(mysql_affected_rows() == 0){
+			return "00:00";
+		}
+		else{
+			$row = mysql_fetch_assoc($result);
+			return $row['log_to'];
+		}
+	}
 }
 ?>

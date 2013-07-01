@@ -56,7 +56,7 @@
 <tr class="editline">
 			<td colspan="3"><img src="images/information.png"><span
 				id="category_description"></span></td>
-			<td><a href="" id="time_from_link">Now</a></td>
+			<td><a href="" id="time_from_link">Now</a>&nbsp;/&nbsp;<a href="" id="last_time_link">Last</a></td>
 			<td><a href="" id="time_to_link">Now</a></td>
 			<td></td>
 			<td><?php 
