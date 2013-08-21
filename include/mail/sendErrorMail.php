@@ -13,9 +13,9 @@ function send_error_mail($errno, $errstr, $errfile, $errline, $errcontext){
 	$mail->Port = '465';
 	$mail->SMTPSecure = 'ssl';
 	$mail->SMTPAuth = 'true';
-	$mail->Username = 'sales@inepex.com';
-	$mail->Password = 'ine123track';
-	$mail->SetFrom("sales@inetrack.hu", "IneTrack");
+	$mail->Username = 'worklog@inepex.com';
+	$mail->Password = 'ine123pex';
+	$mail->SetFrom("worklog@inepex.com", "Worklog");
 	$mail->AddAddress("tibor.hidi@inepex.com", "Hidi Tibor");
 	$mail->AddAddress("gabor.madi@inepex.com", "Madi Gabor");
 	$mail->IsHTML(true);
