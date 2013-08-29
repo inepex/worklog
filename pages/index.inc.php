@@ -391,12 +391,12 @@ if(isset($_GET['delete_log']) && Log::is_log_exist($_GET['delete_log'])){
 						<td><font class="btn">Nem</font></td>
 					</tr>
 					</table>
-					</ul></td>
+					</ul> <br/><span style="font-size:8px;">LogID: '.$log->get_id().'</span> </td>
 				</span>';
-				//echo '<td><a href="index.php?edit_log='.$log->get_id().'&date='.$selected_date->format('Y-m-d').'"><img src="images/modify.png"></a><a href="#" id="delete_log" value="'.$log->get_id().'"><img src="images/delete.png"></a></td>';
+				
 			}
 			else{
-				echo '<td></td>';
+				echo '<td><span style="font-size:8px;">LogID: '.$log->get_id().'</span></td>';
 			}
 			echo '</tr>';
 		}
