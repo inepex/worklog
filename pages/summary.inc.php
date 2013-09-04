@@ -103,7 +103,7 @@ if(isset($_GET['company_id']) && $_GET['company_id'] != "" && Company::is_compan
 				</td>
 			</tr>
 			<?php
-			$full_sum=0; 
+			
 			$summary = Log::get_sum_time_of_logs($selected_user_id, $selected_date,$selected_company);
 			if($summary){
 				foreach($summary as $row){
@@ -115,15 +115,13 @@ if(isset($_GET['company_id']) && $_GET['company_id'] != "" && Company::is_compan
 				<td>'.$row['log_year'].'. '.$monthName.'</td>
 					<td>'.$c->get_name().'</td>
 				<td>'.$row['sum_time'].'</td>
-			</tr>';
-					$full_sum+=$row['sum_time'];
+			</tr>';		
 				}
 				
 			}
 			?>
 		</table>
-		
-		<?php echo $full_sum;  ?>
+		 
 	</form>
 
 	<?php 
@@ -147,7 +145,7 @@ if(isset($_GET['company_id']) && $_GET['company_id'] != "" && Company::is_compan
 	$total_minutes = $total_parts[0]*60+$total_parts[1];
 	echo'<div class="subheader">
 			<div class="titlebar">
-			<h4>Daily sum in selected month (Total: '.$total_parts[0].':'.$total_parts[1].') - '.$total.'</h4>
+			<h4>Daily sum in selected month (Total: '.$total_parts[0].':'.$total_parts[1].')</h4>
 		</div>
 		</div>
 		<hr>';

@@ -104,6 +104,8 @@ class Log{
 			}
 		}
 		$query ='select SEC_TO_TIME(SUM(TIME_TO_SEC(log_to)-TIME_TO_SEC(log_from))) sum_time from (SELECT worklog_log.log_from, worklog_log.log_to, worklog_log.log_date FROM `worklog_log`, worklog_projects WHERE worklog_log.worklog_project_id = worklog_projects.worklog_project_id'.$date_condition.$user_condition.$company_condition.' order by log_date ASC) as connected';
+		
+		
 		$select_result = mysql_query($query);
 		if(mysql_affected_rows() == 0){
 			return '00:00:00';
