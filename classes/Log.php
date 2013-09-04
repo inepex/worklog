@@ -81,6 +81,20 @@ class Log{
 			}
 		}
 	}
+	
+	public static function sec2hms ($sec, $padHours = false) {
+		$hms = "";
+		$hours = intval(intval($sec) / 3600);
+		$hms .= ($padHours)
+		? str_pad($hours, 2, "0", STR_PAD_LEFT). ':'
+		: $hours. ':';
+		$minutes = intval(($sec / 60) % 60);
+		$hms .= str_pad($minutes, 2, "0", STR_PAD_LEFT). ':';
+		$seconds = intval($sec % 60);
+		$hms .= str_pad($seconds, 2, "0", STR_PAD_LEFT);
+		return $hms;
+	}
+	
 
 	public static function get_sum_time_of_logs_in_a_selected_month($user_id="",$date="",$company_id=""){
 		$company_condition = "";
@@ -103,15 +117,16 @@ class Log{
 				$date_condition = " AND worklog_log.log_date >= '".$from_date."' AND worklog_log.log_date <= '".$to_date."'";
 			}
 		}
-		$query ='select SEC_TO_TIME(SUM(TIME_TO_SEC(log_to)-TIME_TO_SEC(log_from))) sum_time from (SELECT worklog_log.log_from, worklog_log.log_to, worklog_log.log_date FROM `worklog_log`, worklog_projects WHERE worklog_log.worklog_project_id = worklog_projects.worklog_project_id'.$date_condition.$user_condition.$company_condition.' order by log_date ASC) as connected';
+		$query ='select (SUM(TIME_TO_SEC(log_to)-TIME_TO_SEC(log_from))) sum_time from (SELECT worklog_log.log_from, worklog_log.log_to, worklog_log.log_date FROM `worklog_log`, worklog_projects WHERE worklog_log.worklog_project_id = worklog_projects.worklog_project_id'.$date_condition.$user_condition.$company_condition.' order by log_date ASC) as connected';
 		
-		
+	 
 		$select_result = mysql_query($query);
 		if(mysql_affected_rows() == 0){
 			return '00:00:00';
 		}
 		else{
 			$summary = mysql_fetch_assoc($select_result);
+			$summary['sum_time'] = Log::sec2hms($summary['sum_time']);
 			if($summary['sum_time'] == null){
 				return '00:00:00';
 			}else{
