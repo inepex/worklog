@@ -102,7 +102,8 @@ if(isset($_GET['company_id']) && $_GET['company_id'] != "" && Company::is_compan
 				<td><input type="submit" class="btn" value="OK">
 				</td>
 			</tr>
-			<?php 
+			<?php
+			$full_sum=0; 
 			$summary = Log::get_sum_time_of_logs($selected_user_id, $selected_date,$selected_company);
 			if($summary){
 				foreach($summary as $row){
@@ -110,16 +111,18 @@ if(isset($_GET['company_id']) && $_GET['company_id'] != "" && Company::is_compan
 					$c = new Company($row['worklog_company_id']);
 					$monthName = date("F", mktime(0, 0, 0, $row['log_month'], 10));
 					echo '<tr>
-		<th><a href="index.php?user_id='.$u->get_id().'">'.$u->get_name().'</a></th>
-		<td>'.$row['log_year'].'. '.$monthName.'</td>
-			<td>'.$c->get_name().'</td>
-		<td>'.$row['sum_time'].'</td>
+				<th><a href="index.php?user_id='.$u->get_id().'">'.$u->get_name().'</a></th>
+				<td>'.$row['log_year'].'. '.$monthName.'</td>
+					<td>'.$c->get_name().'</td>
+				<td>'.$row['sum_time'].'</td>
 			</tr>';
 				}
-
+				$full_sum+=$summary;
 			}
 			?>
 		</table>
+		
+		<?php echo $full_sum;  ?>
 	</form>
 
 	<?php 
@@ -130,18 +133,18 @@ if(isset($_GET['company_id']) && $_GET['company_id'] != "" && Company::is_compan
 	$date_array = date_parse($_GET['date']);
 		}
 		else{
-	$date_for_heatmap    = new DateTime();
-	$date_for_heatmap->modify("first day of this month");
-	$date_array = date_parse($date_for_heatmap->format('Y-m-d'));
-}
+		$date_for_heatmap    = new DateTime();
+		$date_for_heatmap->modify("first day of this month");
+		$date_array = date_parse($date_for_heatmap->format('Y-m-d'));
+	}
 
-$daysinmonth = cal_days_in_month(CAL_GREGORIAN, $date_array['month'] , $date_array['year']);
-$current = $date_array['year']."-".$date_array['month']."-1";
-$total = Log::get_sum_time_of_logs_in_a_selected_month($selected_user_id,$current,$selected_company);
-$total_hour = substr($total,0,strpos($total,':'));
-$total_parts = explode(':', $total);
-$total_minutes = $total_parts[0]*60+$total_parts[1];
-echo'<div class="subheader">
+	$daysinmonth = cal_days_in_month(CAL_GREGORIAN, $date_array['month'] , $date_array['year']);
+	$current = $date_array['year']."-".$date_array['month']."-1";
+	$total = Log::get_sum_time_of_logs_in_a_selected_month($selected_user_id,$current,$selected_company);
+	$total_hour = substr($total,0,strpos($total,':'));
+	$total_parts = explode(':', $total);
+	$total_minutes = $total_parts[0]*60+$total_parts[1];
+	echo'<div class="subheader">
 			<div class="titlebar">
 			<h4>Daily sum in selected month (Total: '.$total_parts[0].':'.$total_parts[1].') - '.$total.'</h4>
 		</div>
