@@ -143,7 +143,7 @@ $total_parts = explode(':', $total);
 $total_minutes = $total_parts[0]*60+$total_parts[1];
 echo'<div class="subheader">
 			<div class="titlebar">
-			<h4>Daily sum in selected month (Total: '.$total_parts[0].':'.$total_parts[1].')</h4>
+			<h4>Daily sum in selected month (Total: '.$total_parts[0].':'.$total_parts[1].') - '.$total.'</h4>
 		</div>
 		</div>
 		<hr>';
