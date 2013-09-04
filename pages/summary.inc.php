@@ -116,8 +116,9 @@ if(isset($_GET['company_id']) && $_GET['company_id'] != "" && Company::is_compan
 					<td>'.$c->get_name().'</td>
 				<td>'.$row['sum_time'].'</td>
 			</tr>';
+					$full_sum+=$row['sum_time'];
 				}
-				$full_sum+=$summary;
+				
 			}
 			?>
 		</table>
