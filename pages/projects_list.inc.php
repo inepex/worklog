@@ -119,33 +119,33 @@ if(isset($_GET['delete_project']) && $_GET['delete_project'] != "" && Project::i
 			<tr>
 				<th>
 					<?php 
-					echo '<a href="projects_list.php?search='.$keyword.'&order_by=worklog_project_id&order='.order_change($order).'&page='.$page.'&project_status='.$project_status.'&company_id='.$company_id.'">ID</a>';
+					echo '<a href="projects_list.php?search='.$keyword.'&order_by=worklog_project_id&order='.order_change($order).'&page='.$page.'&project_status='.$project_status.'&company_id='.$company_id.'&owner_id='.$owner_id.'">ID</a>';
 					?>
 					
 				</th>
 				<th><?php 
-					echo '<a href="projects_list.php?search='.$keyword.'&order_by=project_name&order='.order_change($order).'&page='.$page.'&project_status='.$project_status.'&company_id='.$company_id.'">Project name</a>';
+					echo '<a href="projects_list.php?search='.$keyword.'&order_by=project_name&order='.order_change($order).'&page='.$page.'&project_status='.$project_status.'&company_id='.$company_id.'&owner_id='.$owner_id.'">Project name</a>';
 					?>
 				</th>
 				 
 				<th>
 					<?php 
-					echo '<a href="projects_list.php?search='.$keyword.'&order_by=worklog_user_id&order='.order_change($order).'&page='.$page.'&project_status='.$project_status.'&company_id='.$company_id.'">Owner</a>';
+					echo '<a href="projects_list.php?search='.$keyword.'&order_by=worklog_user_id&order='.order_change($order).'&page='.$page.'&project_status='.$project_status.'&company_id='.$company_id.'&owner_id='.$owner_id.'">Owner</a>';
 					?>
 				</th>
 				<th>
 					<?php 
-					echo '<a href="projects_list.php?search='.$keyword.'&order_by=project_status&order='.order_change($order).'&page='.$page.'&project_status='.$project_status.'&company_id='.$company_id.'">Status</a>';
+					echo '<a href="projects_list.php?search='.$keyword.'&order_by=project_status&order='.order_change($order).'&page='.$page.'&project_status='.$project_status.'&company_id='.$company_id.'&owner_id='.$owner_id.'">Status</a>';
 					?>
 				</th>
 				<th>
 					<?php 
-					echo '<a href="projects_list.php?search='.$keyword.'&order_by=start_date&order='.order_change($order).'&page='.$page.'&project_status='.$project_status.'&company_id='.$company_id.'">Start date</a>';
+					echo '<a href="projects_list.php?search='.$keyword.'&order_by=start_date&order='.order_change($order).'&page='.$page.'&project_status='.$project_status.'&company_id='.$company_id.'&owner_id='.$owner_id.'">Start date</a>';
 					?>
 				</th>
 				<th>
 					<?php 
-					echo '<a href="projects_list.php?search='.$keyword.'&order_by=end_date&order='.order_change($order).'&page='.$page.'&project_status='.$project_status.'&company_id='.$company_id.'">End date</a>';
+					echo '<a href="projects_list.php?search='.$keyword.'&order_by=end_date&order='.order_change($order).'&page='.$page.'&project_status='.$project_status.'&company_id='.$company_id.'&owner_id='.$owner_id.'">End date</a>';
 					?>
 				</th>
 				<th>Edit</th>
