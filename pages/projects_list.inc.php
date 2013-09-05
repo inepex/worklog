@@ -40,6 +40,12 @@ $company_id = '';
 if(isset($_GET['company_id'])){
 	$company_id = $_GET['company_id'];
 }
+
+$owner_id = '';
+if(isset($_GET['owner_id'])){
+	$owner_id = $_GET['owner_id'];
+}
+
 //delete project
 if(isset($_GET['delete_project']) && $_GET['delete_project'] != "" && Project::is_project_exist($_GET['delete_project'])){
 	Project::delete_project($_GET['delete_project']);
@@ -59,7 +65,8 @@ if(isset($_GET['delete_project']) && $_GET['delete_project'] != "" && Project::i
 			<input type="hidden" name="page" value="<?php echo $page?>" />
 			<div style="float: left;">
 				<h4>
-					Projects list <select name="project_status">
+					Projects list 
+					<select name="project_status" style="width:130px;">
 						<option value="" >All</option>
 						<?php 
 						$all_status = ProjectStatus::get_all_status();
@@ -68,7 +75,7 @@ if(isset($_GET['delete_project']) && $_GET['delete_project'] != "" && Project::i
 						}
 						?>
 					</select> 
-					<select name="company_id">
+					<select name="company_id" style="width:130px;">
 						<option value="">All</option>
 						<?php 
 						$companies = Company::get_companies();
@@ -76,7 +83,16 @@ if(isset($_GET['delete_project']) && $_GET['delete_project'] != "" && Project::i
 							echo '<option value="'.$company->get_id().'" '.(($company_id == $company->get_id())?"selected":"").'>'.$company->get_name().'</option>';
 						}
 						?>
-				</select>
+					</select>
+					<select name="owner_id" style="width:130px;">
+						<option value="">All</option>
+						<?php 
+						$owner_users = User::get_users();
+						foreach($owner_users as $owner_user){
+							echo '<option value="'.$owner_user->get_id().'" '.(($owner_id == $owner_user->get_id())?"selected":"").'>'.$owner_user->get_name().'</option>';
+						}
+						?>
+					</select>
 					
 					
 					<input type="submit" value="OK" class="btn">
@@ -135,8 +151,8 @@ if(isset($_GET['delete_project']) && $_GET['delete_project'] != "" && Project::i
 				<th>Edit</th>
 				<th>Delete</th>
 				<?php 
-				$projects = Project::get_projects($keyword, $order, $order_by,$project_status,$page,$company_id);
-				$number_of_projects = count(Project::get_projects($keyword, $order, $order_by,$project_status));
+				$projects = Project::get_projects($keyword, $order, $order_by,$project_status,$company_id,$owner_id,$page);
+				$number_of_projects = count(Project::get_projects($keyword, $order, $order_by,$project_status,$company_id,$owner_id));
 				foreach($projects as $project){
 					/* @var $project Project */
 					//$status = new ProjectStatus($project->get_status());
