@@ -1,5 +1,4 @@
 <?php
-
 $title = "Home";
  
 $include_list[ 'head' ]		= array('pages/header.inc.php');
