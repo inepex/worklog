@@ -362,8 +362,7 @@ if(isset($_GET['delete_log']) && Log::is_log_exist($_GET['delete_log'])){
 			
 			$diff = $interval->format('%H:%I');
 			
-			
-			
+						
 			if ((hoursToMinutes($diff)<=4) ) { $this_is_too_small = 'style="color: #ff0000"';} else {$this_is_too_small='';}
 			
 			
