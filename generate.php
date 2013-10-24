@@ -20,6 +20,7 @@ require_once 'classes/Project.php';
 require_once 'classes/StatusBar.php';
 require_once 'classes/Tools.php';
 require_once 'classes/Log.php';
+require_once 'classes/Scrum.php';
 include('include/login_functions.php');
 //help for debug
  require_once 'classes/PhpConsole.php';

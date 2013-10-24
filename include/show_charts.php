@@ -1,4 +1,5 @@
 <?php
+ 
 $user_worked_hours_in_categories = $selected_user->get_worked_hours_in_categories($selected_date->format('Y-m-d'));
 $user_worked_hours_in_projects = $selected_user->get_worked_hours_in_projects($selected_date->format('Y-m-d'));
 echo '
