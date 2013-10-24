@@ -365,9 +365,6 @@ if(isset($_GET['delete_log']) && Log::is_log_exist($_GET['delete_log'])){
 						
 			if ((hoursToMinutes($diff)<=4) ) { $this_is_too_small = 'style="color: #ff0000"';} else {$this_is_too_small='';}
 			
-			
-			
- 
 			echo '<tr>';
 			echo '<td><a href="project_view.php?project_id='.$project->get_id().'">'.$project->get_name().'</a></td>';
 			echo '<td>'.$category->get_name().'</td>';
