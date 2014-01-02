@@ -73,7 +73,7 @@ if(isset($_GET['company_id']) && $_GET['company_id'] != "" && Company::is_compan
 
 						//
 
-						for(;$date->format('m')>= $first_log_date->format('m'); $date->modify("first day of previous month")){
+						for(;$date->format('Y-m')>= $first_log_date->format('Y-m'); $date->modify("first day of previous month")){
 						$selected = "";
 						if($date->format('Y-m-d') == $selected_date){
 							$selected = "selected";
