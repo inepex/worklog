@@ -10,6 +10,7 @@ class User{
 	protected $picture;
 	protected $default_place;
 	protected $default_efficiency;
+	protected $api_key;
 	public static function authenticate_user($user_name, $md5password){
 		$query = "SELECT * FROM worklog_users WHERE username ='".strip_tags(mysql_real_escape_string($user_name))."'";
 		$select_result = mysql_query($query);
@@ -19,7 +20,7 @@ class User{
 		else{
 			$row = mysql_fetch_assoc($select_result);
 			if($row['password'] == $md5password){
-				return $row['worklog_user_id'];
+				return $row['api_key'];
 			}
 		}
 	}
@@ -65,6 +66,7 @@ class User{
 			}
 			$this->default_place = new WorkPlace($row['default_place_id']);
 			$this->default_efficiency = new Efficiency($row['default_efficiency_id']);
+			$this->api_key      = $row['api_key'];
 		}
 	}
 	public function get_id(){
@@ -96,6 +98,9 @@ class User{
 	}
 	public function get_default_efficiency(){
 		return $this->default_efficiency;
+	}
+	public function get_api_key(){
+		return $this->api_key;
 	}
 	public function edit_user_name($user_name){
 		if($user_name == ''){

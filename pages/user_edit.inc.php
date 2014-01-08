@@ -131,6 +131,10 @@ if($user->get_status() == "2"){
 				<td><?php echo $user->get_email();?></td>
 			</tr>
 			<tr>
+				<td>API key</td>
+				<td><?php echo $user->get_api_key();?></td>
+			</tr>
+			<tr>
 				<td>Username</td>
 				<td><input type="text" name="user-name"
 					value="<?php echo $user->get_user_name();?>"></td>
