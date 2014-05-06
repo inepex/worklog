@@ -63,7 +63,7 @@ while($row = mysql_fetch_assoc($select_result)){
 	
 	
 	
-	// LEVÉL KÜLDÉS
+	// LEVÉL KÜLDÉS 
 
 	if ($sendmail=="true") {
 		$mail = new PHPMailer();
