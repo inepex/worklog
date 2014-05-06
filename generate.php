@@ -44,7 +44,7 @@ if(isset($_SESSION['enterid'])){
 <!DOCTYPE html>
 <html>
 <head>
-<title>Worklog - <?php echo $title; ?>
+<title>Worklog2 - <?php echo $title; ?>
 </title>
 <link rel="icon" href="images/favicon.png" type="image/png">
 <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
