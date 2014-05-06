@@ -37,7 +37,7 @@ if(isset($_SESSION['enterid'])){
 	global $site_version;
 	if ($site_version!='local') {
 		set_error_handler('send_error_mail');
-	}
+	} 
 }
 //
 ?>
