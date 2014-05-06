@@ -39,7 +39,7 @@ if(isset($_SESSION['enterid'])){
 		set_error_handler('send_error_mail');
 	} 
 }
-//
+// 
 ?>
 <!DOCTYPE html>
 <html>

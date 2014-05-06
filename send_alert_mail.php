@@ -61,7 +61,7 @@ while($row = mysql_fetch_assoc($select_result)){
 	 
 	echo "sendmail: ".$sendmail."<br/>";
 	
-	 
+	  
 	
 	// LEVÉL KÜLDÉS 
 
