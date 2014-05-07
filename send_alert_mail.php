@@ -64,7 +64,7 @@ while($row = mysql_fetch_assoc($select_result)){
 	  
 	
 	// LEVÉL KÜLDÉS 
-
+ 
 	if ($sendmail=="true") {
 		$mail = new PHPMailer();
 		$mail->Mailer = 'smtp';
