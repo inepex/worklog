@@ -75,7 +75,7 @@ while($row = mysql_fetch_assoc($select_result)){
 		$mail->Username = 'worklog@inepex.com';
 		$mail->Password = 'ine123pex';
 		$mail->SetFrom("worklog@inepex.com", "Worklog");
-		$mail->AddAddress("gabor.madi@inepex.com", $row['name']);
+		$mail->AddAddress($row['email'], $row['name']);
 		
 		$mail->IsHTML(true);
 		$mail->Subject = "Ejnye ".$row['name'].", 3 napja nem töltöd a Worklogot!";
