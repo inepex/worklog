@@ -113,8 +113,10 @@ class Project {
 			$owner = $project->get_user();
 			if (count($project->get_categories_of_user_with_planned_hours(new User($user_id))) > 0 && ($owner->get_id() == $user_id || $project->is_user_workmate($user_id))) {
 				array_push($projects, $project);
+				$ids[] = $project->id;
 			}
 		}
+		Notification::notice("UID = " . $user_id . " => " . implode(', ', $ids));
 		return $projects;
 	}
 
