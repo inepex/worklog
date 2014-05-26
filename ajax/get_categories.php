@@ -26,7 +26,7 @@ require_once '../include/login_functions.php';
 			for($i=0; $i<count($categories); $i++){
 				$category_id_and_name['assoc_id'] = $categories[$i]->get_assoc_id();
 				$category_id_and_name['id'] = $categories[$i]->get_id();
-				$category_id_and_name['name'] = $categories[$i]->get_name();
+				$category_id_and_name['name'] = "[ ".$categories[$i]->get_name()." ] -- ".$categories[$i]->get_description();
 				$category_id_and_name['description'] = $categories[$i]->get_description();
 				array_push($categories_id_and_name,$category_id_and_name);
 			}
