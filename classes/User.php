@@ -1,5 +1,8 @@
-<?php 
-class User{
+<?php
+
+require_once(dirname(__FILE__) . '/ObjectCache.php');
+
+class User extends ObjectCache {
 	protected $id;
 	protected $user_name;
 	protected $password;
@@ -11,285 +14,298 @@ class User{
 	protected $default_place;
 	protected $default_efficiency;
 	protected $api_key;
-	public static function authenticate_user($user_name, $md5password){
-		$query = "SELECT * FROM worklog_users WHERE username ='".strip_tags(mysql_real_escape_string($user_name))."'";
+
+	public static function authenticate_user($user_name, $md5password) {
+		$query = "SELECT * FROM worklog_users WHERE username ='" . strip_tags(mysql_real_escape_string($user_name)) . "'";
 		$select_result = mysql_query($query);
-		if(mysql_affected_rows() == 0){
+		if (mysql_affected_rows() == 0) {
 			return false;
-		}
-		else{
+		} else {
 			$row = mysql_fetch_assoc($select_result);
-			if($row['password'] == $md5password){
+			if ($row['password'] == $md5password) {
 				return $row['api_key'];
 			}
 		}
 	}
-	public static function get_users(){
+
+	public static function get_users() {
 		$users = array();
 		$query = "SELECT worklog_user_id FROM worklog_users order by name";
 		$select_result = mysql_query($query);
-		while($row = mysql_fetch_assoc($select_result)){
+		while ($row = mysql_fetch_assoc($select_result)) {
 			array_push($users, new User($row['worklog_user_id']));
 		}
 		return $users;
 	}
-	public static function is_exist($user_id){
-		$query = "SELECT * FROM worklog_users WHERE worklog_user_id = ".$user_id;
+
+	public static function is_exist($user_id) {
+		$query = "SELECT * FROM worklog_users WHERE worklog_user_id = " . $user_id;
 		$select_result = mysql_query($query);
-		if(mysql_affected_rows()>0){
+		if (mysql_affected_rows() > 0) {
 			return true;
-		}
-		else{
+		} else {
 			return false;
 		}
 	}
-	public function __construct($id){
-		$query = "SELECT * FROM worklog_users WHERE worklog_user_id = ".$id;
-		$select_result = mysql_query($query);
-		if(mysql_affected_rows() == 0){
-			Notification::error("Nincs ilyen user: id=".$id);
-		}
-		else{
-			$this->id = $id;
-			$row = mysql_fetch_assoc($select_result);
-			$this->user_name = $row['username'];
-			$this->password  = $row['password'];
-			$this->status    = $row['user_status'];
-			$this->email     = $row['email'];
-			$this->enter_date= $row['enterdate'];
-			$this->name      = $row['name'];
-			if($row['picture'] == ""){
-				$this->picture = "nopic.png";
+
+	public function __construct($id) {
+		$this->objectName = 'User';
+		if ($this->isCached($id)) {
+			$this->setFromCache($this->getCached($id));
+		} else {
+			$query = "SELECT * FROM worklog_users WHERE worklog_user_id = " . $id;
+			$select_result = mysql_query($query);
+			if (mysql_affected_rows() == 0) {
+				Notification::error("Nincs ilyen user: id=" . $id);
+			} else {
+				$this->id = $id;
+				$row = mysql_fetch_assoc($select_result);
+				$this->user_name = $row['username'];
+				$this->password = $row['password'];
+				$this->status = $row['user_status'];
+				$this->email = $row['email'];
+				$this->enter_date = $row['enterdate'];
+				$this->name = $row['name'];
+				if ($row['picture'] == "") {
+					$this->picture = "nopic.png";
+				} else {
+					$this->picture = $row['picture'];
+				}
+				$this->default_place = new WorkPlace($row['default_place_id']);
+				$this->default_efficiency = new Efficiency($row['default_efficiency_id']);
+				$this->api_key = $row['api_key'];
 			}
-			else{
-				$this->picture   = $row['picture'];
-			}
-			$this->default_place = new WorkPlace($row['default_place_id']);
-			$this->default_efficiency = new Efficiency($row['default_efficiency_id']);
-			$this->api_key      = $row['api_key'];
 		}
 	}
-	public function get_id(){
+
+	public function get_id() {
 		return $this->id;
 	}
-	public function get_user_name(){
+
+	public function get_user_name() {
 		return $this->user_name;
 	}
-	public function get_password(){
+
+	public function get_password() {
 		return $this->password;
 	}
-	public function get_status(){
+
+	public function get_status() {
 		return $this->status;
 	}
-	public function get_email(){
+
+	public function get_email() {
 		return $this->email;
 	}
-	public function get_enter_date(){
+
+	public function get_enter_date() {
 		return $this->enter_date;
 	}
-	public function get_name(){
+
+	public function get_name() {
 		return $this->name;
 	}
-	public function get_picture(){
+
+	public function get_picture() {
 		return $this->picture;
 	}
-	public function get_default_place(){
+
+	public function get_default_place() {
 		return $this->default_place;
 	}
-	public function get_default_efficiency(){
+
+	public function get_default_efficiency() {
 		return $this->default_efficiency;
 	}
-	public function get_api_key(){
+
+	public function get_api_key() {
 		return $this->api_key;
 	}
-	public function edit_user_name($user_name){
-		if($user_name == ''){
+
+	public function edit_user_name($user_name) {
+		if ($user_name == '') {
 			return false;
-		}
-		else{
-			$query = "SELECT worklog_user_id FROM worklog_users WHERE username = '".strip_tags(mysql_real_escape_string($user_name))."'";
+		} else {
+			$query = "SELECT worklog_user_id FROM worklog_users WHERE username = '" . strip_tags(mysql_real_escape_string($user_name)) . "'";
 			$result = mysql_query($query);
-			if(mysql_affected_rows() != 0 && $user_name != $this->user_name){
+			if (mysql_affected_rows() != 0 && $user_name != $this->user_name) {
 				Notification::error('User name already exists');
 				return false;
-			}
-			else{
-				$query = "UPDATE worklog_users SET username='".strip_tags(mysql_real_escape_string($user_name))."' WHERE worklog_user_id=".$this->id;
+			} else {
+				$query = "UPDATE worklog_users SET username='" . strip_tags(mysql_real_escape_string($user_name)) . "' WHERE worklog_user_id=" . $this->id;
 				$update_result = mysql_query($query);
-				if(mysql_error() == ""){
+				if (mysql_error() == "") {
 					$this->user_name = $user_name;
 					return true;
-				}
-				else{
+				} else {
 					trigger_error(mysql_error());
 					return false;
-				}	
+				}
 			}
 		}
 	}
-	public function edit_default_workplace($default_workplace_id){
-		if($default_workplace_id == ''){
+
+	public function edit_default_workplace($default_workplace_id) {
+		if ($default_workplace_id == '') {
 			return false;
-		}
-		else{
-			$query = "UPDATE worklog_users SET default_place_id='".$default_workplace_id."' WHERE worklog_user_id=".$this->id;
+		} else {
+			$query = "UPDATE worklog_users SET default_place_id='" . $default_workplace_id . "' WHERE worklog_user_id=" . $this->id;
 			$update_result = mysql_query($query);
-			if(mysql_error() == ""){
+			if (mysql_error() == "") {
 				$this->default_place = new WorkPlace($default_workplace_id);
 				return true;
-			}
-			else{
+			} else {
 				trigger_error(mysql_error());
 				return false;
 			}
 		}
 	}
-	
-	public function edit_default_efficiency($default_efficiency_id){
-		if($default_efficiency_id == ''){
+
+	public function edit_default_efficiency($default_efficiency_id) {
+		if ($default_efficiency_id == '') {
 			return false;
-		}
-		else{
-			$query = "UPDATE worklog_users SET default_efficiency_id='".$default_efficiency_id."' WHERE worklog_user_id=".$this->id;
+		} else {
+			$query = "UPDATE worklog_users SET default_efficiency_id='" . $default_efficiency_id . "' WHERE worklog_user_id=" . $this->id;
 			$update_result = mysql_query($query);
-			if(mysql_error() == ""){
+			if (mysql_error() == "") {
 				$this->default_efficiency = new Efficiency($default_efficiency_id);
 				return true;
-			}
-			else{
+			} else {
 				trigger_error(mysql_error());
 				return false;
 			}
 		}
 	}
-	
-	public function edit_password($password){//folytatni
-		if($password == ''){
+
+	public function edit_password($password) { //folytatni
+		if ($password == '') {
 			return false;
-		}
-		else{
-			$query = "UPDATE worklog_users SET password='".md5($password)."' WHERE worklog_user_id=".$this->id;
+		} else {
+			$query = "UPDATE worklog_users SET password='" . md5($password) . "' WHERE worklog_user_id=" . $this->id;
 			$update_result = mysql_query($query);
-			if(mysql_error() == ""){
+			if (mysql_error() == "") {
 				$this->password = md5($password);
 				return true;
-			}
-			else{
+			} else {
 				trigger_error(mysql_error());
 				return false;
 			}
 		}
 	}
-	public function edit_profile_picture($picture_file){
+
+	public function edit_profile_picture($picture_file) {
 		$target_path = "photos/";
 		$new_path_parts = pathinfo($picture_file["name"]);
 		$new_extension = $new_path_parts['extension'];
 		$new_filename = $new_path_parts['filename'];
-		if($new_extension != "jpg" && $new_extension != "jpeg" && $new_extension != "png" && $new_extension != "gif"){
+		if ($new_extension != "jpg" && $new_extension != "jpeg" && $new_extension != "png" && $new_extension != "gif") {
 			Notification::warn("Wrong picture format!");
 			return false;
-		}
-		else{
-			$old_path_parts = pathinfo($target_path.$this->picture);
+		} else {
+			$old_path_parts = pathinfo($target_path . $this->picture);
 			$old_extension = $old_path_parts['extension'];
 			$old_filename = $old_path_parts['filename'];
-			rename($target_path.$this->picture, $target_path.$old_filename."temp");
-			if(move_uploaded_file($picture_file['tmp_name'], $target_path . basename( $new_filename."-".$this->id.".".$new_extension))) {
-				unlink($target_path.$old_filename."temp");
-				$this->picture = $new_filename."-".$this->id.".".$new_extension;
-				$query = "UPDATE worklog_users SET picture='".$this->picture."' WHERE worklog_user_id=".$this->id;
+			rename($target_path . $this->picture, $target_path . $old_filename . "temp");
+			if (move_uploaded_file($picture_file['tmp_name'], $target_path . basename($new_filename . "-" . $this->id . "." . $new_extension))) {
+				unlink($target_path . $old_filename . "temp");
+				$this->picture = $new_filename . "-" . $this->id . "." . $new_extension;
+				$query = "UPDATE worklog_users SET picture='" . $this->picture . "' WHERE worklog_user_id=" . $this->id;
 				$update_result = mysql_query($query);
-				Notification::notice("The file ".basename($picture_file['name'])." has been uploaded");
+				Notification::notice("The file " . basename($picture_file['name']) . " has been uploaded");
 				return true;
-			} else{
-				rename($target_path.$old_filename."temp",$target_path.$this->picture);
+			} else {
+				rename($target_path . $old_filename . "temp", $target_path . $this->picture);
 				Notification::warn("There was an error uploading the file, please try again!");
 				return false;
-			}	
+			}
 		}
 	}
-	public function update_personal_note($note_text){
-		$query = "UPDATE worklog_users SET personal_note = '".strip_tags(mysql_real_escape_string($note_text))."' WHERE worklog_user_id = ".$this->id;
+
+	public function update_personal_note($note_text) {
+		$query = "UPDATE worklog_users SET personal_note = '" . strip_tags(mysql_real_escape_string($note_text)) . "' WHERE worklog_user_id = " . $this->id;
 		$update_result = mysql_query($query);
-		if(mysql_error() == ""){
+		if (mysql_error() == "") {
 			Notification::notice("Personal note has been updated successfully!");
-		}
-		else{
+		} else {
 			trigger_error(mysql_error());
 		}
 	}
-	public function get_personal_note(){
-		$query = "SELECT personal_note FROM worklog_users WHERE worklog_user_id = ".$this->id;
+
+	public function get_personal_note() {
+		$query = "SELECT personal_note FROM worklog_users WHERE worklog_user_id = " . $this->id;
 		$select_result = mysql_query($query);
 		$row = mysql_fetch_assoc($select_result);
 		return $row['personal_note'];
 	}
-	public function is_admin(){
-		if($this->status == 2){
+
+	public function is_admin() {
+		if ($this->status == 2) {
 			return true;
-		}
-		else{
+		} else {
 			return false;
 		}
 	}
-	public function get_projects_where_user_have_planned_hour($status=""){
+
+	public function get_projects_where_user_have_planned_hour($status = "") {
 		$projects = array();
-		$query = 'SELECT worklog_projects.worklog_project_id FROM `worklog_projects`, worklog_project_plan WHERE worklog_projects.worklog_project_id = worklog_project_plan.worklog_project_id AND worklog_project_plan.worklog_user_id = '.$this->id.' AND plan_value != 0 group by worklog_projects.worklog_project_id';
+		$query = 'SELECT worklog_projects.worklog_project_id FROM `worklog_projects`, worklog_project_plan WHERE worklog_projects.worklog_project_id = worklog_project_plan.worklog_project_id AND worklog_project_plan.worklog_user_id = ' . $this->id . ' AND plan_value != 0 group by worklog_projects.worklog_project_id';
 		$select_result = mysql_query($query);
-		while($row = mysql_fetch_assoc($select_result)){
-			if((int)$status >= 0 && (int)$status <=2){
+		while ($row = mysql_fetch_assoc($select_result)) {
+			if ((int)$status >= 0 && (int)$status <= 2) {
 				$project = new Project($row['worklog_project_id']);
-				if($project->get_status()->get_code() ==  $status){
-					array_push($projects,$project);
+				if ($project->get_status()->get_code() == $status) {
+					array_push($projects, $project);
 				}
-			}
-			else{
+			} else {
 				array_push($projects, new Project($row['worklog_project_id']));
 			}
 
 		}
 		return $projects;
 	}
-	public function get_logs($date){
+
+	public function get_logs($date) {
 		return Log::get_logs($this->id, $date);
 	}
-	public function get_earlies_log_date(){
-		$query = "SELECT log_date FROM worklog_log WHERE worklog_user_id = ".$this->id." order by log_date ASC";
+
+	public function get_earlies_log_date() {
+		$query = "SELECT log_date FROM worklog_log WHERE worklog_user_id = " . $this->id . " order by log_date ASC";
 		$select_result = mysql_query($query);
-		if(mysql_affected_rows() == 0){
+		if (mysql_affected_rows() == 0) {
 			return false;
-		}
-		else{
+		} else {
 			$row = mysql_fetch_assoc($select_result);
 			return $row['log_date'];
 		}
 	}
-	public function get_worked_hours_in_associated_category($associated_category){
+
+	public function get_worked_hours_in_associated_category($associated_category) {
 		return $associated_category->get_sum_of_worked_hours($this->id);
 	}
-	public function get_planned_hours_in_associated_category($associated_category){
-		$query = "SELECT plan_value FROM worklog_project_plan WHERE category_assoc_id=".$associated_category->get_assoc_id()." AND worklog_user_id = ".$this->get_id();
+
+	public function get_planned_hours_in_associated_category($associated_category) {
+		$query = "SELECT plan_value FROM worklog_project_plan WHERE category_assoc_id=" . $associated_category->get_assoc_id() . " AND worklog_user_id = " . $this->get_id();
 		$result = mysql_query($query);
-		if(mysql_affected_rows() == 0){
+		if (mysql_affected_rows() == 0) {
 			return 0;
-		}
-		else{
+		} else {
 			$row = mysql_fetch_assoc($result);
-			return $row['plan_value'].':00';
+			return $row['plan_value'] . ':00';
 		}
 	}
-	public function get_worked_hours_in_categories($date){
+
+	public function get_worked_hours_in_categories($date) {
 		$worked_hours_in_categories = array();
 		$result_array = date_parse($date);
-		if($result_array['year'] && $result_array['month'] && $result_array['day']){
-			$to = new DateTime($result_array['year']."-".$result_array['month']."-".$result_array['day']);
-			$from = new DateTime($result_array['year']."-".$result_array['month']."-".$result_array['day']);
+		if ($result_array['year'] && $result_array['month'] && $result_array['day']) {
+			$to = new DateTime($result_array['year'] . "-" . $result_array['month'] . "-" . $result_array['day']);
+			$from = new DateTime($result_array['year'] . "-" . $result_array['month'] . "-" . $result_array['day']);
 			$from->modify("first day of this month");
 			$to->modify("last day of this month");
-			$query = "select SUM(TIME_TO_SEC(log_to)-TIME_TO_SEC(log_from)) sum_time, s.worklog_category_id from (select worklog_log.worklog_user_id, log_from, log_to, worklog_projects_category_assoc.worklog_category_id from worklog_log, worklog_projects_category_assoc where worklog_projects_category_assoc.worklog_projects_category_assoc_id = worklog_log.worklog_category_assoc_id AND worklog_log.worklog_user_id = ".$this->id." AND worklog_log.log_date >= '".$from->format('Y-m-d')."'  AND worklog_log.log_date <= '".$to->format('Y-m-d')."') as s group by s.worklog_category_id";
+			$query = "select SUM(TIME_TO_SEC(log_to)-TIME_TO_SEC(log_from)) sum_time, s.worklog_category_id from (select worklog_log.worklog_user_id, log_from, log_to, worklog_projects_category_assoc.worklog_category_id from worklog_log, worklog_projects_category_assoc where worklog_projects_category_assoc.worklog_projects_category_assoc_id = worklog_log.worklog_category_assoc_id AND worklog_log.worklog_user_id = " . $this->id . " AND worklog_log.log_date >= '" . $from->format('Y-m-d') . "'  AND worklog_log.log_date <= '" . $to->format('Y-m-d') . "') as s group by s.worklog_category_id";
 			$select_result = mysql_query($query);
-				
-			while($row = mysql_fetch_assoc($select_result)){
+
+			while ($row = mysql_fetch_assoc($select_result)) {
 				$worked_hours_in_category = array();
 				$worked_hours_in_category['category_id'] = $row['worklog_category_id'];
 				$worked_hours_in_category['worked_hours'] = $row['sum_time'];
@@ -299,18 +315,19 @@ class User{
 		}
 		return false;
 	}
-	public function get_worked_hours_in_projects($date){
+
+	public function get_worked_hours_in_projects($date) {
 		$worked_hours_in_projects = array();
 		$result_array = date_parse($date);
-		if($result_array['year'] && $result_array['month'] && $result_array['day']){
-			$to = new DateTime($result_array['year']."-".$result_array['month']."-".$result_array['day']);
-			$from = new DateTime($result_array['year']."-".$result_array['month']."-".$result_array['day']);
+		if ($result_array['year'] && $result_array['month'] && $result_array['day']) {
+			$to = new DateTime($result_array['year'] . "-" . $result_array['month'] . "-" . $result_array['day']);
+			$from = new DateTime($result_array['year'] . "-" . $result_array['month'] . "-" . $result_array['day']);
 			$from->modify("first day of this month");
 			$to->modify("last day of this month");
-			$query = 'select SUM(TIME_TO_SEC(log_to)-TIME_TO_SEC(log_from)) sum_time, worklog_project_id from (select * from worklog_log where worklog_user_id = '.$this->id.' AND log_date>="'.$from->format('Y-m-d').'" AND log_date<="'.$to->format('Y-m-d').'") as s group by worklog_project_id, worklog_user_id';
+			$query = 'select SUM(TIME_TO_SEC(log_to)-TIME_TO_SEC(log_from)) sum_time, worklog_project_id from (select * from worklog_log where worklog_user_id = ' . $this->id . ' AND log_date>="' . $from->format('Y-m-d') . '" AND log_date<="' . $to->format('Y-m-d') . '") as s group by worklog_project_id, worklog_user_id';
 			$select_result = mysql_query($query);
 
-			while($row = mysql_fetch_assoc($select_result)){
+			while ($row = mysql_fetch_assoc($select_result)) {
 				$worked_hours_in_project = array();
 				$worked_hours_in_project['project_id'] = $row['worklog_project_id'];
 				$worked_hours_in_project['worked_hours'] = $row['sum_time'];
@@ -320,16 +337,36 @@ class User{
 		}
 		return false;
 	}
-	public function get_last_log_to_time(){
-		$query = "SELECT log_to FROM worklog_log where worklog_user_id =".$this->id."  order by worklog_log_id desc limit 1";
+
+	public function get_last_log_to_time() {
+		$query = "SELECT log_to FROM worklog_log where worklog_user_id =" . $this->id . "  order by worklog_log_id desc limit 1";
 		$result = mysql_query($query);
-		if(mysql_affected_rows() == 0){
+		if (mysql_affected_rows() == 0) {
 			return "00:00";
-		}
-		else{
+		} else {
 			$row = mysql_fetch_assoc($result);
 			return $row['log_to'];
 		}
 	}
+
+	/**
+	 * Set the current object from a cached copy.
+	 * @param $object mixed The cached object.
+	 * @return mixed Nothing.
+	 */
+	protected function setFromCache($object) {
+		$this->id = $object->id;
+		$this->user_name = $object->user_name;
+		$this->password = $object->password;
+		$this->status = $object->status;
+		$this->email = $object->email;
+		$this->enter_date = $object->enter_date;
+		$this->name = $object->name;
+		$this->picture = $object->picture;
+		$this->default_place = $object->default_place;
+		$this->default_efficiency = $object->default_efficiency;
+		$this->api_key = $object->api_key;
+	}
 }
+
 ?>
