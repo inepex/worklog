@@ -1,5 +1,8 @@
 <?php
-class WorkPlace{
+
+require_once('classes/ObjectCache.php');
+
+class WorkPlace extends ObjectCache {
 	private $id;
 	private $name;
 	public static function add_new_work_place($place_name){
@@ -59,15 +62,19 @@ class WorkPlace{
 		}
 	}
 	public function __construct($id){
-		$query = "SELECT * FROM worklog_places WHERE worklog_place_id=".$id;
-		$select_result = mysql_query($query);
-		if(mysql_affected_rows() != 1){
-			trigger_error("Warning: the id is not unique! Called with workplace_id:".$id);
-		}
-		else{
-			$row = mysql_fetch_assoc($select_result);
-			$this->id   = $id;
-			$this->name = $row['place_name'];
+		if (self::isCached($id)) {
+			$this->setFromCache(self::getCached($id));
+		} else {
+			$query = "SELECT * FROM worklog_places WHERE worklog_place_id=" . $id;
+			$select_result = mysql_query($query);
+			if (mysql_affected_rows() != 1) {
+				trigger_error("Warning: the id is not unique! Called with workplace_id:" . $id);
+			} else {
+				$row = mysql_fetch_assoc($select_result);
+				$this->id = $id;
+				$this->name = $row['place_name'];
+				self::cache($id, $this);
+			}
 		}
 	}
 	public function edit_name($new_name){
@@ -101,6 +108,16 @@ class WorkPlace{
 				return true;
 			}
 		}
+	}
+
+	/**
+	 * Set the current object from a cached copy.
+	 * @param $object mixed The cached object.
+	 * @return mixed Nothing.
+	 */
+	protected function setFromCache($object) {
+		$this->id = $object->id;
+		$this->name = $object->name;
 	}
 }
 ?>
