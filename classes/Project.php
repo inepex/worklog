@@ -116,7 +116,7 @@ class Project {
 				$ids[] = $project->id;
 			}
 		}
-		Notification::notice("UID = " . $user_id . " => " . implode(', ', $ids));
+		echo "UID = " . $user_id . " => " . implode(', ', $ids) . "\n\n";
 		return $projects;
 	}
 
