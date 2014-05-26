@@ -1,5 +1,7 @@
 <?php
 
+require_once('classes/ObjectCache.php');
+
 class Efficiency extends ObjectCache {
 
 	private $id;
