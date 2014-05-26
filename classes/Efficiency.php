@@ -1,6 +1,6 @@
-<?php 
-class Efficiency{
-	private $id;
+<?php
+class Efficiency extends ObjectCache {
+    private $id;
 	private $name;
 	public static function is_efficiency_exist($efficiency_id){
 		$query = "SELECT worklog_efficiency_id FROM worklog_efficiency WHERE worklog_efficiency_id = ".$efficiency_id;
@@ -48,16 +48,20 @@ class Efficiency{
 		}
 	}
 	public function __construct($id){
-		$query = "SELECT * FROM worklog_efficiency WHERE worklog_efficiency_id=".$id;
-		$select_result = mysql_query($query);
-		if(mysql_affected_rows() != 1){
-			trigger_error("Warning: the efficiency id is not unique! Called with:".$id);
-		}
-		else{
-			$row = mysql_fetch_assoc($select_result);
-			$this->id   = $id;
-			$this->name = $row['efficiency_name'];
-		}
+        if (self::isCached($id)) {
+            $this->setFromCache(self::getCached($id));
+        } else {
+            $query = "SELECT * FROM worklog_efficiency WHERE worklog_efficiency_id=" . $id;
+            $select_result = mysql_query($query);
+            if (mysql_affected_rows() != 1) {
+                trigger_error("Warning: the efficiency id is not unique! Called with:" . $id);
+            } else {
+                $row = mysql_fetch_assoc($select_result);
+                $this->id = $id;
+                $this->name = $row['efficiency_name'];
+	            self::cache($id, $this);
+            }
+        }
 	}
 	public function edit_name($new_name){
 		$query = "UPDATE worklog_efficiency SET efficiency_name='".strip_tags(mysql_real_escape_string($new_name))."' WHERE worklog_efficiency_id=".$this->id;
@@ -90,6 +94,11 @@ class Efficiency{
 				return true;
 			}
 		}
+	}
+
+	protected function setFromCache($object) {
+		$this->id = $object->id;
+		$this->name = $object->name;
 	}
 }
 ?>
