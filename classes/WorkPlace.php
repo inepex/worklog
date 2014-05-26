@@ -63,8 +63,9 @@ class WorkPlace extends ObjectCache {
 	}
 
 	public function __construct($id) {
-		if (self::isCached($id)) {
-			$this->setFromCache(self::getCached($id));
+		$this->objectName = 'WorkPlace';
+		if ($this->isCached($id)) {
+			$this->setFromCache($this->getCached($id));
 		} else {
 			$query = "SELECT * FROM worklog_places WHERE worklog_place_id=" . $id;
 			$select_result = mysql_query($query);
@@ -74,7 +75,7 @@ class WorkPlace extends ObjectCache {
 				$row = mysql_fetch_assoc($select_result);
 				$this->id = $id;
 				$this->name = $row['place_name'];
-				self::cache($id, $this);
+				$this->cache($id, $this);
 			}
 		}
 	}

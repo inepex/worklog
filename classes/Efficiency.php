@@ -53,8 +53,9 @@ class Efficiency extends ObjectCache {
 	}
 
 	public function __construct($id) {
-		if (self::isCached($id)) {
-			$this->setFromCache(self::getCached($id));
+		$this->objectName = 'Efficiency';
+		if ($this->isCached($id)) {
+			$this->setFromCache($this->getCached($id));
 		} else {
 			$query = "SELECT * FROM worklog_efficiency WHERE worklog_efficiency_id=" . $id;
 			$select_result = mysql_query($query);
@@ -64,7 +65,7 @@ class Efficiency extends ObjectCache {
 				$row = mysql_fetch_assoc($select_result);
 				$this->id = $id;
 				$this->name = $row['efficiency_name'];
-				self::cache($id, $this);
+				$this->cache($id, $this);
 			}
 		}
 	}
