@@ -1,6 +1,6 @@
 <?php
 
-require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/ObjectCache.php');
+require_once(dirname(__FILE__) . '/ObjectCache.php');
 
 class Efficiency extends ObjectCache {
 
