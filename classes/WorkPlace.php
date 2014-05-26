@@ -1,6 +1,6 @@
 <?php
 
-require_once('classes/ObjectCache.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/classes/ObjectCache.php');
 
 class WorkPlace extends ObjectCache {
 	private $id;
