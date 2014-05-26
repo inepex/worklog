@@ -105,18 +105,14 @@ class Project {
 	}
 
 	public static function get_projects_which_contain_category($user_id) {
+		// Supercharged by hgj
 		$projects = array();
-		$query = "SELECT worklog_project_id FROM worklog_projects";
+		$query = "SELECT worklog_project_id FROM worklog_project_plan WHERE worklog_user_id = " . $user_id . " AND plan_value > 0 GROUP BY worklog_project_id ORDER BY worklog_project_id ASC";
 		$select_result = mysql_query($query);
 		while ($row = mysql_fetch_assoc($select_result)) {
 			$project = new Project($row['worklog_project_id']);
-			$owner = $project->get_user();
-			if (count($project->get_categories_of_user_with_planned_hours(new User($user_id))) > 0 && ($owner->get_id() == $user_id || $project->is_user_workmate($user_id))) {
-				array_push($projects, $project);
-				$ids[] = $project->id;
-			}
+			array_push($projects, $project);
 		}
-		echo "UID = " . $user_id . " => " . implode(', ', $ids) . "\n\n";
 		return $projects;
 	}
 
