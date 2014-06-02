@@ -347,7 +347,9 @@ else{
 							$categories = Category::get_categories();
 							foreach($categories as $category){
 								/* @var $category Category */
-								echo '<option value="'.$category->get_id().'">'.$category->get_name().'</option>';
+								if ($category->get_category_status()=='1') {
+									echo '<option value="'.$category->get_id().'">'.$category->get_name().'</option>';
+								}
 							}
 				
 					echo '</select>
