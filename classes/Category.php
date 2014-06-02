@@ -2,6 +2,7 @@
 class Category{
 	protected $id;
 	protected $name;
+	protected $category_status;
 
 	public static function get_categories(){
 		$categories = array();
@@ -58,6 +59,7 @@ class Category{
 			$row = mysql_fetch_assoc($select_result);
 			$this->id   = $id;
 			$this->name = $row['category_name'];
+			$this->category_status = $row['category_status'];
 		}
 	}
 	public function edit_name($new_name){
@@ -76,6 +78,9 @@ class Category{
 	}
 	public function get_name(){
 		return $this->name;
+	}
+	public function get_category_status(){
+		return $this->category_status;
 	}
 	public function is_in_use(){
 		$query = "SELECT worklog_projects_category_assoc_id FROM worklog_projects_category_assoc WHERE worklog_category_id = ".$this->id;
