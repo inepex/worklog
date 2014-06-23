@@ -28,7 +28,7 @@ PhpConsole::start();
 error_reporting(E_ALL);
 require_once 'include/mail/class.phpmailer.php';
 
-
+/* Letter if the user has not used Worklog for 3 days */
 
 $user_id=null;
 $user_name=null;
@@ -94,8 +94,57 @@ while($row = mysql_fetch_assoc($select_result)){
 }
 
 
-
+/* Daily alert email */
 
  
+
+$user_id=null;
+$user_name=null;
+$success=false;
+$message=null;
+
+$sql = "SELECT * FROM worklog_users WHERE user_status > 0";
+$select_result = mysql_query($sql);
+
+while($row = mysql_fetch_assoc($select_result)){
+
+	echo $row['worklog_user_id']."--".$row['username']."<br/>";
+
+	$todayDate = new DateTime("now");
+
+	$sendmail = "false";
+	if ($row['send_daily_alert']=='1') {$sendmail = "true";}
+
+	echo "sendmail: ".$sendmail."<br/>";
+
+	// LEVÉL KÜLDÉS
+
+	if ($sendmail=="true") {
+		$mail = new PHPMailer();
+		$mail->Mailer = 'smtp';
+		$mail->Host = 'smtp.gmail.com';
+		$mail->Port = '465';
+		$mail->SMTPSecure = 'ssl';
+		$mail->SMTPAuth = 'true';
+		$mail->Username = 'worklog@inepex.com';
+		$mail->Password = 'ine123pex';
+		$mail->SetFrom("worklog@inepex.com", "Worklog");
+		$mail->AddAddress($row['email'], $row['name']);
+
+		$mail->IsHTML(true);
+		$mail->Subject = "Ne felejtsd el kitölteni a Worklogot!";
+
+		$mail->Body = "Kedves ".$row['name']."! <br/><br/> Ezt a levelet azért kaptad, hogy emlékeztessünk a Worklog kitöltésére. <br/> Kérjük, ha ma még nem töltötted ki, látogass el a http://worklog.polgarhaz.hu oldalra, mert csak 4 napra visszamenőleg tudod ezt megtenni.   <br/><br/>Üdvözlettel:<br/>Worklog";
+
+		$mail->CharSet = "UTF-8";
+		if(!$mail->Send()) {
+			echo "Mailer Error: " . $mail->ErrorInfo;
+		} else {
+		}
+
+	}
+	echo "<hr/>";
+
+}
 
 ?>

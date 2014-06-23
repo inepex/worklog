@@ -13,6 +13,7 @@ class User extends ObjectCache {
 	protected $picture;
 	protected $default_place;
 	protected $default_efficiency;
+	protected $send_daily_alert;
 	protected $api_key;
 
 	public static function authenticate_user($user_name, $md5password) {
@@ -73,6 +74,7 @@ class User extends ObjectCache {
 				}
 				$this->default_place = new WorkPlace($row['default_place_id']);
 				$this->default_efficiency = new Efficiency($row['default_efficiency_id']);
+				$this->send_daily_alert = $row['send_daily_alert'];
 				$this->api_key = $row['api_key'];
 			}
 		}
@@ -118,6 +120,10 @@ class User extends ObjectCache {
 		return $this->default_efficiency;
 	}
 
+	public function get_send_daily_alert() {
+		return $this->send_daily_alert;
+	}
+	
 	public function get_api_key() {
 		return $this->api_key;
 	}
@@ -160,6 +166,21 @@ class User extends ObjectCache {
 			}
 		}
 	}
+	
+	public function edit_send_daily_alert($send_daily_alert) {
+		 
+			$query = "UPDATE worklog_users SET send_daily_alert='" . $send_daily_alert . "' WHERE worklog_user_id=" . $this->id;
+			$update_result = mysql_query($query);
+			if (mysql_error() == "") {
+				$this->send_daily_alert = $send_daily_alert;
+				return true;
+			} else {
+				trigger_error(mysql_error());
+				return false;
+			}
+		 
+	}
+	
 
 	public function edit_default_efficiency($default_efficiency_id) {
 		if ($default_efficiency_id == '') {
@@ -365,6 +386,7 @@ class User extends ObjectCache {
 		$this->picture = $object->picture;
 		$this->default_place = $object->default_place;
 		$this->default_efficiency = $object->default_efficiency;
+		$this->send_daily_alert = $object->send_daily_alert;
 		$this->api_key = $object->api_key;
 	}
 }

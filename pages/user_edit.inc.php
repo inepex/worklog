@@ -2,6 +2,9 @@
 //SAVE PROFILE CHANGES
 $error=0;
 if(isset($_POST['save-profile-button'])){
+	
+	$user->edit_send_daily_alert($_POST['send_daily_alert']);
+	
 	if(isset($_POST['user-name']) && $_POST['user-name'] == ""){
 		$error=1;
 		Notification::warn("The user name cant be empty!");
@@ -187,6 +190,12 @@ if($user->get_status() == "2"){
 				</select>
 				</td>
 			</tr>
+			<tr>
+				<td>Daily alert email</td>
+				<td> <input type="checkbox" name="send_daily_alert" value="1" <?php if ($user->get_send_daily_alert()=="1") echo 'checked="checked"';?>> Send me alert mails every day at 16:30
+				</td>
+			</tr>
+			
 			<tr>
 				<td></td>
 				<td><input type="submit" value="Save" name="save-profile-button"
