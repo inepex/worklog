@@ -3,6 +3,7 @@
 $error=0;
 if(isset($_POST['save-profile-button'])){
 	
+	if ($_POST['send_daily_alert']!=1) {$_POST['send_daily_alert']='0';}
 	$user->edit_send_daily_alert($_POST['send_daily_alert']);
 	
 	if(isset($_POST['user-name']) && $_POST['user-name'] == ""){
