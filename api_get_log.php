@@ -22,9 +22,6 @@ require_once 'classes/Tools.php';
 require_once 'classes/Log.php';
 require_once 'classes/Scrum.php';
 include('include/login_functions.php');
-//help for debug
- require_once 'classes/PhpConsole.php';
- PhpConsole::start();
 error_reporting(E_ALL);
 
 $user_id=null;
@@ -55,10 +52,10 @@ $message=null;
 					 foreach($logs as $log){
 	
 					 	 $log_id = $log->get_id();
-						 $project  = new Project($log->get_project_id());
-						 $category = new AssociatedCategory($log->get_category_assoc_id());
-						 $work_place = new WorkPlace($log->get_working_place_id());
-						 $efficiency = new Efficiency($log->get_efficiency_id());
+						 $project  = Project::get($log->get_project_id());
+						 $category = AssociatedCategory::get($log->get_category_assoc_id());
+						 $work_place = WorkPlace::get($log->get_working_place_id());
+						 $efficiency = Efficiency::get($log->get_efficiency_id());
 						 $datetime1 = new DateTime($log->get_from());
 						 $datetime2 = new DateTime($log->get_to());
 						 $interval = $datetime1->diff($datetime2);

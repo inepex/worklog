@@ -75,7 +75,7 @@ function getCategories(projectId) {
 		async: false,
 		data : {
 			project_id : projectId
-		},
+		}
 	}).done(function(data) {
 		fillCategoriesSelect(processCategoriesJson(data));
 		$('#category_select').trigger('change');

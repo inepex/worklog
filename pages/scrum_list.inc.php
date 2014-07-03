@@ -57,7 +57,7 @@ else{
 			$date=new DateTime($scrum->get_month());
 			echo '<tr><td>'.$date->format("Y F").'</td><td>';
 			
-			echo Tools::get_chart(new User($scrum->get_user_id()),$date);
+			echo Tools::get_chart(User::get($scrum->get_user_id()),$date);
 			
 			echo '</td><td>'.nl2br(Tools::identify_link($scrum->get_past())).'</td><td>'.nl2br(Tools::identify_link($scrum->get_future())).'</td><td>';
 		

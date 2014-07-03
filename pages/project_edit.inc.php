@@ -89,7 +89,7 @@ if(isset($_GET['project_id']) && $_GET['project_id'] != "" && Project::is_projec
 	//
 	//edit associated category description
 	if(isset($_POST['associated_category_new_description']) && isset($_POST['associated_category_id']) && AssociatedCategory::is_associated_category_exist($_POST['associated_category_id'])){
-		$associated_category_to_edit = new AssociatedCategory($_POST['associated_category_id']);
+		$associated_category_to_edit = AssociatedCategory::get($_POST['associated_category_id']);
 		$project->update_category_description($_POST['associated_category_id'], $_POST['associated_category_new_description']);
 		unset($associated_category_to_edit);
 		echo"<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=project_edit.php?project_id=".$project->get_id()."#categories\">";		
@@ -97,7 +97,7 @@ if(isset($_GET['project_id']) && $_GET['project_id'] != "" && Project::is_projec
 	//
 	//delete workmate
 	if(isset($_GET['delete_workmate'])){
-		$workmate = new AssociatedUser($_GET['delete_workmate']);
+		$workmate = AssociatedUser::get($_GET['delete_workmate']);
 		if(!$workmate->is_have_log_in_project()){
 			$project->delete_workmate($_GET['delete_workmate']);
 			Notification::notice("Workmated removed!");
@@ -330,7 +330,7 @@ else{
 			<table class="table table-bordered">
 				<?php 
 				if(isset($_GET['edit_category']) && AssociatedCategory::is_associated_category_exist($_GET['edit_category'])){
-					$associated_category_to_edit =  new AssociatedCategory($_GET['edit_category']);
+					$associated_category_to_edit =  AssociatedCategory::get($_GET['edit_category']);
 					echo '
 						<tr>
 							<form method="post" action="project_edit.php?project_id='.$project->get_id().'">

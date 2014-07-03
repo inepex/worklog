@@ -22,22 +22,36 @@ class AssociatedCategory extends Category{
 			trigger_error(mysql_error());
 		}
 		else{
-			return new AssociatedCategory(mysql_insert_id());
+			return new AssociatedCategory(mysql_insert_id(), Category::get($category_id), $category_description,$project_id);
 		}
 	}
-	public function __construct($id){
-		$query = "SELECT * FROM worklog_projects_category_assoc WHERE worklog_projects_category_assoc_id = ".$id;
-		$select_result = mysql_query($query);
-		if(mysql_error() != ""){
-			trigger_error(mysql_error());
-		}
-		else{
-			$row = mysql_fetch_assoc($select_result);
-			parent::__construct($row['worklog_category_id']);
-			$this->description = $row['category_description'];
-			$this->project_id  = $row['worklog_project_id'];
-			$this->assoc_id    = $id;
-		}
+    public static function get($id){
+        $associated_category = null;
+        if(AssociatedCategory::isCachedS($id,'AssociatedCategory')){
+            $associated_category = AssociatedCategory::getCachedS($id, 'AssociatedCategory');
+        }else{
+            $query = "SELECT * FROM worklog_projects_category_assoc WHERE worklog_projects_category_assoc_id = ".$id;
+            $select_result = mysql_query($query);
+            if(mysql_error() != ""){
+                trigger_error(mysql_error());
+            }
+            else{
+                $row = mysql_fetch_assoc($select_result);
+                $category = Category::get($row['worklog_category_id']);
+                $associated_category = new AssociatedCategory($id, $category,$row['category_description'], $row['worklog_project_id']);
+                $associated_category->cache($associated_category->get_id(), $associated_category);
+            }
+        }
+        return $associated_category;
+    }
+	public function __construct($id, Category $category,$description, $project_id){
+            $this->objectName = 'AssociatedCategory';
+            $this->assoc_id    = $id;
+			$this->description = $description;
+			$this->project_id  = $project_id;
+            $this->id   = $category->get_id();
+            $this->name = $category->get_name();
+            $this->category_status = $category->get_category_status();
 	}
 	public function get_description(){
 		return $this->description;
@@ -58,7 +72,7 @@ class AssociatedCategory extends Category{
 		$query = "SELECT worklog_user_id FROM worklog_project_plan WHERE worklog_project_id=".$this->project_id." AND category_assoc_id=".$this->assoc_id." AND plan_value>0";
 		$result = mysql_query($query);
 		while($row = mysql_fetch_assoc($result)){
-			array_push($users, new User($row['worklog_user_id']));
+			array_push($users, User::get($row['worklog_user_id']));
 		}
 		return $users;
 	}
@@ -75,7 +89,7 @@ class AssociatedCategory extends Category{
 		return substr($row[0], 0, -3);
 	}
 	public function get_category_status_in_percent($user_id="", $category_assoc_id=""){
-			$project = new Project($this->project_id);
+			$project = Project::get($this->project_id);
 			$percent = 0;
 			$work_time = $this->get_sum_of_worked_hours($user_id);
 			$pieces = explode(":", $work_time);

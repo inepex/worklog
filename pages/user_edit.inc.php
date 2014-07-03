@@ -84,19 +84,19 @@ if($user->get_status() == "2"){
 	}
 	if(isset($_POST['action']) && $_POST['action'] =='edit'){
 		if(isset($_POST['company_id']) && $_POST['company_id'] !='' && isset($_POST['company_name']) && $_POST['company_name'] !=''){
-			$company = new Company($_POST['company_id']);
+			$company = Company::get($_POST['company_id']);
 			$company->edit_name($_POST['company_name']);
 		}
 		if(isset($_POST['efficiency_id']) && $_POST['efficiency_id'] !='' && isset($_POST['efficiency_name']) && $_POST['efficiency_name'] !=''){
-			$efficiency = new Efficiency($_POST['efficiency_id']);
+			$efficiency = Efficiency::get($_POST['efficiency_id']);
 			$efficiency->edit_name($_POST['efficiency_name']);
 		}
 		if(isset($_POST['place_id']) && $_POST['place_id'] !='' && isset($_POST['place_name']) && $_POST['place_name'] !=''){
-			$place = new WorkPlace($_POST['place_id']);
+			$place = WorkPlace::get($_POST['place_id']);
 			$place->edit_name($_POST['place_name']);
 		}
 		if(isset($_POST['category_id']) && $_POST['category_id'] !='' && isset($_POST['category_name']) && $_POST['category_name'] !=''){
-			$category = new Category($_POST['category_id']);
+			$category = Category::get($_POST['category_id']);
 			$category->edit_name($_POST['category_name']);
 		}
 	}

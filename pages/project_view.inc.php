@@ -1,6 +1,6 @@
 <?php 
 if(isset($_GET['project_id']) && $_GET['project_id'] !="" && Project::is_project_exist($_GET['project_id'])){
-	$project = new Project($_GET['project_id']);
+	$project = Project::get($_GET['project_id']);
 }
 else{
 	Notification::warn("Project does not exist!");

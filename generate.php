@@ -21,14 +21,14 @@ require_once 'classes/StatusBar.php';
 require_once 'classes/Tools.php';
 require_once 'classes/Log.php';
 require_once 'classes/Scrum.php';
+require_once 'php-console-master/src/PhpConsole/__autoload.php';
 include('include/login_functions.php');
 //help for debug
- require_once 'classes/PhpConsole.php';
- PhpConsole::start();
+$connector = PhpConsole\Connector::getInstance();
 error_reporting(E_ALL);
-if(isset($_SESSION['enterid'])){
+if(isset($_SESSION['enterid']) && $_SESSION['enterid'] != 0){
 	$user_id = $_SESSION['enterid'];
-	$user = new User($user_id);
+	$user = User::get($user_id);
 	$user_name = $user->get_user_name();
 	$user_picture = $user->get_picture();
 
@@ -38,6 +38,8 @@ if(isset($_SESSION['enterid'])){
 	if ($site_version!='local') {
 		set_error_handler('send_error_mail');
 	} 
+}else{
+    $_SESSION['loggedin_worklog']= "false";
 }
 // 
 ?>

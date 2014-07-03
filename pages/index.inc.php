@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+ini_set("display_errors", 1);
 //save personal note
 if(isset($_POST['save-personal-note']) && isset($_POST['personal-note']) && $_POST['personal-note'] != $user->get_personal_note()){
 	$user->update_personal_note($_POST['personal-note']);
@@ -14,7 +16,7 @@ if(isset($_POST['log_id'])){
 		$error = true;
 	}
 	else{
-		$project = new Project($_POST['project_id']);
+		$project = Project::get($_POST['project_id']);
 		if(!$project->is_associated_category_in_project($_POST['category_assoc_id'])){
 			Notification::warn("The category is not in the project!");
 			$error = true;
@@ -102,7 +104,7 @@ if(isset($_POST['add_log'])){
 		$error = true;
 	}
 	else{
-		$project = new Project($_POST['project_id']);
+		$project = Project::get($_POST['project_id']);
 		if($project->get_status()->get_code() != 1){
 			Notification::warn("The project is not active!");
 			$error = true;
@@ -185,6 +187,7 @@ if(isset($_POST['add_log'])){
 }
 //
 //selected user
+
 if(!isset($_GET['user_id'])){
 	$selected_user = $user;
 }
@@ -193,7 +196,7 @@ else if(isset($_GET['user_id']) && !User::is_exist($_GET['user_id'])){
 	$selected_user = $user;
 }
 else{
-	$selected_user = new User($_GET['user_id']);
+	$selected_user = User::get($_GET['user_id']);
 }
 //
 //selected date
@@ -228,7 +231,6 @@ if(isset($_GET['delete_log']) && Log::is_log_exist($_GET['delete_log'])){
 <script type="text/javascript" src="js/index.js"></script>
 <div class="worklog-container">
 	<div class="subheader">
-
 		<div class="profile_photo" style="margin-top: 10px;">
 			<a href="user_edit.php"><img
 				src="photos/<?php echo $selected_user->get_picture();?>"
@@ -295,8 +297,6 @@ if(isset($_GET['delete_log']) && Log::is_log_exist($_GET['delete_log'])){
 	//Show notifications
 	require_once 'include/notifications.php';
 	?>
-
-
 	<table class="table table-bordered">
 		<?php if($selected_user->get_id() == $user->get_id()){
 			if(isset($_GET['edit_log']) && Log::is_log_exist($_GET['edit_log'])){
@@ -345,15 +345,14 @@ if(isset($_GET['delete_log']) && Log::is_log_exist($_GET['delete_log'])){
 		
 			return $totalMinutes;
 		}
-		 
-		
+
 		$logs = $selected_user->get_logs($selected_date->format("Y-m-d"));
 		foreach($logs as $log){
 			/* @var $log Log */
-			$project  = new Project($log->get_project_id());
-			$category = new AssociatedCategory($log->get_category_assoc_id());
-			$work_place = new WorkPlace($log->get_working_place_id());
-			$efficiency = new Efficiency($log->get_efficiency_id());
+			$project  = Project::get($log->get_project_id());
+			$category = AssociatedCategory::get($log->get_category_assoc_id());
+			$work_place = WorkPlace::get($log->get_working_place_id());
+			$efficiency = Efficiency::get($log->get_efficiency_id());
 			
 			
 			$datetime1 = new DateTime($log->get_from());

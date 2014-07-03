@@ -14,7 +14,6 @@ require_once '../classes/ProjectStatus.php';
 require_once '../classes/ProjectPlanEntry.php';
 require_once '../classes/Project.php';
 require_once '../classes/Log.php';
-require_once '../classes/PhpConsole.php';
 
 if(isset($_POST['project_id']) && Project::is_project_exist($_POST['project_id'])  && isset($_POST['duplicate_name']) && $_POST['duplicate_name'] != ""){
 	$duplicated_project = Project::duplicate_project($_POST['project_id'], $_POST['duplicate_name']);

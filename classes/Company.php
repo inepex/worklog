@@ -1,5 +1,5 @@
 <?php 
-class Company{
+class Company extends ObjectCache{
 	private $id;
 	private $name;
 	public static function is_company_exist($company_id){
@@ -14,10 +14,12 @@ class Company{
 	}
 	public static function get_companies(){
 		$companies = array();
-		$query = "SELECT worklog_company_id FROM worklog_companies order by company_name";
+		$query = "SELECT * FROM worklog_companies order by company_name";
 		$select_result = mysql_query($query);
 		while($row = mysql_fetch_assoc($select_result)){
-			array_push($companies, new Company($row['worklog_company_id']));
+            $company = new Company($row['worklog_company_id'], $row['company_name']);
+			array_push($companies, $company);
+            $company->cache($company->get_id(), $company);
 		}
 		return $companies;
 	}
@@ -32,7 +34,7 @@ class Company{
 		}
 	}
 	public static function  delete_company($company_id){
-		$company = new Company($company_id);
+		$company = Company::get($company_id);
 		if(!$company->is_in_use()){
 			$query = "DELETE FROM worklog_companies WHERE worklog_company_id=".$company_id;
 			$delete_result = mysql_query($query);
@@ -47,17 +49,28 @@ class Company{
 			Notification::warn("The company is in use!");
 		}
 	}
-	public function __construct($id){
-		$query = "SELECT * FROM worklog_companies WHERE worklog_company_id=".$id;
-		$select_result = mysql_query($query);
-		if(mysql_affected_rows() != 1){
-			trigger_error("Warning: the COMPANY id is not unique! Called with:".$id);
-		}
-		else{
-			$row = mysql_fetch_assoc($select_result);
+    public static function get($id){
+        $company = null;
+        if(Company::isCachedS($id, 'Company')){
+            $company = Company::getCachedS($id, 'Company');
+        }else{
+            $query = "SELECT * FROM worklog_companies WHERE worklog_company_id=".$id;
+            $select_result = mysql_query($query);
+            if(mysql_affected_rows() != 1){
+                trigger_error("Warning: the COMPANY id is not unique! Called with:".$id);
+            }
+            else{
+                $row = mysql_fetch_assoc($select_result);
+                $company = new Company($id, $row['company_name']);
+                $company->cache($company->get_id(), $company);
+            }
+        }
+        return $company;
+    }
+	public function __construct($id, $name){
+            $this->objectName = 'Company';
 			$this->id   = $id;
-			$this->name = $row['company_name'];
-		}
+			$this->name = $name;
 	}
 	public function edit_name($new_name){
 		$query = "UPDATE worklog_companies SET company_name='".strip_tags(mysql_real_escape_string($new_name))."' WHERE worklog_company_id=".$this->id;
@@ -91,5 +104,15 @@ class Company{
 			}
 		}
 	}
+
+    /**
+     * Set the current object from a cached copy.
+     * @param $object mixed The cached object.
+     * @return mixed Nothing.
+     */
+    protected function setFromCache($object)
+    {
+        // TODO: Implement setFromCache() method.
+    }
 }
 ?>

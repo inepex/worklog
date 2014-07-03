@@ -19,10 +19,12 @@ class Efficiency extends ObjectCache {
 
 	public static function get_efficiencies() {
 		$efficiencies = array();
-		$query = "SELECT worklog_efficiency_id FROM worklog_efficiency order by worklog_efficiency_id ";
+		$query = "SELECT * FROM worklog_efficiency order by worklog_efficiency_id ";
 		$select_result = mysql_query($query);
 		while ($row = mysql_fetch_assoc($select_result)) {
-			array_push($efficiencies, new efficiency($row['worklog_efficiency_id']));
+            $efficiency = new efficiency($row['worklog_efficiency_id'], $row['efficiency_name']);
+            $efficiency->cache($efficiency->get_id(), $efficiency);
+			array_push($efficiencies, $efficiency);
 		}
 		return $efficiencies;
 	}
@@ -38,7 +40,7 @@ class Efficiency extends ObjectCache {
 	}
 
 	public static function  delete_efficiency($efficiency_id) {
-		$efficiency = new efficiency($efficiency_id);
+		$efficiency = Efficiency::get($efficiency_id);
 		if (!$efficiency->is_in_use()) {
 			$query = "DELETE FROM worklog_efficiency WHERE worklog_efficiency_id=" . $efficiency_id;
 			$delete_result = mysql_query($query);
@@ -52,22 +54,27 @@ class Efficiency extends ObjectCache {
 		}
 	}
 
-	public function __construct($id) {
+    public static function get($id) {
+        $efficiency = null;
+        if (Efficiency::isCachedS($id, 'Efficiency')) {
+            $efficiency = Efficiency::getCachedS($id, 'Efficiency');
+        } else {
+            $query = "SELECT * FROM worklog_efficiency WHERE worklog_efficiency_id=" . $id;
+            $select_result = mysql_query($query);
+            if (mysql_affected_rows() != 1) {
+                trigger_error("Warning: the efficiency id is not unique! Called with:" . $id);
+            } else {
+                $row = mysql_fetch_assoc($select_result);
+                $efficiency = new Efficiency($id, $row['efficiency_name']);
+                $efficiency->cache($efficiency->get_id(), $efficiency);
+            }
+        }
+        return $efficiency;
+    }
+	public function __construct($id, $name) {
 		$this->objectName = 'Efficiency';
-		if ($this->isCached($id)) {
-			$this->setFromCache($this->getCached($id));
-		} else {
-			$query = "SELECT * FROM worklog_efficiency WHERE worklog_efficiency_id=" . $id;
-			$select_result = mysql_query($query);
-			if (mysql_affected_rows() != 1) {
-				trigger_error("Warning: the efficiency id is not unique! Called with:" . $id);
-			} else {
-				$row = mysql_fetch_assoc($select_result);
-				$this->id = $id;
-				$this->name = $row['efficiency_name'];
-				$this->cache($id, $this);
-			}
-		}
+		$this->id = $id;
+        $this->name = $name;
 	}
 
 	public function edit_name($new_name) {
