@@ -5,7 +5,6 @@ class Tools{
 		$text = preg_replace('`([^"=\'>])((http|https|ftp)://[^\s<]+[^\s<\.)])`i','$1<a href="$2">$2</a>',$text);
 		$text = substr($text, 1);
 		return $text;
-		;
 	}
 	
 	public static function get_chart($selected_user,$selected_date) {
