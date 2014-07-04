@@ -15,5 +15,5 @@ require_once '../classes/ProjectPlanEntry.php';
 require_once '../classes/Project.php';
 require_once '../classes/Log.php';
 require_once '../include/login_functions.php';
-$user = new User($_SESSION['enterid']);
+$user = User::get($_SESSION['enterid']);
 echo substr($user->get_last_log_to_time(), 0, -3);

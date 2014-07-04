@@ -26,7 +26,7 @@
 	error_reporting(E_ALL);
 	if(isset($_SESSION['enterid'])){
 		$user_id = $_SESSION['enterid'];
-		$user = new User($user_id);
+		$user = User::get($user_id);
 		$user_name = $user->get_user_name();
 		$user_picture = $user->get_picture();
 
@@ -86,7 +86,7 @@
 		$category = AssociatedCategory::get($log->get_category_assoc_id());
 		$work_place = WorkPlace::get($log->get_working_place_id());
 		$efficiency = Efficiency::get($log->get_efficiency_id());
-		$user = new User($log->get_user_id());
+		$user = User::get($log->get_user_id());
 		
 		$datetime1 = new DateTime($log->get_from());
 		$datetime2 = new DateTime($log->get_to());

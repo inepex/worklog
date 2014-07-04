@@ -43,7 +43,7 @@ $message=null;
 		
 				if(isset($_GET["date"])) {
 				 
-				 $user = new User($user_id);
+				 $user = User::get($user_id);
 				 $logs = $user->get_logs($_GET["date"]);
 				 
 				 $json_logs = array();

@@ -7,7 +7,7 @@ else if(isset($_GET['user_id']) && !User::is_exist($_GET['user_id'])){
 	$selected_user = $user;
 }
 else{
-	$selected_user = new User($_GET['user_id']);
+	$selected_user = User::get($_GET['user_id']);
 }
 ?><div class="worklog-container">
 

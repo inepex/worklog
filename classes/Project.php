@@ -248,7 +248,7 @@ class Project extends ObjectCache{
         if($this->workmates == null){
             $query = "SELECT * FROM worklog_projects_user_assoc WHERE worklog_project_id=" . $this->id;
             $select_result = mysql_query($query);
-
+            $this->workmates = array();
             while ($row = mysql_fetch_assoc($select_result)) {
                 array_push($this->workmates, new AssociatedUser($row['worklog_projects_user_assoc_id'], $row['worklog_project_id'], User::get($row['worklog_user_id'])));
             }
@@ -301,7 +301,7 @@ class Project extends ObjectCache{
 	}
 
 	public function update($name, $company_id, $owner_id, $description, $beginning, $destination, $start, $deadline, $status, $user_id) {
-		$user = new User($user_id);
+		$user = User::get($user_id);
 		if ($user_id != $this->get_user()->get_id() && !$user->is_admin()) {
 			Notification::warn("You do not have permission to do this operation!");
 			return false;
@@ -320,7 +320,7 @@ class Project extends ObjectCache{
 				$this->start_date = $start;
 				$this->end_date = $deadline;
 				$this->status = ProjectStatus::get($status);
-				$this->user = new User($owner_id);
+				$this->user = User::get($owner_id);
 				return true;
 			}
 		}
@@ -414,12 +414,22 @@ class Project extends ObjectCache{
 		if ($date_to != 0 && date_parse($date_to)) {
 			$date_to_condition = " AND log_date<='" . $date_to . "'";
 		}
-		$query = "SELECT worklog_log_id FROM worklog_log WHERE worklog_project_id = " . $this->id . $category_condition . $user_condition . $date_from_condition . $date_to_condition . " order by worklog_log_id desc " . $limit_condition;
+		$query = "SELECT * FROM worklog_log WHERE worklog_project_id = " . $this->id . $category_condition . $user_condition . $date_from_condition . $date_to_condition . " order by worklog_log_id desc " . $limit_condition;
 		$select_result = mysql_query($query);
 		$logs = array();
 		while ($row = mysql_fetch_assoc($select_result)) {
-            //TODO: use new constructor with all parameter 2014.07.01
-			array_push($logs, new Log($row['worklog_log_id']));
+			array_push($logs, new Log(  $row['worklog_log_id'],
+                                        $row['create_date'],
+                                        $row['worklog_project_id'],
+                                        $row['worklog_category_assoc_id'],
+                                        $row['worklog_user_id'],
+                                        $row['log_date'],
+                                        $row['log_from'],
+                                        $row['log_to'],
+                                        $row['log_entry'],
+                                        $row['worklog_place_id'],
+                                        $row['worklog_efficiency_id'])
+                                    );
 		}
 		return $logs;
 	}

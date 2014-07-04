@@ -242,7 +242,7 @@ else{
 		$number_of_logs = count($project->get_logs_of_project($user_id, $associated_category_id,$date_from, $date_to, ""));
 		foreach($logs as $log){
 			/* @var $log Log */
-			$user = new User($log->get_user_id());
+			$user = User::get($log->get_user_id());
 			$associated_category = AssociatedCategory::get($log->get_category_assoc_id());
 			$working_place = WorkPlace::get($log->get_working_place_id());
 			$datetime1 = new DateTime($log->get_from());

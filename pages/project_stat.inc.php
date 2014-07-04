@@ -5,7 +5,7 @@ use gchart\gPieChart;
 
 $selected_user = $user;
 if(isset($_GET['user_id']) && $_GET['user_id'] != "" && User::is_exist($_GET['user_id'])){
-	$selected_user = new User($_GET['user_id']);
+	$selected_user = User::get($_GET['user_id']);
 }
 $projects_status = 1;
 if(isset($_GET['projects_status']) && $_GET['projects_status'] != "" && $_GET['projects_status'] >= 0 && $_GET['projects_status'] <= 3){
