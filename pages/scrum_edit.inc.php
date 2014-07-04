@@ -6,7 +6,7 @@ $selected_date = new DateTime("now");
 if (isset($_GET['scrum_id'])) {
 	 
 	$scrum = new Scrum ($_GET['scrum_id']); 
-	$scrumuser = new User($scrum->get_user_id());
+	$scrumuser = User::get($scrum->get_user_id());
 	$scrumdate = new DateTime($scrum->get_month());
 		 
 }

@@ -41,10 +41,10 @@ class Log{
         }
         else{
             $row = mysql_fetch_assoc($select_result);
-            return new Log(id,
+            return new Log($id,
                            $row['create_date'],
                            $row['worklog_project_id'],
-                           $row['worklog_category_asso_id'],
+                           $row['worklog_category_assoc_id'],
                            $row['worklog_user_id'],
                            $row['log_date'],
                            $row['log_from'],
@@ -185,7 +185,7 @@ class Log{
 		$id = mysql_insert_id();
 		if(mysql_error() == ''){
 			Notification::notice("The log added successfully!");
-			return new Log($id);
+			return Log::get($id);
 		}
 		else{
 			trigger_error(mysql_error());
@@ -257,12 +257,24 @@ class Log{
 
 		$logs = array();
 
-		$query = "SELECT worklog_log_id FROM worklog_log WHERE ".$user_condition." log_date >= '".$date_from."' AND log_date <= '".$date_to."' order by log_date DESC, log_from DESC";
+		$query = "SELECT * FROM worklog_log WHERE ".$user_condition." log_date >= '".$date_from."' AND log_date <= '".$date_to."' order by log_date DESC, log_from DESC";
 			
 			
 		$select_result = mysql_query($query);
 		while($row = mysql_fetch_assoc($select_result)){
-			array_push($logs, new Log($row['worklog_log_id']));
+            //TODO: use new constructor
+			array_push($logs, new Log(  $row['worklog_log_id'],
+                                        $row['create_date'],
+                                        $row['worklog_project_id'],
+                                        $row['worklog_category_assoc_id'],
+                                        $row['worklog_user_id'],
+                                        $row['log_date'],
+                                        $row['log_from'],
+                                        $row['log_to'],
+                                        $row['log_entry'],
+                                        $row['worklog_place_id'],
+                                        $row['worklog_efficiency_id'])
+            );
 		}
 
 			
@@ -272,27 +284,26 @@ class Log{
 
 	public function __construct($id,
                                 $create_date,
-                                Project $project,
-                                AssociatedCategory
-                                $associatedCategory,
-                                User $user,
+                                $project_id,
+                                $associatedCategory_id,
+                                $user_id,
                                 $log_date,
                                 $log_from,
                                 $log_to,
                                 $log_entry,
-                                WorkPlace $workplace,
-                                Efficiency $efficiency){
+                                $workplace_id,
+                                $efficiency_id){
 			$this->id                = $id;
 			$this->create_date       = $create_date;
-			$this->project_id        = $project->get_id();
-			$this->category_assoc_id = $associatedCategory->get_id();
-			$this->user_id           = $user->get_id();
+			$this->project_id        = $project_id;
+			$this->category_assoc_id = $associatedCategory_id;
+			$this->user_id           = $user_id;
 			$this->date              = $log_date;
 			$this->from              = $log_from;
 			$this->to                = $log_to;
 			$this->entry             = $log_entry;
-			$this->working_place_id  = $workplace->get_id();
-			$this->efficiency_id  = $efficiency->get_id();
+			$this->working_place_id  = $workplace_id;
+			$this->efficiency_id  = $efficiency_id;
 	}
 	public function get_project_id(){
 		return $this->project_id;

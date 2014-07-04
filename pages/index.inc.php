@@ -88,7 +88,7 @@ if(isset($_POST['log_id'])){
 	}
 	if(!$error){
 		Notification::notice("Log was updated successfully!");
-		$log_to_edit = new Log($_POST['log_id']);
+		$log_to_edit = Log::get($_POST['log_id']);
 		$log_to_edit->edit_log($_POST['project_id'], $_POST['category_assoc_id'], $_POST['date'], $_POST['from'], $_POST['to'], $_POST['log_entry'], $_POST['work_place_id'], $_POST['efficiency_id']);
 		//TODO: edit
 		echo"<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=index.php\">";
@@ -216,7 +216,7 @@ $selected_date->modify("first day of this month");
 //
 //delete log
 if(isset($_GET['delete_log']) && Log::is_log_exist($_GET['delete_log'])){
-	$log = new Log($_GET['delete_log']);
+	$log = Log::get($_GET['delete_log']);
 	if($user->get_id() == $selected_user->get_id() && $log->is_editable($selected_user->get_id())){
 		Log::delete_log($_GET['delete_log']);
 		Notification::notice("Log entry deleted successfully!");
@@ -300,7 +300,7 @@ if(isset($_GET['delete_log']) && Log::is_log_exist($_GET['delete_log'])){
 	<table class="table table-bordered">
 		<?php if($selected_user->get_id() == $user->get_id()){
 			if(isset($_GET['edit_log']) && Log::is_log_exist($_GET['edit_log'])){
-				$log = new Log($_GET['edit_log']);
+				$log = Log::get($_GET['edit_log']);
 				if($log->is_editable($user->get_id())){
 					include 'include/edit_log_form.php';
 				}

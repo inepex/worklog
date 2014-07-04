@@ -6,7 +6,7 @@
 		<table class="table table-bordered">
 			<?php
 			if(isset($_GET['action']) && $_GET['action'] =='edit' && isset($_GET['company_id']) && $_GET['company_id'] !=''){
-				$company = new Company($_GET['company_id']);
+				$company = Company::get($_GET['company_id']);
 				echo '<tr>
 				<td><input type="text" style="width: 450px;"  name="company_name" value="'.$company->get_name().'">
 				</td>
@@ -63,7 +63,7 @@
 		<table class="table table-bordered">
 			<?php 
 			if(isset($_GET['action']) && $_GET['action'] =='edit' && isset($_GET['place_id']) && $_GET['place_id'] !=''){
-				$place = new WorkPlace($_GET['place_id']);
+				$place = WorkPlace::get($_GET['place_id']);
 				echo '<tr>
 				<td><input type="text" style="width: 450px;"  name="place_name" value="'.$place->get_name().'">
 				</td>
@@ -119,7 +119,7 @@
 		<table class="table table-bordered">
 			<?php 
 			if(isset($_GET['action']) && $_GET['action'] =='edit' && isset($_GET['category_id']) && $_GET['category_id'] !=''){
-				$category = new Category($_GET['category_id']);
+				$category = Category::get($_GET['category_id']);
 				echo '<tr>
 				<td><input type="text" style="width: 450px;"  name="category_name" value="'.$category->get_name().'">
 				</td>
@@ -174,7 +174,7 @@
 		<table class="table table-bordered">
 			<?php
 			if(isset($_GET['action']) && $_GET['action'] =='edit' && isset($_GET['efficiency_id']) && $_GET['efficiency_id'] !=''){
-				$efficiency = new Efficiency($_GET['efficiency_id']);
+				$efficiency = Efficiency::get($_GET['efficiency_id']);
 				echo '<tr>
 				<td><input type="text" style="width: 450px;"  name="efficiency_name" value="'.$efficiency->get_name().'">
 				</td>

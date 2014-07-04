@@ -1,7 +1,7 @@
 <?php
 require_once 'class.phpmailer.php';
 function send_error_mail($errno, $errstr, $errfile, $errline, $errcontext){
-	$active_user = new User($_SESSION['enterid']);
+	$active_user = User::get($_SESSION['enterid']);
 	$mail_body = '<div>Felhasználó:'.$active_user->get_name().'</div>';
 	$mail_body .= '<div>File:'.$errfile.'</div>';
 	$mail_body .= '<div>Line:'.$errline.'</div>';

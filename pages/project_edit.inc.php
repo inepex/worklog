@@ -1,7 +1,7 @@
 <?php
 error_reporting(E_ALL);
 if(isset($_GET['project_id']) && $_GET['project_id'] != "" && Project::is_project_exist($_GET['project_id'])){
-	$project = new Project($_GET['project_id']);
+	$project = Project::get($_GET['project_id']);
 	if($project->get_status()->get_code() != 2 && !$user->is_admin()){
 		Notification::warn("Only admin can edit an active project!");
 		echo"<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=index.php\">";
