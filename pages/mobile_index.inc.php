@@ -87,7 +87,7 @@ if(isset($_POST['add_log'])){
     }
     if(!$error){
         Log::add_log($_POST['project_id'], $_POST['category_assoc_id'], $user->get_id(), $_POST['date'], date("H:i",strtotime($_POST['from'])),date("H:i",strtotime($_POST['to'])), $_POST['log_entry'], $_POST['work_place_id'], $_POST['efficiency_id']);
-        echo"<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=mobile.php\">";
+        echo"<META HTTP-EQUIV=\"Refresh\" CONTENT=\"0; URL=index.php\">";
         exit();
     }
 }

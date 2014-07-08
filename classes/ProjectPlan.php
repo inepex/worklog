@@ -99,7 +99,7 @@ class ProjectPlan extends ObjectCache{
 		$query = "DELETE FROM worklog_project_plan WHERE worklog_user_id = ".$user_id." AND worklog_project_id = ".$this->project_id;
 		$delete_result = mysql_query($query);
 		for($i=0; $i<count($this->entries); $i++){
-			if($this->entries[$i]->get_user_id() == $user_id){
+			if(isset($this->entries[$i]) && $this->entries[$i]->get_user_id() == $user_id){
 				unset($this->entries[$i]);
 			}
 		}
@@ -108,7 +108,7 @@ class ProjectPlan extends ObjectCache{
 		$query = "DELETE FROM worklog_project_plan WHERE category_assoc_id = ".$category_assoc_id." AND worklog_project_id = ".$this->project_id;
 		$delete_result = mysql_query($query);
 		for($i=0; $i<count($this->entries); $i++){
-			if($this->entries[$i]->get_category_assoc_id() == $category_assoc_id){
+			if(isset($this->entries[$i]) && $this->entries[$i]->get_category_assoc_id() == $category_assoc_id){
 				unset($this->entries[$i]);
 			}
 		}
