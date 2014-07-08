@@ -1,2 +1,6 @@
 .idea
 .idea/*
+.project
+.buildpath
+.settings
+.settings/*
