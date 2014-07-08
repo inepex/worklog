@@ -26,15 +26,15 @@ $(function() {
 	    });
 });
 function duplicateProject(projectId,duplicateName){
-	$.ajax({
+    $.ajax({
 		url : "ajax/duplicate_project.php",
 		type : "POST",
 		data : {
 			project_id : projectId,
 			duplicate_name : duplicateName
-		},
+		}
 	}).done(function(data) {
-		 
+        console.log(data);
 		if(parseInt(data) != NaN || parseInt(data) != 0){
 			window.location = "project_edit.php?project_id="+parseInt(data);
 		}

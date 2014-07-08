@@ -19,10 +19,10 @@
 	require_once 'classes/Project.php';
 	require_once 'classes/StatusBar.php';
 	require_once 'classes/Tools.php';
+    require_once 'php-console-master/src/PhpConsole/__autoload.php';
 	require_once 'classes/Log.php';
 	
 	include('include/login_functions.php');
-	PhpConsole::start();
 	error_reporting(E_ALL);
 	if(isset($_SESSION['enterid'])){
 		$user_id = $_SESSION['enterid'];

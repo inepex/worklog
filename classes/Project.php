@@ -106,8 +106,8 @@ class Project extends ObjectCache{
 
 			$duplicated_project->add_category($project_category->get_id(), $project_category->get_description());
 		}
-		$project_workmates = $project->get_workmates();
-		foreach ($project_workmates as $project_workmate) {
+        $workmates = $project->get_workmates();
+		foreach ($workmates as $project_workmate) {
 			$duplicated_project->add_workmate($project_workmate->get_id());
 		}
 		return $duplicated_project;
@@ -336,11 +336,13 @@ class Project extends ObjectCache{
 		}
 	}
 
-	public function add_workmate($wormate_id) {
-		if (!$this->is_user_workmate($wormate_id)) {
-			$query = "INSERT INTO worklog_projects_user_assoc (worklog_project_id, worklog_user_id) VALUES ('" . $this->id . "', '" . $wormate_id . "')";
+	public function add_workmate($workmate_id) {
+		if (!$this->is_user_workmate($workmate_id)) {
+			$query = "INSERT INTO worklog_projects_user_assoc (worklog_project_id, worklog_user_id) VALUES (".$this->id.", ".$workmate_id.")";
 			$insert_result = mysql_query($query);
-			array_push($this->workmates, AssociatedUser::get(mysql_insert_id()));
+            $id = mysql_insert_id();
+            $this->get_workmates();
+            array_push($this->workmates, AssociatedUser::get($id));
 		} else {
 			Notification::warn("User already workmate!");
 		}
@@ -361,9 +363,8 @@ class Project extends ObjectCache{
 	}
 
 	public function add_category($category_id, $description) {
-		$query = "INSERT INTO worklog_projects_category_assoc (worklog_project_id, worklog_category_id, category_description) VALUES ('" . $this->id . "', '" . $category_id . "', '" . $description . "')";
-		$insert_result = mysql_query($query);
-		array_push($this->get_categories(), AssociatedCategory::get(mysql_insert_id()));
+        $this->get_categories();
+		array_push($this->categories,AssociatedCategory::new_associated_category($this->get_id(), $category_id, $description));
 	}
 
 	public function delete_category($category_assoc_id) {
