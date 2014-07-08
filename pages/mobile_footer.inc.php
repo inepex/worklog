@@ -1,3 +1,3 @@
 <div class="footer">
-    <a href="?desktop">View Desktop</a>
+    <a href="?desktop=true">View Desktop</a>
 </div>
