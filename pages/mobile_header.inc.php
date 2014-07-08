@@ -1,4 +1,4 @@
-<div class="header">
+<div class="header"  style="width: auto !important;">
     <div class="navbar navbar-inverse">
         <div class="navbar-inner">
             <div class="container">

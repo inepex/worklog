@@ -1,4 +1,4 @@
-<div class="worklog-container">
+<div class="worklog-container" style="width: auto !important;">
     <h4>Login</h4>
     <?
     if (!isset($_POST['entername']) && $_SESSION['loggedin_worklog']=="false") {

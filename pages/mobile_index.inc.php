@@ -94,7 +94,7 @@ if(isset($_POST['add_log'])){
 
 ?>
 <script type="text/javascript" src="js/index.js"></script>
-<div class="worklog-container">
+<div class="worklog-container"  style="width: auto !important;">
     <div class="subheader">
         <div class="profile_photo" style="margin-top: 10px;">
             <a href="user_edit.php"><img
