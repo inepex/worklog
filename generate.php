@@ -48,6 +48,7 @@ if(isset($_SESSION['enterid']) && $_SESSION['enterid'] != 0){
 <head>
 <title>Worklog  - <?php echo $title; ?>
 </title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="images/favicon.png" type="image/png">
 <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
 <link rel="stylesheet" href="css/style.css">
