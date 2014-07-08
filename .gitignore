@@ -1,5 +1,9 @@
+# IntelliJ IDEA
 .idea
 .idea/*
+*.iml
+**/.iml
+# Eclipse
 .project
 .buildpath
 .settings
