@@ -5,7 +5,7 @@
 		<td><select style="width: 100px !important;" id="project_select"
 			name="project_id">
 				<?php 
-				$projects = Project::get_projects_which_contain_category($user_id);
+				$projects = Project::get_active_projects_which_contain_category($user_id);
 				foreach($projects as $project){
 					/* @var $project Project */
 					if($project->get_status()->get_code() == 1){

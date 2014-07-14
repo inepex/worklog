@@ -155,7 +155,7 @@ if(isset($_GET['delete_project']) && $_GET['delete_project'] != "" && Project::i
 				$number_of_projects = count(Project::get_projects($keyword, $order, $order_by,$project_status,$company_id,$owner_id));
 				foreach($projects as $project){
 					/* @var $project Project */
-					//$status = new ProjectStatus($project->get_status());
+					//$status = $project->get_status();
 					echo '<tr class="status_'.$project->get_status()->get_code().'">';
 					echo 	'<td>'.$project->get_id().'</td>
 					<td><a href="project_view.php?project_id='.$project->get_id().'">'.$project->get_name().'</a></td>

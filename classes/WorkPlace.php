@@ -9,7 +9,7 @@ class WorkPlace extends ObjectCache {
 	public static function add_new_work_place($place_name) {
 		$query = "INSERT INTO worklog_places (place_name) VALUES ('" . strip_tags(mysql_real_escape_string($place_name)) . "')";
 		$insert_result = mysql_query($query);
-		return new WorkPlace(mysql_insert_id());
+		return new WorkPlace(mysql_insert_id(),$place_name);
 	}
 
 	public static function new_place($place_name) {
@@ -23,7 +23,7 @@ class WorkPlace extends ObjectCache {
 	}
 
 	public static function  delete_work_place($place_id) {
-		$place = new WorkPlace($place_id);
+		$place = WorkPlace::get($place_id);
 		if (!$place->is_in_use()) {
 			$query = "DELETE FROM worklog_places WHERE worklog_place_id=" . $place_id;
 			$delete_result = mysql_query($query);
@@ -36,13 +36,31 @@ class WorkPlace extends ObjectCache {
 			Notification::warn("The place is in use!");
 		}
 	}
-
+    public static function get($id) {
+        $workplace = null;
+        if (WorkPlace::isCachedS($id, 'WorkPlace')) {
+            $workplace = WorkPlace::getCachedS($id, 'WorkPlace');
+        } else {
+            $query = "SELECT * FROM worklog_places WHERE worklog_place_id=" . $id;
+            $select_result = mysql_query($query);
+            if (mysql_affected_rows() != 1) {
+                trigger_error("Warning: the id is not unique! Called with workplace_id:" . $id);
+            } else {
+                $row = mysql_fetch_assoc($select_result);
+                $workplace = new WorkPlace($id, $row['place_name']);
+                $workplace->cache($id, $workplace);
+            }
+        }
+        return $workplace;
+    }
 	public static function get_places() {
 		$places = array();
-		$query = "SELECT worklog_place_id FROM worklog_places order by place_name";
+		$query = "SELECT * FROM worklog_places order by place_name";
 		$select_result = mysql_query($query);
 		while ($row = mysql_fetch_assoc($select_result)) {
-			array_push($places, new WorkPlace($row['worklog_place_id']));
+            $workplace = new WorkPlace($row['worklog_place_id'], $row['place_name']);
+            $workplace->cache($workplace->get_id(), $workplace);
+			array_push($places, $workplace);
 		}
 		return $places;
 	}
@@ -62,22 +80,10 @@ class WorkPlace extends ObjectCache {
 		}
 	}
 
-	public function __construct($id) {
-		$this->objectName = 'WorkPlace';
-		if ($this->isCached($id)) {
-			$this->setFromCache($this->getCached($id));
-		} else {
-			$query = "SELECT * FROM worklog_places WHERE worklog_place_id=" . $id;
-			$select_result = mysql_query($query);
-			if (mysql_affected_rows() != 1) {
-				trigger_error("Warning: the id is not unique! Called with workplace_id:" . $id);
-			} else {
-				$row = mysql_fetch_assoc($select_result);
-				$this->id = $id;
-				$this->name = $row['place_name'];
-				$this->cache($id, $this);
-			}
-		}
+	public function __construct($id, $name) {
+                $this->objectName = 'WorkPlace';
+        		$this->id = $id;
+				$this->name = $name;
 	}
 
 	public function edit_name($new_name) {

@@ -10,6 +10,13 @@ abstract class ObjectCache {
 	 */
 	protected static $objectCache = array();
 
+    protected static function isCachedS($id, $objectName) {
+        return isset(self::$objectCache[$objectName . '-' . $id]);
+    }
+
+    protected static function getCachedS($id, $objectName) {
+        return self::$objectCache[$objectName . '-' . $id];
+    }
 	/**
 	 * @var string The name of the child object.
 	 */
@@ -20,9 +27,10 @@ abstract class ObjectCache {
 	 * @param $id int The id to search for.
 	 * @return bool True if the given id exists in the cache.
 	 */
-	protected function isCached($id) {
-		return isset(self::$objectCache[$this->objectName . '-' . $id]);
-	}
+	protected function isCached($id)
+    {
+        return isset(self::$objectCache[$this->objectName . '-' . $id]);
+    }
 
 	/**
 	 * Get the cached object for the given id.

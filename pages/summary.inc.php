@@ -107,8 +107,8 @@ if(isset($_GET['company_id']) && $_GET['company_id'] != "" && Company::is_compan
 			$summary = Log::get_sum_time_of_logs($selected_user_id, $selected_date,$selected_company);
 			if($summary){
 				foreach($summary as $row){
-					$u = new User($row['worklog_user_id']);
-					$c = new Company($row['worklog_company_id']);
+					$u = User::get($row['worklog_user_id']);
+					$c = Company::get($row['worklog_company_id']);
 					$monthName = date("F", mktime(0, 0, 0, $row['log_month'], 10));
 					echo '<tr>
 				<th><a href="index.php?user_id='.$u->get_id().'">'.$u->get_name().'</a></th>

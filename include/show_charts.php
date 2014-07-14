@@ -20,7 +20,7 @@ var data = google.visualization.arrayToDataTable([
 
 ["Type", "Count"],';
 foreach ($user_worked_hours_in_categories as $user_worked_hours_in_category){
-	$category = new Category($user_worked_hours_in_category['category_id']);
+	$category = Category::get($user_worked_hours_in_category['category_id']);
 	$hours = floor($user_worked_hours_in_category['worked_hours']/3600);
 	$minutes = floor(($user_worked_hours_in_category['worked_hours']/60)%60);
 	echo '["'.$category->get_name().' ('.str_pad($hours, 2, "0", STR_PAD_LEFT).':'.str_pad($minutes, 2, "0", STR_PAD_LEFT).')", '.$user_worked_hours_in_category['worked_hours'].'],';
@@ -47,7 +47,7 @@ var data2 = google.visualization.arrayToDataTable([
 	
 ["Type", "Count"],';
 foreach ($user_worked_hours_in_projects as $user_worked_hours_in_project){
-	$project = new Project($user_worked_hours_in_project['project_id']);
+	$project = Project::get($user_worked_hours_in_project['project_id']);
 	$hours = floor($user_worked_hours_in_project['worked_hours']/3600);
 	$minutes = floor(($user_worked_hours_in_project['worked_hours']/60)%60);
 	echo '["'.$project->get_name().' ('.str_pad($hours, 2, "0", STR_PAD_LEFT).':'.str_pad($minutes, 2, "0", STR_PAD_LEFT).')", '.$user_worked_hours_in_project['worked_hours'].'],';

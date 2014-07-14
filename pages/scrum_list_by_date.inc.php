@@ -63,11 +63,11 @@ else {
 				
 		foreach($scrum_list as $scrum){
 			$date=new DateTime($scrum->get_month());
-			$scrumuser=new User($scrum->get_user_id());
+			$scrumuser=User::get($scrum->get_user_id());
 				
 			echo '<tr><td>'.$scrumuser->get_name().'</td><td>';
 			
-			echo Tools::get_chart(new User($scrum->get_user_id()),$date);
+			echo Tools::get_chart(User::get($scrum->get_user_id()),$date);
 			
 			echo '</td><td>'.nl2br(Tools::identify_link($scrum->get_past())).'</td><td>'.nl2br(Tools::identify_link($scrum->get_future())).'</td><td>';
 		

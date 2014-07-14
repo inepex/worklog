@@ -2,7 +2,9 @@
 
 require_once(dirname(__FILE__) . '/ObjectCache.php');
 
+
 class User extends ObjectCache {
+    protected static $object_name = 'User';
 	protected $id;
 	protected $user_name;
 	protected $password;
@@ -28,13 +30,58 @@ class User extends ObjectCache {
 			}
 		}
 	}
-
+    public static function get($id){
+        $user = null;
+            if(User::isCachedS($id, User::$object_name)){
+                $user = User::getCachedS($id, 'User');
+            }else {
+                $query = "SELECT * FROM worklog_users WHERE worklog_user_id = " . $id;
+                $select_result = mysql_query($query);
+                if (mysql_affected_rows() == 0) {
+                    Notification::error("Nincs ilyen user: id=" . $id);
+                    try {
+                        throw new Exception;
+                    } catch(Exception $e) {
+                        var_dump($e->getTrace());
+                    }
+                } else {
+                    $row = mysql_fetch_assoc($select_result);
+                    $user = new  User($id
+                                     ,$row['username']
+                                     ,$row['password']
+                                     ,$row['user_status']
+                                     ,$row['email']
+                                     ,$row['enterdate']
+                                     ,$row['name']
+                                     ,$row['picture']
+                                     ,WorkPlace::get($row['default_place_id'])
+                                     ,Efficiency::get($row['default_efficiency_id'])
+                                     ,$row['send_daily_alert']
+                                     ,$row['api_key']);
+                    $user->cache($user->get_id(), $user);
+                }
+            }
+        return $user;
+    }
 	public static function get_users() {
 		$users = array();
-		$query = "SELECT worklog_user_id FROM worklog_users order by name";
-		$select_result = mysql_query($query);
-		while ($row = mysql_fetch_assoc($select_result)) {
-			array_push($users, new User($row['worklog_user_id']));
+		$query = "SELECT * FROM worklog_users order by name";
+        $select_result = mysql_query($query);
+        while ($row = mysql_fetch_assoc($select_result)) {
+            $user = new User($row['worklog_user_id']
+                            ,$row['username']
+                            ,$row['password']
+                            ,$row['user_status']
+                            ,$row['email']
+                            ,$row['enterdate']
+                            ,$row['name']
+                            ,$row['picture']
+                            ,WorkPlace::get($row['default_place_id'])
+                            ,Efficiency::get($row['default_efficiency_id'])
+                            ,$row['send_daily_alert']
+                            ,$row['api_key']);
+            $user->cache($user->get_id(), $user);
+            array_push($users, $user);
 		}
 		return $users;
 	}
@@ -48,37 +95,25 @@ class User extends ObjectCache {
 			return false;
 		}
 	}
-
-	public function __construct($id) {
-		$this->objectName = 'User';
-		if ($this->isCached($id)) {
-			$this->setFromCache($this->getCached($id));
-		} else {
-			$query = "SELECT * FROM worklog_users WHERE worklog_user_id = " . $id;
-			$select_result = mysql_query($query);
-			if (mysql_affected_rows() == 0) {
-				Notification::error("Nincs ilyen user: id=" . $id);
-			} else {
-				$this->id = $id;
-				$row = mysql_fetch_assoc($select_result);
-				$this->user_name = $row['username'];
-				$this->password = $row['password'];
-				$this->status = $row['user_status'];
-				$this->email = $row['email'];
-				$this->enter_date = $row['enterdate'];
-				$this->name = $row['name'];
-				if ($row['picture'] == "") {
-					$this->picture = "nopic.png";
-				} else {
-					$this->picture = $row['picture'];
-				}
-				$this->default_place = new WorkPlace($row['default_place_id']);
-				$this->default_efficiency = new Efficiency($row['default_efficiency_id']);
-				$this->send_daily_alert = $row['send_daily_alert'];
-				$this->api_key = $row['api_key'];
-			}
-		}
-	}
+    public function __construct($id, $user_name, $password, $status, $email, $enter_date, $name, $picture, WorkPlace $default_place, Efficiency $default_efficiency, $send_daily_alert, $api_key) {
+        $this->objectName = User::$object_name;
+        $this->id = $id;
+        $this->user_name = $user_name;
+        $this->password = $password;
+        $this->status = $status;
+        $this->email = $email;
+        $this->enter_date = $enter_date;
+        $this->name = $name;
+        if ($picture == "") {
+            $this->picture = "nopic.png";
+        } else {
+            $this->picture = $picture;
+        }
+        $this->default_place = $default_place;
+        $this->default_efficiency = $default_efficiency;
+        $this->send_daily_alert = $send_daily_alert;
+        $this->api_key = $api_key;
+    }
 
 	public function get_id() {
 		return $this->id;
@@ -158,7 +193,7 @@ class User extends ObjectCache {
 			$query = "UPDATE worklog_users SET default_place_id='" . $default_workplace_id . "' WHERE worklog_user_id=" . $this->id;
 			$update_result = mysql_query($query);
 			if (mysql_error() == "") {
-				$this->default_place = new WorkPlace($default_workplace_id);
+				$this->default_place = WorkPlace::get($default_workplace_id);
 				return true;
 			} else {
 				trigger_error(mysql_error());
@@ -189,7 +224,7 @@ class User extends ObjectCache {
 			$query = "UPDATE worklog_users SET default_efficiency_id='" . $default_efficiency_id . "' WHERE worklog_user_id=" . $this->id;
 			$update_result = mysql_query($query);
 			if (mysql_error() == "") {
-				$this->default_efficiency = new Efficiency($default_efficiency_id);
+				$this->default_efficiency = Efficiency::get($default_efficiency_id);
 				return true;
 			} else {
 				trigger_error(mysql_error());
@@ -273,12 +308,12 @@ class User extends ObjectCache {
 		$select_result = mysql_query($query);
 		while ($row = mysql_fetch_assoc($select_result)) {
 			if ((int)$status >= 0 && (int)$status <= 2) {
-				$project = new Project($row['worklog_project_id']);
+				$project = Project::get($row['worklog_project_id']);
 				if ($project->get_status()->get_code() == $status) {
 					array_push($projects, $project);
 				}
 			} else {
-				array_push($projects, new Project($row['worklog_project_id']));
+				array_push($projects, Project::get($row['worklog_project_id']));
 			}
 
 		}

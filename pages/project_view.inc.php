@@ -1,6 +1,6 @@
 <?php 
 if(isset($_GET['project_id']) && $_GET['project_id'] !="" && Project::is_project_exist($_GET['project_id'])){
-	$project = new Project($_GET['project_id']);
+	$project = Project::get($_GET['project_id']);
 }
 else{
 	Notification::warn("Project does not exist!");
@@ -242,9 +242,9 @@ else{
 		$number_of_logs = count($project->get_logs_of_project($user_id, $associated_category_id,$date_from, $date_to, ""));
 		foreach($logs as $log){
 			/* @var $log Log */
-			$user = new User($log->get_user_id());
-			$associated_category = new AssociatedCategory($log->get_category_assoc_id());
-			$working_place = new WorkPlace($log->get_working_place_id());
+			$user = User::get($log->get_user_id());
+			$associated_category = AssociatedCategory::get($log->get_category_assoc_id());
+			$working_place = WorkPlace::get($log->get_working_place_id());
 			$datetime1 = new DateTime($log->get_from());
 			$datetime2 = new DateTime($log->get_to());
 			$interval = $datetime1->diff($datetime2);

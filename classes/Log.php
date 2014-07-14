@@ -13,6 +13,49 @@ class Log{
 	private $working_place_id;
 	private $efficiency_id;
 
+    public static function get_logs($user_id, $date){
+        $logs = array();
+        $result_array = date_parse($date);
+        if($result_array['year'] && $result_array['month'] && $result_array['day']){
+            $to = new DateTime($result_array['year']."-".$result_array['month']."-".$result_array['day']);
+            $from = new DateTime($result_array['year']."-".$result_array['month']."-".$result_array['day']);
+            $from->modify("first day of this month");
+            $to->modify("last day of this month");
+            $query = "SELECT worklog_log_id FROM worklog_log WHERE worklog_user_id = ".$user_id." AND log_date >= '".$from->format("Y-m-d")."' AND log_date <= '".$to->format("Y-m-d")."' order by log_date DESC, log_from DESC";
+        }
+        else{
+            $query = "SELECT worklog_log_id FROM worklog_log WHERE worklog_user_id = ".$user_id." order by log_date DESC, log_from DESC";
+        }
+        $select_result = mysql_query($query);
+        while($row = mysql_fetch_assoc($select_result)){
+            array_push($logs, Log::get($row['worklog_log_id']));
+        }
+        return $logs;
+    }
+
+    public static function get($id){
+        $query = "SELECT * FROM worklog_log WHERE worklog_log_id=".$id;
+        $select_result = mysql_query($query);
+        if(mysql_affected_rows() != 1){
+            trigger_error("Warning: the LOG id is not unique! Called with:".$id);
+        }
+        else{
+            $row = mysql_fetch_assoc($select_result);
+            return new Log($id,
+                           $row['create_date'],
+                           $row['worklog_project_id'],
+                           $row['worklog_category_assoc_id'],
+                           $row['worklog_user_id'],
+                           $row['log_date'],
+                           $row['log_from'],
+                           $row['log_to'],
+                           $row['log_entry'],
+                           $row['worklog_place_id'],
+                           $row['worklog_efficiency_id']
+                          );
+        }
+    }
+
 	public static function get_sum_time_of_logs($user_id="", $date="",$company_id=""){
 		$user_condition    = "";
 		$date_condition    = "";
@@ -142,7 +185,7 @@ class Log{
 		$id = mysql_insert_id();
 		if(mysql_error() == ''){
 			Notification::notice("The log added successfully!");
-			return new Log($id);
+			return Log::get($id);
 		}
 		else{
 			trigger_error(mysql_error());
@@ -204,30 +247,6 @@ class Log{
 			return $row['min_date'];
 		}
 	}
-	public static function get_logs($user_id, $date){
-
-		$logs = array();
-		$result_array = date_parse($date);
-		if($result_array['year'] && $result_array['month'] && $result_array['day']){
-			$to = new DateTime($result_array['year']."-".$result_array['month']."-".$result_array['day']);
-			$from = new DateTime($result_array['year']."-".$result_array['month']."-".$result_array['day']);
-			$from->modify("first day of this month");
-			$to->modify("last day of this month");
-			$query = "SELECT worklog_log_id FROM worklog_log WHERE worklog_user_id = ".$user_id." AND log_date >= '".$from->format("Y-m-d")."' AND log_date <= '".$to->format("Y-m-d")."' order by log_date DESC, log_from DESC";
-		}
-		else{
-			$query = "SELECT worklog_log_id FROM worklog_log WHERE worklog_user_id = ".$user_id." order by log_date DESC, log_from DESC";
-		}
-		$select_result = mysql_query($query);
-		while($row = mysql_fetch_assoc($select_result)){
-			array_push($logs, new Log($row['worklog_log_id']));
-		}
-
-
-		return $logs;
-
-
-	}
 
 	public static function export_logs($user_id, $date_from, $date_to){
 
@@ -238,12 +257,24 @@ class Log{
 
 		$logs = array();
 
-		$query = "SELECT worklog_log_id FROM worklog_log WHERE ".$user_condition." log_date >= '".$date_from."' AND log_date <= '".$date_to."' order by log_date DESC, log_from DESC";
+		$query = "SELECT * FROM worklog_log WHERE ".$user_condition." log_date >= '".$date_from."' AND log_date <= '".$date_to."' order by log_date DESC, log_from DESC";
 			
 			
 		$select_result = mysql_query($query);
 		while($row = mysql_fetch_assoc($select_result)){
-			array_push($logs, new Log($row['worklog_log_id']));
+            //TODO: use new constructor
+			array_push($logs, new Log(  $row['worklog_log_id'],
+                                        $row['create_date'],
+                                        $row['worklog_project_id'],
+                                        $row['worklog_category_assoc_id'],
+                                        $row['worklog_user_id'],
+                                        $row['log_date'],
+                                        $row['log_from'],
+                                        $row['log_to'],
+                                        $row['log_entry'],
+                                        $row['worklog_place_id'],
+                                        $row['worklog_efficiency_id'])
+            );
 		}
 
 			
@@ -251,27 +282,28 @@ class Log{
 
 	}
 
-
-	public function __construct($id){
-		$query = "SELECT * FROM worklog_log WHERE worklog_log_id=".$id;
-		$select_result = mysql_query($query);
-		if(mysql_affected_rows() != 1){
-			trigger_error("Warning: the LOG id is not unique! Called with:".$id);
-		}
-		else{
-			$row = mysql_fetch_assoc($select_result);
+	public function __construct($id,
+                                $create_date,
+                                $project_id,
+                                $associatedCategory_id,
+                                $user_id,
+                                $log_date,
+                                $log_from,
+                                $log_to,
+                                $log_entry,
+                                $workplace_id,
+                                $efficiency_id){
 			$this->id                = $id;
-			$this->create_date       = $row['create_date'];
-			$this->project_id        = $row['worklog_project_id'];
-			$this->category_assoc_id = $row['worklog_category_assoc_id'];
-			$this->user_id           = $row['worklog_user_id'];
-			$this->date              = $row['log_date'];
-			$this->from              = $row['log_from'];
-			$this->to                = $row['log_to'];
-			$this->entry             = $row['log_entry'];
-			$this->working_place_id  = $row['worklog_place_id'];
-			$this->efficiency_id  = $row['worklog_efficiency_id'];
-		}
+			$this->create_date       = $create_date;
+			$this->project_id        = $project_id;
+			$this->category_assoc_id = $associatedCategory_id;
+			$this->user_id           = $user_id;
+			$this->date              = $log_date;
+			$this->from              = $log_from;
+			$this->to                = $log_to;
+			$this->entry             = $log_entry;
+			$this->working_place_id  = $workplace_id;
+			$this->efficiency_id  = $efficiency_id;
 	}
 	public function get_project_id(){
 		return $this->project_id;

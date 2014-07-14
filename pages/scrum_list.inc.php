@@ -7,7 +7,7 @@ else if(isset($_GET['user_id']) && !User::is_exist($_GET['user_id'])){
 	$selected_user = $user;
 }
 else{
-	$selected_user = new User($_GET['user_id']);
+	$selected_user = User::get($_GET['user_id']);
 }
 ?><div class="worklog-container">
 
@@ -57,7 +57,7 @@ else{
 			$date=new DateTime($scrum->get_month());
 			echo '<tr><td>'.$date->format("Y F").'</td><td>';
 			
-			echo Tools::get_chart(new User($scrum->get_user_id()),$date);
+			echo Tools::get_chart(User::get($scrum->get_user_id()),$date);
 			
 			echo '</td><td>'.nl2br(Tools::identify_link($scrum->get_past())).'</td><td>'.nl2br(Tools::identify_link($scrum->get_future())).'</td><td>';
 		

@@ -1,7 +1,7 @@
 <?php
 error_reporting(E_ALL);
 
-class Project {
+class Project extends ObjectCache{
 	public static $number_of_projects_per_page = 30;
 	private $id;
 	private $company;
@@ -29,7 +29,7 @@ class Project {
 
 	public static function delete_project($project_id) {
 		if (!Project::is_project_used($project_id)) {
-			$project = new Project($project_id);
+			$project = Project::get($project_id);
 			$workmates = $project->get_workmates();
 			foreach ($workmates as $workmate) {
 				$project->delete_workmate($workmate->get_assoc_id());
@@ -72,32 +72,42 @@ class Project {
 		if ($page !== "") {
 			$page_condition = ' limit ' . ($page * Project::$number_of_projects_per_page) . ', ' . Project::$number_of_projects_per_page;
 		}
+        $order_condition = "";
 		if ($order_by != "") {
 			$order_condition = " order by " . $order_by . "";
 			if ($order == 'desc' || $order == 'asc') {
 				$order_condition .= " " . $order;
 			}
 		}
-		$query = "SELECT worklog_project_id FROM worklog_projects" . $search_condition . $project_status_condicion . $owner_condicion . $project_company_condicion . $order_condition . $page_condition;
+		$query = "SELECT * FROM worklog_projects" . $search_condition . $project_status_condicion . $owner_condicion . $project_company_condicion . $order_condition . $page_condition;
 		$select_result = mysql_query($query);
 		while ($row = mysql_fetch_assoc($select_result)) {
-			array_push($projects, new Project($row['worklog_project_id']));
+            $project = new Project($row['worklog_project_id'],
+                Company::get($row['worklog_company_id']),
+                User::get($row['worklog_user_id']),
+                $row['project_name'],
+                $row['project_description'],
+                $row['beginning'],
+                $row['destination'],
+                $row['start_date'],
+                $row['end_date'],
+                ProjectStatus::get($row['project_status'])
+            );
+			array_push($projects,$project);
+            $project->cache($project->get_id(), $project);
 		}
 		return $projects;
 	}
 
-	public static function duplicate_project($project_id, $duplicate_name) {
-
-		$project = new Project($project_id); //befejezni
-
+	public static function duplicate_project($project, $duplicate_name) {
 		$duplicated_project = Project::new_project($duplicate_name, $project->get_company()->get_id(), $project->get_description(), $project->get_beginning(), $project->get_destination(), $project->get_start_date(), $project->get_end_date(), $project->get_user()->get_id());
 		$project_categories = $project->get_categories();
 		foreach ($project_categories as $project_category) {
 
 			$duplicated_project->add_category($project_category->get_id(), $project_category->get_description());
 		}
-		$project_workmates = $project->get_workmates();
-		foreach ($project_workmates as $project_workmate) {
+        $workmates = $project->get_workmates();
+		foreach ($workmates as $project_workmate) {
 			$duplicated_project->add_workmate($project_workmate->get_id());
 		}
 		return $duplicated_project;
@@ -105,12 +115,21 @@ class Project {
 	}
 
 	public static function get_projects_which_contain_category($user_id) {
-		// Supercharged by hgj
 		$projects = array();
 		$query = "SELECT worklog_project_id FROM worklog_project_plan WHERE worklog_user_id = " . $user_id . " AND plan_value > 0 GROUP BY worklog_project_id ORDER BY worklog_project_id ASC";
 		$select_result = mysql_query($query);
 		while ($row = mysql_fetch_assoc($select_result)) {
-			$project = new Project($row['worklog_project_id']);
+            $project = Project::get($row['worklog_project_id']);
+			array_push($projects, $project);
+		}
+		return $projects;
+	}
+	public static function get_active_projects_which_contain_category($user_id) {
+		$projects = array();
+		$query = "SELECT worklog_project_id FROM worklog_projects WHERE worklog_project_id IN (SELECT worklog_project_id FROM worklog_project_plan WHERE worklog_user_id = " . $user_id . " AND plan_value > 0 GROUP BY worklog_project_id ORDER BY worklog_project_id ASC) AND project_status = 1";
+		$select_result = mysql_query($query);
+		while ($row = mysql_fetch_assoc($select_result)) {
+            $project = Project::get($row['worklog_project_id']);
 			array_push($projects, $project);
 		}
 		return $projects;
@@ -142,43 +161,52 @@ class Project {
 			return false;
 		} else {
 
-			return new Project(mysql_insert_id());
+			return Project::get(mysql_insert_id());
 		}
 	}
-
-	public function __construct($id) {
-		$query = "SELECT * FROM worklog_projects WHERE worklog_project_id=" . $id;
-		$select_result = mysql_query($query);
-		if (mysql_affected_rows() != 1) {
-			trigger_error("Warning: the id is not unique! Called with project_id:" . $id);
-		} else {
-			$row = mysql_fetch_assoc($select_result);
-			$this->id = $id;
-			$this->company = new Company($row['worklog_company_id']);
-			$this->user = new User($row['worklog_user_id']);
-			$this->name = $row['project_name'];
-			$this->description = $row['project_description'];
-			$this->beginning = $row['beginning'];
-			$this->destination = $row['destination'];
-			$this->start_date = $row['start_date'];
-			$this->end_date = $row['end_date'];
-			$this->status = new ProjectStatus($row['project_status']);
-			$this->project_plan = new ProjectPlan($this->id);
-		}
-		//workmates
-		$query = "SELECT * FROM worklog_projects_user_assoc WHERE worklog_project_id=" . $this->id;
-		$select_result = mysql_query($query);
-
-		while ($row = mysql_fetch_assoc($select_result)) {
-			array_push($this->workmates, new AssociatedUser($row['worklog_projects_user_assoc_id']));
-		}
-		//categories
-		$query = "SELECT worklog_projects_category_assoc_id FROM worklog_projects_category_assoc WHERE worklog_project_id=" . $this->id;
-		$select_result = mysql_query($query);
-		while ($row = mysql_fetch_assoc($select_result)) {
-			array_push($this->categories, new AssociatedCategory($row['worklog_projects_category_assoc_id']));
-		}
-	}
+    public static function get($id){
+        $project = null;
+        if(Project::isCachedS($id, 'Project')){
+            $project = Project::getCachedS($id, 'Project');
+        }else{
+            $query = "SELECT * FROM worklog_projects WHERE worklog_project_id=" . $id;
+            $select_result = mysql_query($query);
+            if (mysql_affected_rows() != 1) {
+                trigger_error("Warning: the id is not unique! Called with project_id:" . $id);
+            } else {
+                $row = mysql_fetch_assoc($select_result);
+                $project = new Project( $id,
+                                        Company::get($row['worklog_company_id']),
+                                        User::get($row['worklog_user_id']),
+                                        $row['project_name'],
+                                        $row['project_description'],
+                                        $row['beginning'],
+                                        $row['destination'],
+                                        $row['start_date'],
+                                        $row['end_date'],
+                                        ProjectStatus::get($row['project_status'])
+                                      );
+                $project->cache($id, $project);
+            }
+        }
+        return $project;
+    }
+    public function __construct($id, Company $company, $user, $name, $description, $beginning, $destination, $start_date, $end_date, ProjectStatus $status){
+            $this->objectName = 'Project';
+            $this->id = $id;
+            $this->company = $company;
+            $this->user = $user;
+            $this->name = $name;
+            $this->description = $description;
+            $this->beginning = $beginning;
+            $this->destination = $destination;
+            $this->start_date = $start_date;
+            $this->end_date = $end_date;
+            $this->status = $status;
+            $this->project_plan = null; //lazy fill, because the data is too big
+            $this->workmates = null;    //lazy fill, because the data is too big
+            $this->categories = null;    //lazy fill, because the data is too big
+    }
 
 	public function get_id() {
 		return $this->id;
@@ -217,10 +245,26 @@ class Project {
 	}
 
 	public function get_workmates() {
+        if($this->workmates == null){
+            $query = "SELECT * FROM worklog_projects_user_assoc WHERE worklog_project_id=" . $this->id;
+            $select_result = mysql_query($query);
+            $this->workmates = array();
+            while ($row = mysql_fetch_assoc($select_result)) {
+                array_push($this->workmates, new AssociatedUser($row['worklog_projects_user_assoc_id'], $row['worklog_project_id'], User::get($row['worklog_user_id'])));
+            }
+        }
 		return $this->workmates;
 	}
 
 	public function get_categories() {
+        if($this->categories == null){
+            $this->categories = array();
+            $query = "SELECT worklog_projects_category_assoc_id FROM worklog_projects_category_assoc WHERE worklog_project_id=" . $this->id;
+            $select_result = mysql_query($query);
+            while ($row = mysql_fetch_assoc($select_result)) {
+                array_push($this->categories, AssociatedCategory::get($row['worklog_projects_category_assoc_id']));
+            }
+        }
 		return $this->categories;
 	}
 
@@ -236,7 +280,7 @@ class Project {
 
 	public function get_categories_of_user_with_planned_hours($user) {
 		$categories = array();
-		foreach ($this->categories as $category) {
+		foreach ($this->get_categories() as $category) {
 			/* @var $category AssociatedCategory */
 			if ($category->is_user_have_planned_hours($user)) {
 				array_push($categories, $category);
@@ -250,11 +294,14 @@ class Project {
 	}
 
 	public function get_project_plan() {
+        if($this->project_plan == null){
+            $this->project_plan = ProjectPlan::getByProject($this);
+        }
 		return $this->project_plan;
 	}
 
 	public function update($name, $company_id, $owner_id, $description, $beginning, $destination, $start, $deadline, $status, $user_id) {
-		$user = new User($user_id);
+		$user = User::get($user_id);
 		if ($user_id != $this->get_user()->get_id() && !$user->is_admin()) {
 			Notification::warn("You do not have permission to do this operation!");
 			return false;
@@ -265,15 +312,15 @@ class Project {
 				trigger_error(mysql_error());
 				return false;
 			} else {
-				$this->company = new Company($company_id);
+				$this->company = Company::get($company_id);
 				$this->name = $name;
 				$this->description = $description;
 				$this->beginning = $beginning;
 				$this->destination = $destination;
 				$this->start_date = $start;
 				$this->end_date = $deadline;
-				$this->status = new ProjectStatus($status);
-				$this->user = new User($owner_id);
+				$this->status = ProjectStatus::get($status);
+				$this->user = User::get($owner_id);
 				return true;
 			}
 		}
@@ -289,19 +336,21 @@ class Project {
 		}
 	}
 
-	public function add_workmate($wormate_id) {
-		if (!$this->is_user_workmate($wormate_id)) {
-			$query = "INSERT INTO worklog_projects_user_assoc (worklog_project_id, worklog_user_id) VALUES ('" . $this->id . "', '" . $wormate_id . "')";
+	public function add_workmate($workmate_id) {
+		if (!$this->is_user_workmate($workmate_id)) {
+			$query = "INSERT INTO worklog_projects_user_assoc (worklog_project_id, worklog_user_id) VALUES (".$this->id.", ".$workmate_id.")";
 			$insert_result = mysql_query($query);
-			array_push($this->workmates, new AssociatedUser(mysql_insert_id()));
+            $id = mysql_insert_id();
+            $this->get_workmates();
+            array_push($this->workmates, AssociatedUser::get($id));
 		} else {
 			Notification::warn("User already workmate!");
 		}
 	}
 
 	public function delete_workmate($workmate_assoc_id) {
-		$associated_user = new AssociatedUser($workmate_assoc_id);
-		$this->project_plan->delete_entry_of_user($associated_user->get_id());
+		$associated_user = AssociatedUser::get($workmate_assoc_id);
+		$this->get_project_plan()->delete_entry_of_user($associated_user->get_id());
 		$query = "DELETE FROM worklog_projects_user_assoc WHERE worklog_projects_user_assoc_id = " . $workmate_assoc_id;
 		$delete_result = mysql_query($query);
 		//
@@ -314,20 +363,19 @@ class Project {
 	}
 
 	public function add_category($category_id, $description) {
-		$query = "INSERT INTO worklog_projects_category_assoc (worklog_project_id, worklog_category_id, category_description) VALUES ('" . $this->id . "', '" . $category_id . "', '" . $description . "')";
-		$insert_result = mysql_query($query);
-		array_push($this->categories, new AssociatedCategory(mysql_insert_id()));
+        $this->get_categories();
+		array_push($this->categories,AssociatedCategory::new_associated_category($this->get_id(), $category_id, $description));
 	}
 
 	public function delete_category($category_assoc_id) {
-		$associated_category = new AssociatedCategory($category_assoc_id);
+		$associated_category = AssociatedCategory::get($category_assoc_id);
 		if (!$associated_category->is_associated_category_in_use()) {
-			$this->project_plan->delete_entries_of_category($category_assoc_id);
+			$this->get_project_plan()->delete_entries_of_category($category_assoc_id);
 			$query = "DELETE FROM worklog_projects_category_assoc WHERE worklog_projects_category_assoc_id = " . $category_assoc_id;
 			$delete_result = mysql_query($query);
-			foreach ($this->categories as $key => $category) {
+			foreach ($this->get_categories() as $key => $category) {
 				if ($category->get_assoc_id() == $category_assoc_id) {
-					unset($this->categories[$key]);
+					unset($this->get_categories()[$key]);
 				}
 			}
 		} else {
@@ -337,7 +385,7 @@ class Project {
 	}
 
 	public function is_associated_category_in_project($category_assoc_id) {
-		foreach ($this->categories as $category) {
+		foreach ($this->get_categories() as $category) {
 			/* @var $category AssociatedCategory */
 			if ($category->get_assoc_id() == $category_assoc_id) {
 				return true;
@@ -367,11 +415,22 @@ class Project {
 		if ($date_to != 0 && date_parse($date_to)) {
 			$date_to_condition = " AND log_date<='" . $date_to . "'";
 		}
-		$query = "SELECT worklog_log_id FROM worklog_log WHERE worklog_project_id = " . $this->id . $category_condition . $user_condition . $date_from_condition . $date_to_condition . " order by worklog_log_id desc " . $limit_condition;
+		$query = "SELECT * FROM worklog_log WHERE worklog_project_id = " . $this->id . $category_condition . $user_condition . $date_from_condition . $date_to_condition . " order by worklog_log_id desc " . $limit_condition;
 		$select_result = mysql_query($query);
 		$logs = array();
 		while ($row = mysql_fetch_assoc($select_result)) {
-			array_push($logs, new Log($row['worklog_log_id']));
+			array_push($logs, new Log(  $row['worklog_log_id'],
+                                        $row['create_date'],
+                                        $row['worklog_project_id'],
+                                        $row['worklog_category_assoc_id'],
+                                        $row['worklog_user_id'],
+                                        $row['log_date'],
+                                        $row['log_from'],
+                                        $row['log_to'],
+                                        $row['log_entry'],
+                                        $row['worklog_place_id'],
+                                        $row['worklog_efficiency_id'])
+                                    );
 		}
 		return $logs;
 	}
@@ -407,4 +466,14 @@ class Project {
 			return round($sum_percent, 2);
 		}
 	}
+
+    /**
+     * Set the current object from a cached copy.
+     * @param $object mixed The cached object.
+     * @return mixed Nothing.
+     */
+    protected function setFromCache($object)
+    {
+        // TODO: Implement setFromCache() method.
+    }
 }

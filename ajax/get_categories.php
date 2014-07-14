@@ -14,12 +14,11 @@ require_once '../classes/ProjectPlan.php';
 require_once '../classes/ProjectPlanEntry.php';
 require_once '../classes/Project.php';
 require_once '../classes/Log.php';
-require_once '../classes/PhpConsole.php';
 require_once '../include/login_functions.php';
-	$user = new User($_SESSION['enterid']);
+	$user = User::get($_SESSION['enterid']);
 	if(isset($_POST['project_id']) && $_POST['project_id'] != ""){
 		if(Project::is_project_exist($_POST['project_id'])){
-			$project = new Project($_POST['project_id']);
+			$project = Project::get($_POST['project_id']);
 			$categories = $project->get_categories_of_user_with_planned_hours($user);
 			$categories_id_and_name = array();
 			$category_id_and_name   = array();

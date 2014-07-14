@@ -1,15 +1,17 @@
 <?php 
-class Category{
+class Category extends ObjectCache{
 	protected $id;
 	protected $name;
 	protected $category_status;
 
 	public static function get_categories(){
 		$categories = array();
-		$query = "SELECT worklog_category_id FROM worklog_categories order by category_name";
+		$query = "SELECT * FROM worklog_categories order by category_name";
 		$select_result = mysql_query($query);
 		while($row = mysql_fetch_assoc($select_result)){
-			array_push($categories, new Category($row['worklog_category_id']));
+			$category = new Category($row['worklog_category_id'], $row['category_name'], $row['category_status']);
+            $category->cache($category->get_id(), $category);
+            array_push($categories, $category);
 		}
 		return $categories;
 	}
@@ -34,7 +36,7 @@ class Category{
 		}
 	}
 	public static function  delete_category($category_id){
-		$category = new Category($category_id);
+		$category = Category::get($category_id);
 		if(!$category->is_in_use()){
 			$query = "DELETE FROM worklog_categories WHERE worklog_category_id=".$category_id;
 			$delete_result = mysql_query($query);
@@ -49,18 +51,29 @@ class Category{
 			Notification::warn("The category is in use!");
 		}
 	}
-	public function __construct($id){
-		$query = "SELECT * FROM worklog_categories WHERE worklog_category_id=".$id;
-		$select_result = mysql_query($query);
-		if(mysql_affected_rows() != 1){
-			trigger_error("Warning: the CATEGORY id is not exist or not unique! Called with:".$id);
-		}
-		else{
-			$row = mysql_fetch_assoc($select_result);
-			$this->id   = $id;
-			$this->name = $row['category_name'];
-			$this->category_status = $row['category_status'];
-		}
+	public static function get($id){
+		$category = null;
+        if(Category::isCachedS($id, 'Category')){
+            $category = Category::getCachedS($id, 'Category');
+        }else{
+            $query = "SELECT * FROM worklog_categories WHERE worklog_category_id=".$id;
+            $select_result = mysql_query($query);
+            if(mysql_affected_rows() != 1){
+                trigger_error("Warning: the CATEGORY id is not exist or not unique! Called with:".$id);
+            }
+            else{
+                $row = mysql_fetch_assoc($select_result);
+                $category = new Category($id,$row['category_name'], $row['category_status']);
+                $category->cache($id, $category);
+            }
+        }
+        return $category;
+	}
+	public function __construct($id, $name, $status){
+        $this->objectName = 'Category';
+        $this->id   = $id;
+        $this->name = $name;
+        $this->category_status = $status;
 	}
 	public function edit_name($new_name){
 		$query = "UPDATE worklog_categories SET category_name='".strip_tags(mysql_real_escape_string($new_name))."' WHERE worklog_category_id=".$this->id;
@@ -97,5 +110,15 @@ class Category{
 			}
 		}
 	}
+
+    /**
+     * Set the current object from a cached copy.
+     * @param $object mixed The cached object.
+     * @return mixed Nothing.
+     */
+    protected function setFromCache($object)
+    {
+        // TODO: Implement setFromCache() method.
+    }
 }
 ?>

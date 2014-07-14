@@ -19,15 +19,14 @@
 	require_once 'classes/Project.php';
 	require_once 'classes/StatusBar.php';
 	require_once 'classes/Tools.php';
+    require_once 'php-console-master/src/PhpConsole/__autoload.php';
 	require_once 'classes/Log.php';
-	require_once 'classes/PhpConsole.php';
 	
 	include('include/login_functions.php');
-	PhpConsole::start();
 	error_reporting(E_ALL);
 	if(isset($_SESSION['enterid'])){
 		$user_id = $_SESSION['enterid'];
-		$user = new User($user_id);
+		$user = User::get($user_id);
 		$user_name = $user->get_user_name();
 		$user_picture = $user->get_picture();
 
@@ -83,11 +82,11 @@
  
 	foreach($logs as $log){
 		/* @var $log Log */
-		$project  = new Project($log->get_project_id());
-		$category = new AssociatedCategory($log->get_category_assoc_id());
-		$work_place = new WorkPlace($log->get_working_place_id());
-		$efficiency = new Efficiency($log->get_efficiency_id());
-		$user = new User($log->get_user_id());
+		$project  = Project::get($log->get_project_id());
+		$category = AssociatedCategory::get($log->get_category_assoc_id());
+		$work_place = WorkPlace::get($log->get_working_place_id());
+		$efficiency = Efficiency::get($log->get_efficiency_id());
+		$user = User::get($log->get_user_id());
 		
 		$datetime1 = new DateTime($log->get_from());
 		$datetime2 = new DateTime($log->get_to());

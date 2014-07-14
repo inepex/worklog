@@ -1,15 +1,21 @@
 <?php 
-class ProjectPlan{
+class ProjectPlan extends ObjectCache{
 	private $project_id;
 	private $entries = array();
 
-	public function __construct($project_id){
-		$query = "SELECT * FROM worklog_project_plan WHERE worklog_project_id = ".$project_id;
-		$select_result = mysql_query($query);
-		while($row = mysql_fetch_assoc($select_result)){
-			array_push($this->entries, new ProjectPlanEntry($row['worklog_project_plan_id']));
-		}
-		$this->project_id = $project_id;
+    public static function getByProject(Project $project){
+        $query = "SELECT * FROM worklog_project_plan WHERE worklog_project_id = ".$project->get_id();
+        $select_result = mysql_query($query);
+        $project_plan_entries = array();
+        while($row = mysql_fetch_assoc($select_result)){
+            array_push($project_plan_entries, ProjectPlanEntry::get($row['worklog_project_plan_id']));
+        }
+        return new ProjectPlan($project, $project_plan_entries);
+    }
+	public function __construct(Project $project, array $project_plan_entries){
+        $this->objectName = 'ProjectPlan';
+        $this->project_id = $project->get_id();
+		$this->entries = $project_plan_entries;
 	}
 	public function get_entries(){
 		return $this->entries;
@@ -93,7 +99,7 @@ class ProjectPlan{
 		$query = "DELETE FROM worklog_project_plan WHERE worklog_user_id = ".$user_id." AND worklog_project_id = ".$this->project_id;
 		$delete_result = mysql_query($query);
 		for($i=0; $i<count($this->entries); $i++){
-			if($this->entries[$i]->get_user_id() == $user_id){
+			if(isset($this->entries[$i]) && $this->entries[$i]->get_user_id() == $user_id){
 				unset($this->entries[$i]);
 			}
 		}
@@ -102,10 +108,22 @@ class ProjectPlan{
 		$query = "DELETE FROM worklog_project_plan WHERE category_assoc_id = ".$category_assoc_id." AND worklog_project_id = ".$this->project_id;
 		$delete_result = mysql_query($query);
 		for($i=0; $i<count($this->entries); $i++){
-			if($this->entries[$i]->get_category_assoc_id() == $category_assoc_id){
+			if(isset($this->entries[$i]) && $this->entries[$i]->get_category_assoc_id() == $category_assoc_id){
 				unset($this->entries[$i]);
 			}
 		}
 	}
+    public function set_from_cache(){
+
+    }
+    /**
+     * Set the current object from a cached copy.
+     * @param $object mixed The cached object.
+     * @return mixed Nothing.
+     */
+    protected function setFromCache($object)
+    {
+        // TODO: Implement setFromCache() method.
+    }
 }
 ?>
