@@ -17,7 +17,7 @@ function send_error_mail($errno, $errstr, $errfile, $errline, $errcontext){
 	$mail->Password = 'ine123pex';
 	$mail->SetFrom("worklog@inepex.com", "Worklog");
 	$mail->AddAddress("it@inepex.com", "Inepex Belsõ IT");
-	$mail->IsHTML(true);
+	$mail->IsHTML(true); 
 	$mail->Subject = "Worklog error";
 	$mail->Body = $mail_body;
 	$mail->AltBody = 'File:'.$errfile.'. Line:'.$errline.'. Error:'.$errstr;
