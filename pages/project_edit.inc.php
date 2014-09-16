@@ -1,5 +1,5 @@
 <?php
-error_reporting(E_ALL);
+error_reporting(E_ALL ^ E_DEPRECATED);
 if(isset($_GET['project_id']) && $_GET['project_id'] != "" && Project::is_project_exist($_GET['project_id'])){
 	$project = Project::get($_GET['project_id']);
 	if($project->get_status()->get_code() != 2 && !$user->is_admin()){

@@ -1,6 +1,6 @@
 <?php
-error_reporting(E_ALL);
-class AssociatedCategory extends Category{
+error_reporting(E_ALL ^ E_DEPRECATED);
+class  AssociatedCategory extends Category{
 	public static $NUMBER_OF_LOGS_TO_LIST;
 	private $assoc_id;
 	private $project_id;

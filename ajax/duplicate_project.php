@@ -16,7 +16,8 @@ require_once '../classes/Project.php';
 require_once '../classes/Log.php';
 
 if(isset($_POST['project_id']) && Project::is_project_exist($_POST['project_id'])  && isset($_POST['duplicate_name']) && $_POST['duplicate_name'] != ""){
-	$duplicated_project = Project::duplicate_project(Project::get($_POST['project_id']), $_POST['duplicate_name']);
+    $project = Project::get($_POST['project_id']);
+    $duplicated_project = Project::duplicate_project($project, $_POST['duplicate_name']);
 	echo $duplicated_project->get_id();
 }
 ?>

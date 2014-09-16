@@ -1,5 +1,5 @@
 <?php
-error_reporting(E_ALL);
+error_reporting(E_ALL ^ E_DEPRECATED);
 
 class Project extends ObjectCache{
 	public static $number_of_projects_per_page = 30;
@@ -102,16 +102,23 @@ class Project extends ObjectCache{
 	public static function duplicate_project($project, $duplicate_name) {
 		$duplicated_project = Project::new_project($duplicate_name, $project->get_company()->get_id(), $project->get_description(), $project->get_beginning(), $project->get_destination(), $project->get_start_date(), $project->get_end_date(), $project->get_user()->get_id());
 		$project_categories = $project->get_categories();
-		foreach ($project_categories as $project_category) {
-
-			$duplicated_project->add_category($project_category->get_id(), $project_category->get_description());
-		}
         $workmates = $project->get_workmates();
-		foreach ($workmates as $project_workmate) {
-			$duplicated_project->add_workmate($project_workmate->get_id());
+
+        foreach ($workmates as $project_workmate) {
+            $duplicated_project->add_workmate($project_workmate->get_id());
+        }
+
+        foreach ($project_categories as $project_category) {
+
+			$new_assciated_category = $duplicated_project->add_category($project_category->get_id(), $project_category->get_description());
+            foreach($project->get_project_plan()->get_entries() as $entry){
+                if($entry->get_category_assoc_id() == $project_category->get_assoc_id()){
+                    $duplicated_project->get_project_plan()->add_entry($entry->get_user_id(), $new_assciated_category->get_assoc_id(), $entry->get_value());
+                }
+            }
+
 		}
 		return $duplicated_project;
-
 	}
 
 	public static function get_projects_which_contain_category($user_id) {
@@ -364,7 +371,9 @@ class Project extends ObjectCache{
 
 	public function add_category($category_id, $description) {
         $this->get_categories();
-		array_push($this->categories,AssociatedCategory::new_associated_category($this->get_id(), $category_id, $description));
+        $new_associated_category = AssociatedCategory::new_associated_category($this->get_id(), $category_id, $description);
+		array_push($this->categories, $new_associated_category);
+        return $new_associated_category;
 	}
 
 	public function delete_category($category_assoc_id) {

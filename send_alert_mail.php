@@ -2,7 +2,7 @@
 session_set_cookie_params(86400);
 ini_set('session.gc_maxlifetime', 86400);
 session_start();
-error_reporting(E_ALL);
+error_reporting(E_ALL ^ E_DEPRECATED);
 header("Content-type: text/html; charset=utf-8");
 require_once '../worklog-config.php';
 require_once 'classes/User.php';
@@ -22,7 +22,7 @@ require_once 'classes/Tools.php';
 require_once 'classes/Log.php';
 require_once 'classes/Scrum.php';
 include('include/login_functions.php');
-error_reporting(E_ALL);
+error_reporting(E_ALL ^ E_DEPRECATED);
 require_once 'include/mail/class.phpmailer.php';
 
 /* Letter if the user has not used Worklog for 3 days */

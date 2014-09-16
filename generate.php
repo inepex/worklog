@@ -2,7 +2,7 @@
 session_set_cookie_params(86400);
 ini_set('session.gc_maxlifetime', 86400);
 session_start();
-error_reporting(E_ALL);
+error_reporting(E_ALL ^ E_DEPRECATED);
 header("Content-type: text/html; charset=utf-8");
 require_once '../worklog-config.php';
 require_once 'classes/User.php';
@@ -25,7 +25,7 @@ require_once 'php-console-master/src/PhpConsole/__autoload.php';
 include('include/login_functions.php');
 //help for debug
 $connector = PhpConsole\Connector::getInstance();
-error_reporting(E_ALL);
+error_reporting(E_ALL ^ E_DEPRECATED);
 if(isset($_SESSION['enterid']) && $_SESSION['enterid'] != 0){
 	$user_id = $_SESSION['enterid'];
 	$user = User::get($user_id);
