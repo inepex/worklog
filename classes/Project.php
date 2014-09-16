@@ -349,7 +349,6 @@ class Project extends ObjectCache{
 			$insert_result = mysql_query($query);
             $id = mysql_insert_id();
             $this->get_workmates();
-            array_push($this->workmates, AssociatedUser::get($id));
 		} else {
 			Notification::warn("User already workmate!");
 		}
