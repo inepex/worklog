@@ -2,8 +2,12 @@
 $(function() {
 	$('#time_from_link').click(function(event) {
 		event.preventDefault();
-		var time = new Date();
-		$('#time_from').val(('0' + (time.getHours())).slice(-2) + ":" + ('0' + (time.getMinutes())).slice(-2));
+		var date = new Date();
+        var year  = date.getFullYear();
+        var month = ('0' + (date.getMonth()+1)).slice(-2);
+        var day   = ('0' + (date.getDate())).slice(-2);
+        $('#date_select').val(year+"-"+month+"-"+day).change();
+		$('#time_from').val(('0' + (date.getHours())).slice(-2) + ":" + ('0' + (date.getMinutes())).slice(-2));
 	});
 
 });
@@ -11,8 +15,12 @@ $(function() {
 $(function() {
 	$('#time_to_link').click(function(event) {
 		event.preventDefault();
-		var time = new Date();
-		$('#time_to').val(('0' + (time.getHours())).slice(-2) + ":" + ('0' + (time.getMinutes())).slice(-2));
+		var date = new Date();
+        var year  = date.getFullYear();
+        var month = ('0' + (date.getMonth()+1)).slice(-2);
+        var day   = ('0' + (date.getDate())).slice(-2);
+        $('#date_select').val(year+"-"+month+"-"+day).change();
+		$('#time_to').val(('0' + (date.getHours())).slice(-2) + ":" + ('0' + (date.getMinutes())).slice(-2));
 	});
 
 });
@@ -22,9 +30,16 @@ $(function() {
 	$('#last_time_link').click(function(event) {
 		event.preventDefault();
 		$.ajax({
-			url : "ajax/get_last_log_to_time.php",
+			url : "ajax/get_last_log_to_time.php"
 		}).done(function(data) {
-			$('#time_from').val(data);
+            var date;
+            try{
+                date = JSON.parse(data);
+                $('#time_from').val(date.time);
+                $('#date_select').val(date.date).change();
+            }catch(err){
+                console.log("can't parse json response. The response:" + data);
+            }
 		});
 	});
 

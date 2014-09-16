@@ -1,3 +1,11 @@
+<?php
+    $user = User::get($user_id);
+    $last_log = $user->get_last_log();
+    if(!isset($_POST['project_id']) && $last_log !== false){
+        $_POST['project_id'] = $last_log->get_project_id();
+        $_POST['category_assoc_id'] = $last_log->get_category_assoc_id();
+    }
+?>
 <input type="hidden" id="selected_date" value="<?php echo (isset($_POST['date']) && $_POST['date'])?$_POST['date']:"";?>">
 <input type="hidden" id="selected_category_id" value="<?php echo (isset($_POST['category_assoc_id']) && $_POST['category_assoc_id'])?$_POST['category_assoc_id']:"";?>">
 <form method="post">

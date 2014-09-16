@@ -16,4 +16,4 @@ require_once '../classes/Project.php';
 require_once '../classes/Log.php';
 require_once '../include/login_functions.php';
 $user = User::get($_SESSION['enterid']);
-echo substr($user->get_last_log_to_time(), 0, -3);
+echo json_encode($user->get_last_log_to_time());

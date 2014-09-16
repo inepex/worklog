@@ -393,15 +393,34 @@ class User extends ObjectCache {
 		}
 		return false;
 	}
-
+    /**
+     *Get the date and end time of the user's last log
+     * @return array
+     * array elements: 'time', 'date'
+     */
 	public function get_last_log_to_time() {
-		$query = "SELECT log_to FROM worklog_log where worklog_user_id =" . $this->id . "  order by worklog_log_id desc limit 1";
+		$query = "SELECT log_date, log_to FROM worklog_log where worklog_user_id =" . $this->id . "  order by worklog_log_id desc limit 1";
 		$result = mysql_query($query);
-		if (mysql_affected_rows() == 0) {
-			return "00:00";
+		$date = array();
+        if (mysql_affected_rows() == 0) {
+
 		} else {
 			$row = mysql_fetch_assoc($result);
-			return $row['log_to'];
+			$date['time'] = substr($row['log_to'], 0, 5);
+			$date['date'] = $row['log_date'];
+		}
+        return $date;
+	}
+
+	public function get_last_log() {
+		$query = "SELECT worklog_log_id FROM worklog_log where worklog_user_id =" . $this->id . "  order by worklog_log_id desc limit 1";
+		$result = mysql_query($query);
+		$date = array();
+        if (mysql_affected_rows() == 0) {
+            return false;
+		} else {
+			$row = mysql_fetch_assoc($result);
+			return Log::get($row['worklog_log_id']);
 		}
 	}
 
