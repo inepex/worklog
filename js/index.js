@@ -16,10 +16,6 @@ $(function() {
 	$('#time_to_link').click(function(event) {
 		event.preventDefault();
 		var date = new Date();
-        var year  = date.getFullYear();
-        var month = ('0' + (date.getMonth()+1)).slice(-2);
-        var day   = ('0' + (date.getDate())).slice(-2);
-        $('#date_select').val(year+"-"+month+"-"+day).change();
 		$('#time_to').val(('0' + (date.getHours())).slice(-2) + ":" + ('0' + (date.getMinutes())).slice(-2));
 	});
 
