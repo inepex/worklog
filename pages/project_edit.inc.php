@@ -56,6 +56,20 @@ if(isset($_GET['project_id']) && $_GET['project_id'] != "" && Project::is_projec
 			}
 			
 		}
+
+        //update project plan
+        if(isset($_POST['plan_entry_value'])){
+            for($i=0; $i<count($_POST['plan_entry_value']); $i++){
+                if(!preg_match('/[0-9]/', $_POST['plan_entry_value'][$i])){
+                    Notification::warn($_POST['plan_entry_value'][$i]." is not a number!");
+                }
+                else{
+                    $project->get_project_plan()->add_entry($_POST['plan_entry_user_id'][$i], $_POST['plan_entry_category_assoc_id'][$i], $_POST['plan_entry_value'][$i]);
+                }
+            }
+            Notification::notice("Project plan updated successfully!");
+        }
+        //
 	}
 	//
 
@@ -121,19 +135,6 @@ if(isset($_GET['project_id']) && $_GET['project_id'] != "" && Project::is_projec
 		exit();
 	}
 	//
-	//update project plan
-	if(isset($_POST['update_project_plan']) && isset($_POST['plan_entry_value'])){
-		for($i=0; $i<count($_POST['plan_entry_value']); $i++){
-			if(!preg_match('/[0-9]/', $_POST['plan_entry_value'][$i])){
-					Notification::warn($_POST['plan_entry_value'][$i]." is not a number!");
-			}
-			else{
-				$project->get_project_plan()->add_entry($_POST['plan_entry_user_id'][$i], $_POST['plan_entry_category_assoc_id'][$i], $_POST['plan_entry_value'][$i]);
-			}
-		}
-		Notification::notice("Project plan updated successfully!");
-	}
-	//
 }
 else{
 	Notification::warn("The requested project does not exist!");
@@ -147,6 +148,7 @@ else{
 	<div class="subheader">
 
 		<div class="titlebar">
+            <td><a name="top"></a>
 			<div style="float: left;">
 				<h4>Create New Project / Edit Project</h4>
 			</div>
@@ -177,7 +179,7 @@ else{
 	<hr>
 	<?php require_once 'include/notifications.php';?>
 	<div style="clear: both;"></div>
-	<form method="post">
+	<form method="post" action="project_edit.php?project_id=<?php echo $project->get_id();?>#top">
 		<table class="table table-bordered">
 			<tr>
 				<td width="120">Project name:</td>
@@ -263,13 +265,61 @@ else{
 					<?php echo(($project->get_status()->get_code()  == 2)?'checked':''); ?>
 					name="project_status" value="2"> Requested</td>
 			</tr>
-			<tr>
-				<td></td>
-				<td><input type="submit" class="btn btn-primary" value="Save"
-					name="update_project"></td>
-			</tr>
-		</table>
-	</form>
+            <?php
+            $workmates = $project->get_workmates();
+            $categories = Category::get_categories();
+            $associated_categories = $project->get_categories();
+            ?>
+            <tr>
+                <td>Project Plan:</td>
+
+                <td><a name="project_plan"></a>
+                    <table class="table table-bordered" style="width: 0;">
+                        <tr>
+                            <th></th>
+                            <?php
+
+                            foreach($workmates as $workmate){
+                                /* @var $u AssociatedUser */
+
+
+                                echo '<th style="text-align:center!important;"><a href="index.php?user_id='.$workmate->get_id().'"><img src="photos/'.$workmate->get_picture().'" width="30" alt="'.$workmate->get_name().'" title="'.$workmate->get_name().'"></a><br><span style="font-size:10px;">'.$workmate->get_name().'</span></th>';
+                            }
+                            ?>
+                            <th>SUM</th>
+                        </tr>
+                        <?php
+                        foreach ($associated_categories as $associated_category){
+                            echo '<tr class="project-plan">';
+                            echo '<th width="150">'.$associated_category->get_name().'<br><span class="hint">
+                     '.$associated_category->get_description().'</span></th>';
+                            foreach ($workmates as $workmate){
+                                echo '<td><input type="text" class="project-plan-input" name="plan_entry_value[]" value="'.$project->get_project_plan()->get_sum_for_category_and_user($workmate->get_id(), $associated_category->get_assoc_id()).'"/></td>';
+                                echo '<input type="hidden" name="plan_entry_user_id[]" value="'.$workmate->get_id().'">';
+                                echo '<input type="hidden" name="plan_entry_category_assoc_id[]" value="'.$associated_category->get_assoc_id().'">';
+                            }
+                            echo '<td>'.$project->get_project_plan()->get_sum_for_category($associated_category->get_assoc_id()).'</td>';
+                            echo '</tr>';
+                        }
+                        echo '<tr class="project-plan">';
+                        echo '<th>SUM</th>';
+                        foreach ($workmates as $workmate){
+                            echo '<td>'.$project->get_project_plan()->get_sum_for_user($workmate->get_id()).'</td>';
+                        }
+                        echo '<td>'.$project->get_project_plan()->get_sum_of_entries().'</td>';
+                        echo '</tr>';
+                        ?>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" class="btn btn-primary" value="Save"
+                           name="update_project"></td>
+            </tr>
+        </table>
+    </form>
+
 
 	<hr>
 
@@ -295,8 +345,7 @@ else{
 						name="add_workmate">
 					</td>
 				</tr>
-				<?php 
-				$workmates = $project->get_workmates();
+				<?php
 				foreach ($workmates as $workmate){
 					/* @var $workmate AssociatedUser */
 					echo '<tr>
@@ -344,7 +393,6 @@ else{
 					echo '
 						<tr>
 						<td><select style="width: 120px;" name="category_id">';
-							$categories = Category::get_categories();
 							foreach($categories as $category){
 								/* @var $category Category */
 								if ($category->get_category_status()=='1') {
@@ -365,8 +413,7 @@ else{
 				}
 				?>
 				
-				<?php 
-				$associated_categories = $project->get_categories();
+				<?php
 				foreach($associated_categories as $associated_category){
 					/* @var $associated_category AssociatedCategory */
 					echo   '<tr><td width="120">'.$associated_category->get_name().'</td>
@@ -390,50 +437,6 @@ else{
 			</table>
 		</form>
 	</div>
-
-	<div style="clear: both;"></div>
-	<hr>
-	<a name="project_plan"></a>
-	<h4>Project Plan</h4>
-	<form method="post" action = "project_edit.php?project_id=<?php echo $project->get_id();?>#project_plan">
-		<table class="table table-bordered" style="width: 0;">
-			<tr>
-				<th></th>
-				<?php
-
-				foreach($workmates as $workmate){
-					/* @var $u AssociatedUser */
-
-					
-					echo '<th style="text-align:center!important;"><a href="index.php?user_id='.$workmate->get_id().'"><img src="photos/'.$workmate->get_picture().'" width="30" alt="'.$workmate->get_name().'" title="'.$workmate->get_name().'"></a><br><span style="font-size:10px;">'.$workmate->get_name().'</span></th>';
-				}
-				?>
-				<th>SUM</th>
-			</tr>
-			<?php 
-			foreach ($associated_categories as $associated_category){
-				echo '<tr class="project-plan">';
-				echo '<th width="150">'.$associated_category->get_name().'<br><span class="hint">
-			 '.$associated_category->get_description().'</span></th>';
-				foreach ($workmates as $workmate){
-					echo '<td><input type="text" class="project-plan-input" name="plan_entry_value[]" value="'.$project->get_project_plan()->get_sum_for_category_and_user($workmate->get_id(), $associated_category->get_assoc_id()).'"/></td>';
-					echo '<input type="hidden" name="plan_entry_user_id[]" value="'.$workmate->get_id().'">';
-					echo '<input type="hidden" name="plan_entry_category_assoc_id[]" value="'.$associated_category->get_assoc_id().'">';
-				}
-				echo '<td>'.$project->get_project_plan()->get_sum_for_category($associated_category->get_assoc_id()).'</td>';
-				echo '</tr>';
-			}
-			echo '<tr class="project-plan">';
-			echo '<th>SUM</th>';
-			foreach ($workmates as $workmate){
-				echo '<td>'.$project->get_project_plan()->get_sum_for_user($workmate->get_id()).'</td>';
-			}
-			echo '<td>'.$project->get_project_plan()->get_sum_of_entries().'</td>';
-			echo '</tr>';
-			?>
-		</table>
-		<input type="submit" class="btn btn-primary" name="update_project_plan" value="Save project plan">
-	</form>
-
+    <div style="clear: both;"></div>
 </div>
 </div>
