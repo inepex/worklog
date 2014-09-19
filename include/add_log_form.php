@@ -10,7 +10,7 @@
 <input type="hidden" id="selected_category_id" value="<?php echo (isset($_POST['category_assoc_id']) && $_POST['category_assoc_id'])?$_POST['category_assoc_id']:"";?>">
 <form method="post">
 	<tr>
-		<td><select style="width: 100px !important;" id="project_select"
+		<td colspan="2"><select style="width: 235px !important;" id="project_select"
 			name="project_id">
 				<?php 
 				$projects = Project::get_active_projects_which_contain_category($user_id);
@@ -25,9 +25,6 @@
 					}
 				}
 				?>
-		</select></td>
-		<td><select style="width: 120px !important;" id="category_select"
-			name="category_assoc_id">
 		</select></td>
 		<td><select style="width: 115px;" id="date_select" name="date">
 		</select></td>
@@ -62,8 +59,11 @@
 	</tr>
 
 <tr class="editline">
-			<td colspan="3"><img src="images/information.png"><span
-				id="category_description"></span></td>
+			<td colspan="3">
+                <select style="width: 370px !important;" id="category_select"
+                                        name="category_assoc_id">
+                 </select>
+            </td>
 			<td><a href="" id="time_from_link">Now</a>&nbsp;/&nbsp;<a href="" id="last_time_link">Last</a></td>
 			<td><a href="" id="time_to_link">Now</a></td>
 			<td></td>
