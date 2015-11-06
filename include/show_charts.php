@@ -31,7 +31,7 @@ echo ']
 
 var options = {
 	title: "Categories","width":500,
-	"height":700,sliceVisibilityThreshold:0,
+	"height":500,sliceVisibilityThreshold:0,
 	tooltip: {isHtml: true},
 	tooltipText: "percentage",
 };
@@ -58,7 +58,7 @@ echo ']
 
 var options2 = {
 title: "Projects","width":500,
-"height":700,sliceVisibilityThreshold:0,
+"height":500,sliceVisibilityThreshold:0,
 tooltip: {isHtml: true},
 tooltipText: "percentage"
 };
