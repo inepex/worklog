@@ -30,11 +30,11 @@ echo ']
 );
 
 var options = {
-	title: "Categories","width":500,
-	"height":300,sliceVisibilityThreshold:0,
+	title: "Categories","width":600,
+	"height":600,sliceVisibilityThreshold:0,
 	tooltip: {isHtml: true},
 	tooltipText: "percentage",
-    chartArea: {  width: "50%", height: "70%" }
+    chartArea: {  left: 10 }
 };
 
 var chart = new google.visualization.PieChart(document.getElementById("category_chart"));
@@ -58,11 +58,10 @@ echo ']
 );
 
 var options2 = {
-title: "Projects","width":500,
-"height":300,sliceVisibilityThreshold:0,
+title: "Projects","width":600,
+"height":600,sliceVisibilityThreshold:0,
 tooltip: {isHtml: true},
-tooltipText: "percentage",
-chartArea: {  width: "100", left : 10}
+tooltipText: "percentage"
 };
 
 var chart2 = new google.visualization.PieChart(document.getElementById("project_chart"));
