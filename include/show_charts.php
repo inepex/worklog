@@ -30,11 +30,10 @@ echo ']
 );
 
 var options = {
-	title: "Categories","width":600,
-	"height":600,sliceVisibilityThreshold:0,
+	title: "Categories","width":500,
+	"height":700,sliceVisibilityThreshold:0,
 	tooltip: {isHtml: true},
 	tooltipText: "percentage",
-    chartArea: {  left: 10 }
 };
 
 var chart = new google.visualization.PieChart(document.getElementById("category_chart"));
@@ -58,8 +57,8 @@ echo ']
 );
 
 var options2 = {
-title: "Projects","width":600,
-"height":600,sliceVisibilityThreshold:0,
+title: "Projects","width":500,
+"height":700,sliceVisibilityThreshold:0,
 tooltip: {isHtml: true},
 tooltipText: "percentage"
 };
