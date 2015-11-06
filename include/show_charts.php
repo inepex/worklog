@@ -37,7 +37,7 @@ var options = {
     legend : {
         alignment: "center",
         textStyle: {
-            fontSize: 8
+            fontSize: 10
         }
     }
 };
@@ -70,7 +70,7 @@ tooltipText: "percentage",
 legend : {
     alignment: "center",
     textStyle: {
-            fontSize: 8
+            fontSize: 10
     }
 }
 };
