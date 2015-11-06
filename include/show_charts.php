@@ -33,7 +33,8 @@ var options = {
 	title: "Categories","width":500,
 	"height":300,sliceVisibilityThreshold:0,
 	tooltip: {isHtml: true},
-	tooltipText: "percentage"
+	tooltipText: "percentage",
+    chartArea: {  width: "50%", height: "70%" }
 };
 
 var chart = new google.visualization.PieChart(document.getElementById("category_chart"));
@@ -60,7 +61,8 @@ var options2 = {
 title: "Projects","width":500,
 "height":300,sliceVisibilityThreshold:0,
 tooltip: {isHtml: true},
-tooltipText: "percentage"
+tooltipText: "percentage",
+chartArea: {  width: "50%", height: "70%" }
 };
 
 var chart2 = new google.visualization.PieChart(document.getElementById("project_chart"));
