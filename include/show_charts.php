@@ -35,8 +35,7 @@ var options = {
 	tooltip: {isHtml: true},
 	tooltipText: "percentage",
     legend : {
-        position : "bottom",
-        maxLines : 20
+        alignment: "center"
     }
 };
 
@@ -66,8 +65,7 @@ title: "Projects","width":500,
 tooltip: {isHtml: true},
 tooltipText: "percentage",
 legend : {
-    position: "bottom",
-    maxLines : 20
+    alignment: "center"
 }
 };
 
