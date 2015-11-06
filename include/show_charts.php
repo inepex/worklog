@@ -31,9 +31,10 @@ echo ']
 
 var options = {
 	title: "Categories","width":500,
-	"height":500,sliceVisibilityThreshold:0,
+	"height":600,sliceVisibilityThreshold:0,
 	tooltip: {isHtml: true},
 	tooltipText: "percentage",
+    legend.position: "labeled"
 };
 
 var chart = new google.visualization.PieChart(document.getElementById("category_chart"));
@@ -58,9 +59,10 @@ echo ']
 
 var options2 = {
 title: "Projects","width":500,
-"height":500,sliceVisibilityThreshold:0,
+"height":600,sliceVisibilityThreshold:0,
 tooltip: {isHtml: true},
-tooltipText: "percentage"
+tooltipText: "percentage",
+legend.position: "bottom"
 };
 
 var chart2 = new google.visualization.PieChart(document.getElementById("project_chart"));
