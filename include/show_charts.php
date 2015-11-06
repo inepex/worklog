@@ -66,7 +66,7 @@ title: "Projects","width":500,
 tooltip: {isHtml: true},
 tooltipText: "percentage",
 legend : {
-    position: "bottom"
+    position: "bottom",
     maxLines : 20
 }
 };
