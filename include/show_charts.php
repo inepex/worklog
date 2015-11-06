@@ -62,7 +62,7 @@ title: "Projects","width":500,
 "height":300,sliceVisibilityThreshold:0,
 tooltip: {isHtml: true},
 tooltipText: "percentage",
-chartArea: {  width: "50%", height: "70%" }
+chartArea: {  width: "100", left : 10}
 };
 
 var chart2 = new google.visualization.PieChart(document.getElementById("project_chart"));
