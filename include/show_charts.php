@@ -34,7 +34,9 @@ var options = {
 	"height":600,sliceVisibilityThreshold:0,
 	tooltip: {isHtml: true},
 	tooltipText: "percentage",
-    legend.position: "labeled"
+    legend : {
+        position: "labeled"
+    }
 };
 
 var chart = new google.visualization.PieChart(document.getElementById("category_chart"));
@@ -62,7 +64,9 @@ title: "Projects","width":500,
 "height":600,sliceVisibilityThreshold:0,
 tooltip: {isHtml: true},
 tooltipText: "percentage",
-legend.position: "bottom"
+legend : {
+    position: "bottom"
+}
 };
 
 var chart2 = new google.visualization.PieChart(document.getElementById("project_chart"));
