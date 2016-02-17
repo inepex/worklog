@@ -13,10 +13,10 @@ function send_error_mail($errno, $errstr, $errfile, $errline, $errcontext){
 	$mail->Port = '465';
 	$mail->SMTPSecure = 'ssl';
 	$mail->SMTPAuth = 'true';
-	$mail->Username = 'worklog@inepex.com';
-	$mail->Password = 'ine123pex';
-	$mail->SetFrom("worklog@inepex.com", "Worklog");
-	$mail->AddAddress("it@inepex.com", "Inepex Belsõ IT");
+	$mail->Username = 'noreply@inepex.com';
+	$mail->Password = '8{yxfn"KUd4Q';
+	$mail->SetFrom("noreply@inepex.com", "Worklog");
+	$mail->AddAddress("dev@inepex.com", "Inepex Developers");
 	$mail->IsHTML(true); 
 	$mail->Subject = "Worklog error";
 	$mail->Body = $mail_body;
