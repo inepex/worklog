@@ -304,7 +304,7 @@ class User extends ObjectCache {
 
 	public function get_projects_where_user_have_planned_hour($status = "") {
 		$projects = array();
-		$query = 'SELECT worklog_projects.worklog_project_id FROM `worklog_projects`, worklog_project_plan WHERE worklog_projects.worklog_project_id = worklog_project_plan.worklog_project_id AND worklog_project_plan.worklog_user_id = ' . $this->id . ' AND plan_value != 0 group by worklog_projects.worklog_project_id';
+		$query = 'SELECT worklog_projects.worklog_project_id FROM `worklog_projects`, worklog_project_plan WHERE worklog_projects.worklog_project_id = worklog_project_plan.worklog_project_id AND worklog_project_plan.worklog_user_id = ' . $this->id . ' AND plan_value != 0 group by worklog_projects.worklog_project_id order by start_date desc';
 		$select_result = mysql_query($query);
 		while ($row = mysql_fetch_assoc($select_result)) {
 			if ((int)$status >= 0 && (int)$status <= 2) {
