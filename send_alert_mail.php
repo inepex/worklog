@@ -69,9 +69,9 @@ while($row = mysql_fetch_assoc($select_result)){
 		$mail->Port = '465';
 		$mail->SMTPSecure = 'ssl';
 		$mail->SMTPAuth = 'true';
-		$mail->Username = 'worklog@inepex.com';
-		$mail->Password = 'ine123pex';
-		$mail->SetFrom("worklog@inepex.com", "Worklog");
+		$mail->Username = 'noreply@inepex.com';
+		$mail->Password = '8{yxfn"KUd4Q';
+		$mail->SetFrom("noreply@inepex.com", "Worklog");
 		$mail->AddAddress($row['email'], $row['name']);
 		
 		$mail->IsHTML(true);
@@ -123,9 +123,9 @@ while($row = mysql_fetch_assoc($select_result)){
 		$mail->Port = '465';
 		$mail->SMTPSecure = 'ssl';
 		$mail->SMTPAuth = 'true';
-		$mail->Username = 'worklog@inepex.com';
-		$mail->Password = 'ine123pex';
-		$mail->SetFrom("worklog@inepex.com", "Worklog");
+		$mail->Username = 'noreply@inepex.com';
+		$mail->Password = '8{yxfn"KUd4Q';
+		$mail->SetFrom("noreply@inepex.com", "Worklog");
 		$mail->AddAddress($row['email'], $row['name']);
 
 		$mail->IsHTML(true);
