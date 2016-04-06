@@ -210,7 +210,7 @@ else{
 				<td>
 					<select name="owner_id">
 					<?php 
-						$users = User::get_users();
+						$users = User::get_active_users();
 						foreach($users as $u){
 							$selected="";
 							if($u->get_id() == $project->get_user()->get_id()){
@@ -331,7 +331,7 @@ else{
 				<tr>
 					<td><select name="workmate_id">
 							<?php 
-							$users = User::get_users();
+							$users = User::get_active_users();
 							foreach ($users as $u){
 								/* @var $u User */
 								if(!$project->is_user_workmate($u->get_id())){
