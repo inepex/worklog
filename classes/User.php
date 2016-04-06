@@ -63,9 +63,14 @@ class User extends ObjectCache {
             }
         return $user;
     }
-	public static function get_users() {
+	
+	public static function get_users_by_state($require_old_users) {
 		$users = array();
-		$query = "SELECT * FROM worklog_users order by name";
+		if($require_old_users) {
+			$query = "SELECT * FROM worklog_users order by name";
+		} else{
+			$query = "SELECT * FROM worklog_users WHERE user_status > 0 order by name";
+		}
         $select_result = mysql_query($query);
         while ($row = mysql_fetch_assoc($select_result)) {
             $user = new User($row['worklog_user_id']
@@ -84,6 +89,14 @@ class User extends ObjectCache {
             array_push($users, $user);
 		}
 		return $users;
+	}
+	
+	public static function get_users() {
+		return User::get_users_by_state(true);
+	}
+	
+	public static function get_active_users() {
+		return User::get_users_by_state(false);
 	}
 
 	public static function is_exist($user_id) {
