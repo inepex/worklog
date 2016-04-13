@@ -24,77 +24,9 @@ require_once 'classes/Scrum.php';
 include('include/login_functions.php');
 error_reporting(E_ALL ^ E_DEPRECATED);
 require_once 'include/mail/class.phpmailer.php';
-
-/* Letter if the user has not used Worklog for 3 days */
-
-$user_id=null;
-$user_name=null;
-$success=false;
-$message=null;
-
-$sql = "SELECT * FROM worklog_users WHERE user_status > 0";
-$select_result = mysql_query($sql);
-
-while($row = mysql_fetch_assoc($select_result)){
 	
-	echo $row['worklog_user_id']."--".$row['username']."<br/>";
-	
-	
-	$todayDate = new DateTime("now");
-	
-	$sendmail = "true";
-	
-	for ($i=1;$i<4;$i++) {
-	
-		$sql2 = "SELECT * FROM worklog_log WHERE worklog_user_id=".$row['worklog_user_id']." AND log_date='".$todayDate->format("Y-m-d")."'";
-	
-		$select_result2 = mysql_query($sql2);
-		
-		if (mysql_num_rows($select_result2)!=0) {$sendmail = "false";}
-		echo  $todayDate->format("Y-m-d")."--".mysql_num_rows($select_result2)."<br/>";
-	
-		$todayDate->modify("-1 day");
-	}
-	 
-	echo "sendmail: ".$sendmail."<br/>";
-	
-	  
-	
-	// LEVÉL KÜLDÉS 
- 
-	if ($sendmail=="true") {
-		$mail = new PHPMailer();
-		$mail->Mailer = 'smtp';
-		$mail->Host = 'smtp.gmail.com';
-		$mail->Port = '465';
-		$mail->SMTPSecure = 'ssl';
-		$mail->SMTPAuth = 'true';
-		$mail->Username = 'noreply@inepex.com';
-		$mail->Password = '8{yxfn"KUd4Q';
-		$mail->SetFrom("noreply@inepex.com", "Worklog");
-		$mail->AddAddress($row['email'], $row['name']);
-		
-		$mail->IsHTML(true);
-		$mail->Subject = "Ejnye ".$row['name'].", 3 napja nem töltöd a Worklogot!";
-		
-		$mail->Body = "Kedves ".$row['name']."! <br/><br/> Felhívjuk a figyelmed, hogy úgy látjuk, 3 napja nem töltötted ki a Worklogot. <br/> Kérjük, ezt mielőbb pótold a http://worklog.polgarhaz.hu oldalon, mert csak 4 napra visszamenőleg tudod ezt megtenni. <br/>Ha szabadságon vagy, kérjük tekintsd levelünket tárgytalannak. :) <br/><br/>Üdvözlettel:<br/>Worklog";
-	 
-		$mail->CharSet = "UTF-8";
-		if(!$mail->Send()) {
-			echo "Mailer Error: " . $mail->ErrorInfo;
-		} else {
-		}
-		
-	}
-	echo "<hr/>";
-	
-}
-
-
 /* Daily alert email */
 
- 
-
 $user_id=null;
 $user_name=null;
 $success=false;
@@ -108,6 +40,11 @@ while($row = mysql_fetch_assoc($select_result)){
 	echo $row['worklog_user_id']."--".$row['username']."<br/>";
 
 	$todayDate = new DateTime("now");
+	
+	$simpleDate = date("y-m-d");
+	$currentYear = date("y");
+	$day = date("w");
+	$holidays = array ($currentYear.'-01-01',$currentYear.'-03-15',$currentYear.'-05-01',$currentYear.'-08-20',$currentYear.'-10-23',$currentYear.'-11-01',$currentYear.'-12-25',$currentYear.'-12-26');
 
 	$sendmail = "false";
 	if ($row['send_daily_alert']=='1') {$sendmail = "true";}
@@ -116,7 +53,7 @@ while($row = mysql_fetch_assoc($select_result)){
 
 	// LEVÉL KÜLDÉS
 
-	if ($sendmail=="true") {
+	if ($sendmail=="true" and ($day != 0 or $day != 6) and !in_array($simpleDate, $holidays, true)) {
 		$mail = new PHPMailer();
 		$mail->Mailer = 'smtp';
 		$mail->Host = 'smtp.gmail.com';
