@@ -53,7 +53,7 @@ while($row = mysql_fetch_assoc($select_result)){
 
 	// LEVÉL KÜLDÉS
 
-	if ($sendmail=="true" and ($day != 0 or $day != 6) and !in_array($simpleDate, $holidays, true)) {
+	if ($sendmail=="true" and ($day != 0 and $day != 6) and !in_array($simpleDate, $holidays, true)) {
 		$mail = new PHPMailer();
 		$mail->Mailer = 'smtp';
 		$mail->Host = 'smtp.gmail.com';
