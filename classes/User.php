@@ -30,6 +30,17 @@ class User extends ObjectCache {
 			}
 		}
 	}
+	
+	public static function new_user($user_name, $password, $email, $name, $default_place, $default_efficiency) {
+		$query = "INSERT INTO worklog_users (username, password, user_status, email, name, default_place_id, default_efficiency_id, send_daily_alert) VALUES ('".strip_tags(mysql_real_escape_string($user_name))."','".md5($password)."','1','".$email."','".strip_tags(mysql_real_escape_string($name))."','".$default_place."','".$default_efficiency."','1')";
+		$insert_result = mysql_query($query);
+		if (mysql_error() != '') {
+			Notification::error(mysql_error());
+		} else {
+			Notification::notice("Added successfully!");
+		}
+	}
+	
     public static function get($id){
         $user = null;
             if(User::isCachedS($id, User::$object_name)){
@@ -175,6 +186,14 @@ class User extends ObjectCache {
 	public function get_api_key() {
 		return $this->api_key;
 	}
+	
+	public function get_selected_if_state_equals($state) {
+		if ($state == $this->get_status()) {
+			return 'selected="selected"';
+		} else {
+			return '';
+		}
+	}
 
 	public function edit_user_name($user_name) {
 		if ($user_name == '') {
@@ -195,6 +214,22 @@ class User extends ObjectCache {
 					trigger_error(mysql_error());
 					return false;
 				}
+			}
+		}
+	}
+	
+	public function edit_status($user_status) {
+		if ($user_status == '') {
+			return false;
+		} else {
+			$query = "UPDATE worklog_users SET user_status='" . $user_status . "' WHERE worklog_user_id=" . $this->id;
+			$update_result = mysql_query($query);
+			if (mysql_error() == "") {
+				//$this->status = User::get($user_status);
+				return true;
+			} else {
+				trigger_error(mysql_error());
+				return false;
 			}
 		}
 	}

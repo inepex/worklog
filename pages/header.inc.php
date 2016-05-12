@@ -47,6 +47,11 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Logged in as <?php echo $_SESSION['entername'];?> <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                           <li><a href="user_edit.php">Settings</a></li>
+						  <?php
+							if ($user->get_status() == "2") {
+								echo '<li><a href="add_user.php">Edit Users</a></li>';
+							}
+						  ?>
                           <li><a href="api_description.php">Workglog API</a></li>
                           <li><a href="<?php echo $logoutlink; ?>">Logout</a></li>
                         </ul>

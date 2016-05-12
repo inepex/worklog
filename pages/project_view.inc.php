@@ -178,7 +178,9 @@ else{
 			<input type="hidden" name="project_id" id="project_id"
 				value="<?php echo $project->get_id();?>"> Filters: <select
 				style="width: 120px !important;" name="user_id">
-				<?php foreach($workmates as $workmate){
+				<option value="" >All</option>
+				<?php
+				foreach($workmates as $workmate){
 					$selected = "";
 					if(isset($_GET['user_id']) &&$_GET['user_id'] == $workmate->get_id()){
 						$selected = 'selected = "selected"';
@@ -188,6 +190,7 @@ else{
 
 			</select> <select style="width: 120px !important;"
 				name="associated_category_id">
+				<option value="" >All</option>
 				<?php 
 				foreach($categories as $category){
 					$selected = "";
