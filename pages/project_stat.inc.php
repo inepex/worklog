@@ -26,7 +26,7 @@ if(isset($_GET['projects_status']) && $_GET['projects_status'] != "" && $_GET['p
 			<form method="get">
 				<select name="user_id">
 					<?php 
-					$users = User::get_users();
+					$users = User::get_active_users();
 					foreach($users as $single_user){
 						$selected = "";
 						if($single_user->get_id() == $selected_user->get_id()){

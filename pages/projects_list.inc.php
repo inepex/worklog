@@ -87,7 +87,7 @@ if(isset($_GET['delete_project']) && $_GET['delete_project'] != "" && Project::i
 					<select name="owner_id" style="width:130px;">
 						<option value="">All</option>
 						<?php 
-						$owner_users = User::get_users();
+						$owner_users = User::get_active_users();
 						foreach($owner_users as $owner_user){
 							echo '<option value="'.$owner_user->get_id().'" '.(($owner_id == $owner_user->get_id())?"selected":"").'>'.$owner_user->get_name().'</option>';
 						}

@@ -50,7 +50,7 @@ if(isset($_GET['company_id']) && $_GET['company_id'] != "" && Company::is_compan
 				<td><select name="user_id">
 						<option value="">All</option>
 						<?php 
-						$users = User::get_users();
+						$users = User::get_active_users();
 						foreach($users as $u){
 							/* @var $u User */
 							$selected = "";

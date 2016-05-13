@@ -265,7 +265,7 @@ if(isset($_GET['delete_log']) && Log::is_log_exist($_GET['delete_log'])){
 					?>
 				</select> <select name="user_id">
 					<?php 
-					$users = User::get_users();
+					$users = User::get_active_users();
 					foreach($users as $u){
 						/* @var $u User */
 						$selected = "";
